@@ -1,8 +1,8 @@
 #pragma once
-#include <eosiolib/asset.hpp>
-#include <eosiolib/multi_index.hpp>
+#include <agriolib/asset.hpp>
+#include <agriolib/multi_index.hpp>
 
-namespace eosio {
+namespace agrio {
 
    using boost::container::flat_map;
 
@@ -18,10 +18,10 @@ namespace eosio {
       flat_map<extended_symbol, int64_t>   balances;
 
       uint64_t primary_key() const { return owner; }
-      EOSLIB_SERIALIZE( exaccount, (owner)(balances) )
+      AGRLIB_SERIALIZE( exaccount, (owner)(balances) )
    };
 
-   typedef eosio::multi_index<N(exaccounts), exaccount> exaccounts;
+   typedef agrio::multi_index<N(exaccounts), exaccount> exaccounts;
 
 
    /**
@@ -40,4 +40,4 @@ namespace eosio {
           */
          flat_map<account_name, exaccounts> exaccounts_cache;
    };
-} /// namespace eosio
+} /// namespace agrio

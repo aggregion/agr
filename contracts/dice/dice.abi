@@ -1,5 +1,5 @@
 {
-   "version": "eosio::abi/1.0",
+   "version": "agrio::abi/1.0",
   "types": [{
       "new_type_name": "account_name",
       "type": "name"
@@ -73,7 +73,7 @@
           "name": "owner",
           "type": "account_name"
         },{
-          "name": "eos_balance",
+          "name": "agr_balance",
           "type": "asset"
         },{
           "name": "open_offers",

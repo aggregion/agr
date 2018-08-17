@@ -1,8 +1,8 @@
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/print.hpp>
-using namespace eosio;
+#include <agriolib/agrio.hpp>
+#include <agriolib/print.hpp>
+using namespace agrio;
 
-class payloadless : public eosio::contract {
+class payloadless : public agrio::contract {
   public:
       using contract::contract;
 
@@ -11,4 +11,4 @@ class payloadless : public eosio::contract {
       }
 };
 
-EOSIO_ABI( payloadless, (doit) )
+AGRIO_ABI( payloadless, (doit) )

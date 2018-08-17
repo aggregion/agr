@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
-namespace eosio {
+namespace agrio {
 
    class noop: public contract {
       public:
@@ -18,6 +18,6 @@ namespace eosio {
          }
    };
 
-   EOSIO_ABI( noop, ( anyaction ) )
+   AGRIO_ABI( noop, ( anyaction ) )
 
-} /// eosio     
+} /// agrio     

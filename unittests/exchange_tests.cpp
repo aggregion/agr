@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/algorithm/string/predicate.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/symbol.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/symbol.hpp>
 
 #include <exchange/exchange.wast.hpp>
 #include <exchange/exchange.abi.hpp>
@@ -21,9 +21,9 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio;
+using namespace agrio::chain;
+using namespace agrio::testing;
 using namespace fc;
 
 #define A(X) asset::from_string( #X )

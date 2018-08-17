@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
 #include <boost/test/unit_test.hpp>
-#include <eosio/chain/block_timestamp.hpp>
+#include <agrio/chain/block_timestamp.hpp>
 #include <fc/time.hpp>
 #include <fc/exception/exception.hpp>
 
-using namespace eosio;
+using namespace agrio;
 using namespace chain;
 
 

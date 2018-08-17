@@ -27,7 +27,7 @@ class Node(object):
 
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-arguments
-    def __init__(self, host, port, pid=None, cmd=None, enableMongo=False, mongoHost="localhost", mongoPort=27017, mongoDb="EOStest"):
+    def __init__(self, host, port, pid=None, cmd=None, enableMongo=False, mongoHost="localhost", mongoPort=27017, mongoDb="AGRtest"):
         self.host=host
         self.port=port
         self.pid=pid
@@ -149,7 +149,7 @@ class Node(object):
             assert(account)
             assert(isinstance(account, Account))
             if Utils.Debug: Utils.Print("Validating account %s" % (account.name))
-            accountInfo=self.getEosAccount(account.name, exitOnError=True)
+            accountInfo=self.getAgrAccount(account.name, exitOnError=True)
             try:
                 if not self.enableMongo:
                     assert(accountInfo["account_name"] == account.name)
@@ -444,17 +444,17 @@ class Node(object):
 
         return self.waitForTransBlockIfNeeded(trans, waitForTransBlock, exitOnError=exitOnError)
 
-    def getEosAccount(self, name, exitOnError=False):
+    def getAgrAccount(self, name, exitOnError=False):
         assert(isinstance(name, str))
         if not self.enableMongo:
             cmdDesc="get account"
             cmd="%s -j %s" % (cmdDesc, name)
-            msg="( getEosAccount(name=%s) )" % (name);
+            msg="( getAgrAccount(name=%s) )" % (name);
             return self.processCmd(cmd, cmdDesc, silentErrors=False, exitOnError=exitOnError, exitMsg=msg)
         else:
-            return self.getEosAccountFromDb(name, exitOnError=exitOnError)
+            return self.getAgrAccountFromDb(name, exitOnError=exitOnError)
 
-    def getEosAccountFromDb(self, name, exitOnError=False):
+    def getAgrAccountFromDb(self, name, exitOnError=False):
         cmd="%s %s" % (Utils.MongoPath, self.mongoEndpointArgs)
         subcommand='db.accounts.findOne({"name" : "%s"})' % (name)
         if Utils.Debug: Utils.Print("cmd: echo '%s' | %s" % (subcommand, cmd))
@@ -515,7 +515,7 @@ class Node(object):
     def verifyAccount(self, account):
         assert(account)
         if not self.enableMongo:
-            ret=self.getEosAccount(account.name)
+            ret=self.getAgrAccount(account.name)
             if ret is not None:
                 account_name=ret["account_name"]
                 if account_name is None:
@@ -527,7 +527,7 @@ class Node(object):
 
     def verifyAccountMdb(self, account):
         assert(account)
-        ret=self.getEosAccountFromDb(account.name)
+        ret=self.getAgrAccountFromDb(account.name)
         if ret is not None:
             account_name=ret["name"]
             if account_name is None:
@@ -576,7 +576,7 @@ class Node(object):
         assert(isinstance(destination, Account))
 
         cmd="%s %s -v transfer -j %s %s" % (
-            Utils.EosClientPath, self.endpointArgs, source.name, destination.name)
+            Utils.AgrClientPath, self.endpointArgs, source.name, destination.name)
         cmdArr=cmd.split()
         cmdArr.append(amountStr)
         cmdArr.append(memo)
@@ -631,7 +631,7 @@ class Node(object):
         assert(isinstance(initialBalances, dict))
         assert(isinstance(transferAmount, int))
 
-        currentBalances=self.getEosBalances([source] + accounts)
+        currentBalances=self.getAgrBalances([source] + accounts)
         assert(currentBalances)
         assert(isinstance(currentBalances, dict))
         assert(len(initialBalances) == len(currentBalances))
@@ -652,14 +652,14 @@ class Node(object):
                             (expectedInitialBalance, initialBalance, key.name))
                 return False
 
-    def getEosBalances(self, accounts):
+    def getAgrBalances(self, accounts):
         """Returns a dictionary with account balances keyed by accounts"""
         assert(accounts)
         assert(isinstance(accounts, list))
 
         balances={}
         for account in accounts:
-            balance = self.getAccountEosBalance(account.name)
+            balance = self.getAccountAgrBalance(account.name)
             balances[account]=balance
 
         return balances
@@ -671,7 +671,7 @@ class Node(object):
         msg="key=%s" % (key);
         return self.processCmd(cmd, cmdDesc, exitOnError=exitOnError, exitMsg=msg)
 
-    # Get actions mapped to an account (cleos get actions)
+    # Get actions mapped to an account (clagr get actions)
     def getActions(self, account, pos=-1, offset=-1, exitOnError=False):
         assert(isinstance(account, Account))
         assert(isinstance(pos, int))
@@ -726,22 +726,22 @@ class Node(object):
         servants=trans["controlled_accounts"]
         return servants
 
-    def getAccountEosBalanceStr(self, scope):
-        """Returns SYS currency0000 account balance from cleos get table command. Returned balance is string following syntax "98.0311 SYS". """
+    def getAccountAgrBalanceStr(self, scope):
+        """Returns SYS currency0000 account balance from clagr get table command. Returned balance is string following syntax "98.0311 SYS". """
         assert isinstance(scope, str)
-        amount=self.getTableAccountBalance("eosio.token", scope)
-        if Utils.Debug: Utils.Print("getNodeAccountEosBalance %s %s" % (scope, amount))
+        amount=self.getTableAccountBalance("agrio.token", scope)
+        if Utils.Debug: Utils.Print("getNodeAccountAgrBalance %s %s" % (scope, amount))
         assert isinstance(amount, str)
         return amount
 
-    def getAccountEosBalance(self, scope):
-        """Returns SYS currency0000 account balance from cleos get table command. Returned balance is an integer e.g. 980311. """
-        balanceStr=self.getAccountEosBalanceStr(scope)
+    def getAccountAgrBalance(self, scope):
+        """Returns SYS currency0000 account balance from clagr get table command. Returned balance is an integer e.g. 980311. """
+        balanceStr=self.getAccountAgrBalanceStr(scope)
         balance=Node.currencyStrToInt(balanceStr)
         return balance
 
     def getAccountCodeHash(self, account):
-        cmd="%s %s get code %s" % (Utils.EosClientPath, self.endpointArgs, account)
+        cmd="%s %s get code %s" % (Utils.AgrClientPath, self.endpointArgs, account)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         try:
             retStr=Utils.checkOutput(cmd.split())
@@ -761,7 +761,7 @@ class Node(object):
 
     # publish contract and return transaction as json object
     def publishContract(self, account, contractDir, wasmFile, abiFile, waitForTransBlock=False, shouldFail=False):
-        cmd="%s %s -v set contract -j %s %s" % (Utils.EosClientPath, self.endpointArgs, account, contractDir)
+        cmd="%s %s -v set contract -j %s %s" % (Utils.AgrClientPath, self.endpointArgs, account, contractDir)
         cmd += "" if wasmFile is None else (" "+ wasmFile)
         cmd += "" if abiFile is None else (" " + abiFile)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
@@ -815,7 +815,7 @@ class Node(object):
 
     # returns tuple with transaction and
     def pushMessage(self, account, action, data, opts, silentErrors=False):
-        cmd="%s %s push action -j %s %s" % (Utils.EosClientPath, self.endpointArgs, account, action)
+        cmd="%s %s push action -j %s %s" % (Utils.AgrClientPath, self.endpointArgs, account, action)
         cmdArr=cmd.split()
         if data is not None:
             cmdArr.append(data)
@@ -872,7 +872,7 @@ class Node(object):
 
     def processCmd(self, cmd, cmdDesc, silentErrors=True, exitOnError=False, exitMsg=None, returnType=ReturnType.json):
         assert(isinstance(returnType, ReturnType))
-        cmd="%s %s %s" % (Utils.EosClientPath, self.endpointArgs, cmd)
+        cmd="%s %s %s" % (Utils.AgrClientPath, self.endpointArgs, cmd)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         trans=None
         try:
@@ -941,7 +941,7 @@ class Node(object):
         return False if info is None else True
 
     def getHeadBlockNum(self):
-        """returns head block number(string) as returned by cleos get info."""
+        """returns head block number(string) as returned by clagr get info."""
         if not self.enableMongo:
             info=self.getInfo(exitOnError=True)
             if info is not None:

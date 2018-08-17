@@ -1,8 +1,8 @@
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/dispatcher.hpp>
-#include <eosiolib/multi_index.hpp>
+#include <agriolib/agrio.hpp>
+#include <agriolib/dispatcher.hpp>
+#include <agriolib/multi_index.hpp>
 
-using namespace eosio;
+using namespace agrio;
 
 namespace multi_index_test {
 
@@ -17,7 +17,7 @@ struct limit_order {
       uint64_t get_expiration()const { return expiration; }
       uint128_t get_price()const { return price; }
 
-      EOSLIB_SERIALIZE( limit_order, (id)(price)(expiration)(owner) )
+      AGRLIB_SERIALIZE( limit_order, (id)(price)(expiration)(owner) )
    };
 
    struct test_k256 {
@@ -27,7 +27,7 @@ struct limit_order {
       auto primary_key()const { return id; }
       key256 get_val()const { return val; }
 
-      EOSLIB_SERIALIZE( test_k256, (id)(val) )
+      AGRLIB_SERIALIZE( test_k256, (id)(val) )
    };
 
    class multi_index_test {
@@ -39,7 +39,7 @@ struct limit_order {
 
             uint32_t what;
 
-            EOSLIB_SERIALIZE(trigger, (what))
+            AGRLIB_SERIALIZE(trigger, (what))
          };
 
          static void on(const trigger& act)
@@ -51,7 +51,7 @@ struct limit_order {
                case 0:
                {
                   print("Testing uint128_t secondary index.\n");
-                  eosio::multi_index<N(orders), limit_order,
+                  agrio::multi_index<N(orders), limit_order,
                      indexed_by< N(byexp),   const_mem_fun<limit_order, uint64_t, &limit_order::get_expiration> >,
                      indexed_by< N(byprice), const_mem_fun<limit_order, uint128_t, &limit_order::get_price> >
                      > orders( N(multitest), N(multitest) );
@@ -99,7 +99,7 @@ struct limit_order {
                case 1: // Test key265 secondary index
                {
                   print("Testing key256 secondary index.\n");
-                  eosio::multi_index<N(test1), test_k256,
+                  agrio::multi_index<N(test1), test_k256,
                      indexed_by< N(byval), const_mem_fun<test_k256, key256, &test_k256::get_val> >
                   > testtable( N(multitest), N(exchange) ); // Code must be same as the receiver? Scope doesn't have to be.
 
@@ -157,7 +157,7 @@ struct limit_order {
                }
                break;
                default:
-                  eosio_assert(0, "Given what code is not supported.");
+                  agrio_assert(0, "Given what code is not supported.");
                break;
             }
          }
@@ -170,7 +170,7 @@ namespace multi_index_test {
       /// The apply method implements the dispatch of events to this contract
       void apply( uint64_t /* receiver */, uint64_t code, uint64_t action ) {
          require_auth(code);
-         eosio_assert(eosio::dispatch<multi_index_test, multi_index_test::trigger>(code, action),
+         agrio_assert(agrio::dispatch<multi_index_test, multi_index_test::trigger>(code, action),
                       "Could not dispatch");
       }
    }

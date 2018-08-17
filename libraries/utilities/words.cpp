@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #include <stdint.h>
-#include <eosio/utilities/words.hpp>
+#include <agrio/utilities/words.hpp>
 
-namespace eosio { namespace words {
+namespace agrio { namespace words {
 
 const const_char_ptr word_list[] = { 
 "a",
@@ -7569,7 +7569,7 @@ const const_char_ptr word_list[] = {
 "casefy",
 "caseic",
 "casein",
-"caseose",
+"casagre",
 "caseous",
 "caser",
 "casern",
@@ -10157,7 +10157,7 @@ const const_char_ptr word_list[] = {
 "crenic",
 "crenula",
 "creole",
-"creosol",
+"cragrol",
 "crepe",
 "crepine",
 "crepon",
@@ -14064,10 +14064,10 @@ const const_char_ptr word_list[] = {
 "eon",
 "eonism",
 "eophyte",
-"eosate",
-"eoside",
-"eosin",
-"eosinic",
+"agrate",
+"agride",
+"agrin",
+"agrinic",
 "eozoon",
 "epacme",
 "epacrid",
@@ -17318,8 +17318,8 @@ const const_char_ptr word_list[] = {
 "geopony",
 "georama",
 "georgic",
-"geosid",
-"geoside",
+"gagrid",
+"gagride",
 "geotaxy",
 "geotic",
 "geoty",
@@ -24540,7 +24540,7 @@ const const_char_ptr word_list[] = {
 "lunulet",
 "lupe",
 "lupeol",
-"lupeose",
+"lupagre",
 "lupine",
 "lupinin",
 "lupis",
@@ -27351,7 +27351,7 @@ const const_char_ptr word_list[] = {
 "neon",
 "neonate",
 "neorama",
-"neossin",
+"nagrsin",
 "neoteny",
 "neotype",
 "neoza",
@@ -28436,7 +28436,7 @@ const const_char_ptr word_list[] = {
 "olenid",
 "olent",
 "oleo",
-"oleose",
+"olagre",
 "oleous",
 "olfact",
 "olfacty",
@@ -39628,7 +39628,7 @@ const const_char_ptr word_list[] = {
 "spender",
 "spense",
 "spent",
-"speos",
+"spagr",
 "sperate",
 "sperity",
 "sperket",
@@ -42276,7 +42276,7 @@ const const_char_ptr word_list[] = {
 "tele",
 "teledu",
 "telega",
-"teleost",
+"telagrt",
 "teleran",
 "telergy",
 "telesia",
@@ -42801,7 +42801,7 @@ const const_char_ptr word_list[] = {
 "three",
 "threne",
 "threnos",
-"threose",
+"thragre",
 "thresh",
 "threw",
 "thrice",
@@ -49761,4 +49761,4 @@ void hide_unused_warning() {
   (void)word_list; 
 }
 
-} } // eosio::words
+} } // agrio::words

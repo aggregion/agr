@@ -13,15 +13,15 @@ class Utils:
     Debug=False
     FNull = open(os.devnull, 'w')
 
-    EosClientPath="programs/cleos/cleos"
+    AgrClientPath="programs/clagr/clagr"
 
-    EosWalletName="keosd"
-    EosWalletPath="programs/keosd/"+ EosWalletName
+    AgrWalletName="kagrd"
+    AgrWalletPath="programs/kagrd/"+ AgrWalletName
 
-    EosServerName="nodeos"
-    EosServerPath="programs/nodeos/"+ EosServerName
+    AgrServerName="nodagr"
+    AgrServerPath="programs/nodagr/"+ AgrServerName
 
-    EosLauncherPath="programs/eosio-launcher/eosio-launcher"
+    AgrLauncherPath="programs/agrio-launcher/agrio-launcher"
     MongoPath="mongo"
     ShuttingDown=False
 

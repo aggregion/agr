@@ -1,8 +1,8 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
 /**
  *  @defgroup tictactoecontract Tic Tac Toe Contract
@@ -42,7 +42,7 @@
  *  @{
  */
 
-class tic_tac_toe : public eosio::contract {
+class tic_tac_toe : public agrio::contract {
    public:
       tic_tac_toe( account_name self ):contract(self){}
       /**
@@ -74,13 +74,13 @@ class tic_tac_toe : public eosio::contract {
          }
 
          auto primary_key() const { return challenger; }
-         EOSLIB_SERIALIZE( game, (challenger)(host)(turn)(winner)(board))
+         AGRLIB_SERIALIZE( game, (challenger)(host)(turn)(winner)(board))
       };
 
       /**
        * @brief The table definition, used to store existing games and their current state
        */
-      typedef eosio::multi_index< N(games), game> games;
+      typedef agrio::multi_index< N(games), game> games;
 
       /// @abi action
       /// Create a new game

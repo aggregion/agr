@@ -1,29 +1,29 @@
 [submodule "libraries/chainbase"]
 	path = libraries/chainbase
-	url = https://github.com/eosio/chainbase
+	url = https://github.com/aggregion/chainbase
         ignore = dirty
 [submodule "libraries/appbase"]
 	path = libraries/appbase
-	url = https://github.com/eosio/appbase
+	url = https://github.com/aggregion/appbase
         ignore = dirty
 [submodule "contracts/musl/upstream"]
 	path = contracts/musl/upstream
-	url = https://github.com/EOSIO/musl.git
-	branch = eosio
+	url = https://github.com/aggregion/musl.git
+	branch = agrio
 [submodule "contracts/libc++/upstream"]
 	path = contracts/libc++/upstream
-	url = https://github.com/EOSIO/libcxx.git
-	branch = eosio
+	url = https://github.com/aggregion/libcxx.git
+	branch = agrio
 [submodule "externals/binaryen"]
 	path = externals/binaryen
-	url = https://github.com/EOSIO/binaryen
+	url = https://github.com/aggregion/binaryen
 
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
-	url = https://github.com/eosio/berkeley-softfloat-3
+	url = https://github.com/aggregion/berkeley-softfloat-3
 [submodule "externals/magic_get"]
 	path = externals/magic_get
-	url = https://github.com/EOSIO/magic_get
+	url = https://github.com/aggregion/magic_get
 [submodule "libraries/fc"]
 	path = libraries/fc
-	url = https://github.com/EOSIO/fc
+	url = https://github.com/aggregion/fc

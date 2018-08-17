@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/chain/exceptions.hpp>
 
 #include <fc/network/ip.hpp>
 #include <fc/log/logger_config.hpp>
@@ -25,7 +25,7 @@
 #include <memory>
 #include <regex>
 
-namespace eosio {
+namespace agrio {
 
    static appbase::abstract_plugin& _http_plugin = app().register_plugin<http_plugin>();
 
@@ -145,14 +145,14 @@ namespace eosio {
 
                fc::ec_key ecdh = EC_KEY_new_by_curve_name(NID_secp384r1);
                if (!ecdh)
-                  EOS_THROW(chain::http_exception, "Failed to set NID_secp384r1");
+                  AGR_THROW(chain::http_exception, "Failed to set NID_secp384r1");
                if(SSL_CTX_set_tmp_ecdh(ctx->native_handle(), (EC_KEY*)ecdh) != 1)
-                  EOS_THROW(chain::http_exception, "Failed to set ECDH PFS");
+                  AGR_THROW(chain::http_exception, "Failed to set ECDH PFS");
 
                if(SSL_CTX_set_cipher_list(ctx->native_handle(), \
                   "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:AES256:" \
                   "!DHE:!RSA:!AES128:!RC4:!DES:!3DES:!DSS:!SRP:!PSK:!EXP:!MD5:!LOW:!aNULL:!eNULL") != 1)
-                  EOS_THROW(chain::http_exception, "Failed to set HTTPS cipher list");
+                  AGR_THROW(chain::http_exception, "Failed to set HTTPS cipher list");
             } catch (const fc::exception& e) {
                elog("https server initialization error: ${w}", ("w", e.to_detail_string()));
             } catch(std::exception& e) {

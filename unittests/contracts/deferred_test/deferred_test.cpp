@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/transaction.hpp>
-#include <eosiolib/dispatcher.hpp>
+#include <agriolib/agrio.hpp>
+#include <agriolib/transaction.hpp>
+#include <agriolib/dispatcher.hpp>
 
-using namespace eosio;
+using namespace agrio;
 
-class deferred_test : public eosio::contract {
+class deferred_test : public agrio::contract {
    public:
       using contract::contract;
 
@@ -32,7 +32,7 @@ class deferred_test : public eosio::contract {
       //@abi action
       void deferfunc( uint64_t payload ) {
          print("deferfunc called on ", name{_self}, " with payload = ", payload, "\n");
-         eosio_assert( payload != 13, "value 13 not allowed in payload" );
+         agrio_assert( payload != 13, "value 13 not allowed in payload" );
       }
 
    private:
@@ -45,7 +45,7 @@ void apply_onerror(uint64_t receiver, const onerror& error ) {
 extern "C" {
     /// The apply method implements the dispatch of events to this contract
     void apply( uint64_t receiver, uint64_t code, uint64_t action ) {
-      if( code == N(eosio) && action == N(onerror) ) {
+      if( code == N(agrio) && action == N(onerror) ) {
          apply_onerror( receiver, onerror::from_current_action() );
       } else if( code == receiver ) {
          deferred_test thiscontract(receiver);
@@ -58,4 +58,4 @@ extern "C" {
    }
 }
 
-//EOSIO_ABI( deferred_test, (defercall)(deferfunc) )
+//AGRIO_ABI( deferred_test, (defercall)(deferfunc) )

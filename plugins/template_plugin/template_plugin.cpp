@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/template_plugin/template_plugin.hpp>
+#include <agrio/template_plugin/template_plugin.hpp>
 
-namespace eosio {
+namespace agrio {
    static appbase::abstract_plugin& _template_plugin = app().register_plugin<template_plugin>();
 
 class template_plugin_impl {

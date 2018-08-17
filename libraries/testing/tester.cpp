@@ -1,18 +1,18 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/algorithm/string/predicate.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
-#include <eosio/chain/eosio_contract.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/wast_to_wasm.hpp>
+#include <agrio/chain/agrio_contract.hpp>
 
-#include <eosio.bios/eosio.bios.wast.hpp>
-#include <eosio.bios/eosio.bios.abi.hpp>
+#include <agrio.bios/agrio.bios.wast.hpp>
+#include <agrio.bios/agrio.bios.abi.hpp>
 #include <fstream>
 
-eosio::chain::asset core_from_string(const std::string& s) {
-  return eosio::chain::asset::from_string(s + " " CORE_SYMBOL_NAME);
+agrio::chain::asset core_from_string(const std::string& s) {
+  return agrio::chain::asset::from_string(s + " " CORE_SYMBOL_NAME);
 }
 
-namespace eosio { namespace testing {
+namespace agrio { namespace testing {
    std::string read_wast( const char* fn ) {
       std::ifstream wast_file(fn);
       FC_ASSERT( wast_file.is_open(), "wast file cannot be found" );
@@ -300,10 +300,10 @@ namespace eosio { namespace testing {
       if( include_code ) {
          FC_ASSERT( owner_auth.threshold <= std::numeric_limits<weight_type>::max(), "threshold is too high" );
          FC_ASSERT( active_auth.threshold <= std::numeric_limits<weight_type>::max(), "threshold is too high" );
-         owner_auth.accounts.push_back( permission_level_weight{ {a, config::eosio_code_name},
+         owner_auth.accounts.push_back( permission_level_weight{ {a, config::agrio_code_name},
                                                                  static_cast<weight_type>(owner_auth.threshold) } );
          sort_permissions(owner_auth);
-         active_auth.accounts.push_back( permission_level_weight{ {a, config::eosio_code_name},
+         active_auth.accounts.push_back( permission_level_weight{ {a, config::agrio_code_name},
                                                                   static_cast<weight_type>(active_auth.threshold) } );
          sort_permissions(active_auth);
       }
@@ -797,7 +797,7 @@ namespace eosio { namespace testing {
             auto block = a.control->fetch_block_by_number(i);
             if( block ) { //&& !b.control->is_known_block(block->id()) ) {
                b.control->abort_block();
-               b.control->push_block(block); //, eosio::chain::validation_steps::created_block);
+               b.control->push_block(block); //, agrio::chain::validation_steps::created_block);
             }
          }
       };
@@ -807,9 +807,9 @@ namespace eosio { namespace testing {
    }
 
    void base_tester::push_genesis_block() {
-      set_code(config::system_account_name, eosio_bios_wast);
+      set_code(config::system_account_name, agrio_bios_wast);
 
-      set_abi(config::system_account_name, eosio_bios_abi);
+      set_abi(config::system_account_name, agrio_bios_abi);
       //produce_block();
    }
 
@@ -881,7 +881,7 @@ namespace eosio { namespace testing {
       return match;
    }
 
-   bool eosio_assert_message_is::operator()( const eosio_assert_message_exception& ex ) {
+   bool agrio_assert_message_is::operator()( const agrio_assert_message_exception& ex ) {
       auto message = ex.get_log().at( 0 ).get_message();
       bool match = (message == expected);
       if( !match ) {
@@ -890,7 +890,7 @@ namespace eosio { namespace testing {
       return match;
    }
 
-   bool eosio_assert_message_starts_with::operator()( const eosio_assert_message_exception& ex ) {
+   bool agrio_assert_message_starts_with::operator()( const agrio_assert_message_exception& ex ) {
       auto message = ex.get_log().at( 0 ).get_message();
       bool match = boost::algorithm::starts_with( message, expected );
       if( !match ) {
@@ -899,7 +899,7 @@ namespace eosio { namespace testing {
       return match;
    }
 
-   bool eosio_assert_code_is::operator()( const eosio_assert_code_exception& ex ) {
+   bool agrio_assert_code_is::operator()( const agrio_assert_code_exception& ex ) {
       auto message = ex.get_log().at( 0 ).get_message();
       bool match = (message == expected);
       if( !match ) {
@@ -908,7 +908,7 @@ namespace eosio { namespace testing {
       return match;
    }
 
-} }  /// eosio::testing
+} }  /// agrio::testing
 
 std::ostream& operator<<( std::ostream& osm, const fc::variant& v ) {
    //fc::json::to_stream( osm, v );

@@ -3,7 +3,7 @@ steps:
       echo "--- Creating symbolic link to job directory :file_folder:" && \
       sleep 5 && ln -s "$(pwd)" /data/job && cd /data/job && \
       echo "+++ Building :hammer:" && \
-      echo 1 | ./eosio_build.sh -o Debug && \
+      echo 1 | ./agrio_build.sh -o Debug && \
       echo "--- Compressing build directory :compression:" && \
       tar -pczf build.tar.gz build/
     label: ":darwin: Build"
@@ -14,7 +14,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        echo 1 | ./eosio_build.sh -o Debug && \
+        echo 1 | ./agrio_build.sh -o Debug && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":ubuntu: Build"
@@ -23,13 +23,13 @@ steps:
     artifact_paths: "build.tar.gz"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:ubuntu"
+        image: "agrio/ci:ubuntu"
         workdir: /data/job
     timeout: 60
     
   - command: |
         echo "+++ :hammer: Building" && \
-        echo 1 | ./eosio_build.sh -o Debug && \
+        echo 1 | ./agrio_build.sh -o Debug && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":ubuntu: 18.04 Build"
@@ -38,13 +38,13 @@ steps:
     artifact_paths: "build.tar.gz"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:ubuntu18"
+        image: "agrio/ci:ubuntu18"
         workdir: /data/job
     timeout: 60
 
   - command: |
         echo "+++ :hammer: Building" && \
-        echo 1 | ./eosio_build.sh -o Debug && \
+        echo 1 | ./agrio_build.sh -o Debug && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":fedora: Build"
@@ -53,13 +53,13 @@ steps:
     artifact_paths: "build.tar.gz"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:fedora"
+        image: "agrio/ci:fedora"
         workdir: /data/job
     timeout: 60
  
   - command: |
         echo "+++ :hammer: Building" && \
-        echo 1 | ./eosio_build.sh -o Debug && \
+        echo 1 | ./agrio_build.sh -o Debug && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":centos: Build"
@@ -68,13 +68,13 @@ steps:
     artifact_paths: "build.tar.gz"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:centos"
+        image: "agrio/ci:centos"
         workdir: /data/job
     timeout: 60
 
   - command: |
         echo "+++ :hammer: Building" && \
-        echo 1 | ./eosio_build.sh -o Debug && \
+        echo 1 | ./agrio_build.sh -o Debug && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":aws: Build"
@@ -83,7 +83,7 @@ steps:
     artifact_paths: "build.tar.gz"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:amazonlinux"
+        image: "agrio/ci:amazonlinux"
         workdir: /data/job
     timeout: 60
 
@@ -129,7 +129,7 @@ steps:
       - "build/config.ini"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:ubuntu"
+        image: "agrio/ci:ubuntu"
         workdir: /data/job
     timeout: 60
   
@@ -153,7 +153,7 @@ steps:
       - "build/config.ini"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:ubuntu18"
+        image: "agrio/ci:ubuntu18"
         workdir: /data/job
     timeout: 60
 
@@ -177,7 +177,7 @@ steps:
       - "build/config.ini"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:fedora"
+        image: "agrio/ci:fedora"
         workdir: /data/job
     timeout: 60
 
@@ -201,7 +201,7 @@ steps:
       - "build/config.ini"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:centos"
+        image: "agrio/ci:centos"
         workdir: /data/job
     timeout: 60
 
@@ -225,6 +225,6 @@ steps:
       - "build/config.ini"
     plugins:
       docker#v1.1.1:
-        image: "eosio/ci:amazonlinux"
+        image: "agrio/ci:amazonlinux"
         workdir: /data/job
     timeout: 60

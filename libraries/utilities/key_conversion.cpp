@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/utilities/key_conversion.hpp>
+#include <agrio/utilities/key_conversion.hpp>
 #include <fc/crypto/base58.hpp>
 #include <fc/variant.hpp>
 
-namespace eosio { namespace utilities {
+namespace agrio { namespace utilities {
 
 std::string key_to_wif(const fc::sha256& secret )
 {
@@ -50,4 +50,4 @@ fc::optional<fc::ecc::private_key> wif_to_key( const std::string& wif_key )
   return fc::optional<fc::ecc::private_key>();
 }
 
-} } // end namespace eosio::utilities
+} } // end namespace agrio::utilities

@@ -1,28 +1,28 @@
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/transaction_context.hpp>
+#include <agrio/chain/controller.hpp>
+#include <agrio/chain/transaction_context.hpp>
 
-#include <eosio/chain/block_log.hpp>
-#include <eosio/chain/fork_database.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/block_log.hpp>
+#include <agrio/chain/fork_database.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-#include <eosio/chain/account_object.hpp>
-#include <eosio/chain/block_summary_object.hpp>
-#include <eosio/chain/global_property_object.hpp>
-#include <eosio/chain/contract_table_objects.hpp>
-#include <eosio/chain/generated_transaction_object.hpp>
-#include <eosio/chain/transaction_object.hpp>
-#include <eosio/chain/reversible_block_object.hpp>
+#include <agrio/chain/account_object.hpp>
+#include <agrio/chain/block_summary_object.hpp>
+#include <agrio/chain/global_property_object.hpp>
+#include <agrio/chain/contract_table_objects.hpp>
+#include <agrio/chain/generated_transaction_object.hpp>
+#include <agrio/chain/transaction_object.hpp>
+#include <agrio/chain/reversible_block_object.hpp>
 
-#include <eosio/chain/authorization_manager.hpp>
-#include <eosio/chain/resource_limits.hpp>
+#include <agrio/chain/authorization_manager.hpp>
+#include <agrio/chain/resource_limits.hpp>
 
 #include <chainbase/chainbase.hpp>
 #include <fc/io/json.hpp>
 #include <fc/scoped_exit.hpp>
 
-#include <eosio/chain/eosio_contract.hpp>
+#include <agrio/chain/agrio_contract.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 using resource_limits::resource_limits_manager;
 
@@ -119,7 +119,7 @@ struct controller_impl {
 
    void pop_block() {
       auto prev = fork_db.get_block( head->header.previous );
-      EOS_ASSERT( prev, block_validate_exception, "attempt to pop beyond last irreversible block" );
+      AGR_ASSERT( prev, block_validate_exception, "attempt to pop beyond last irreversible block" );
 
       if( const auto* b = reversible_blocks.find<reversible_block_object,by_num>(head->block_num) )
       {
@@ -161,20 +161,20 @@ struct controller_impl {
 #define SET_APP_HANDLER( receiver, contract, action) \
    set_apply_handler( #receiver, #contract, #action, &BOOST_PP_CAT(apply_, BOOST_PP_CAT(contract, BOOST_PP_CAT(_,action) ) ) )
 
-   SET_APP_HANDLER( eosio, eosio, newaccount );
-   SET_APP_HANDLER( eosio, eosio, setcode );
-   SET_APP_HANDLER( eosio, eosio, setabi );
-   SET_APP_HANDLER( eosio, eosio, updateauth );
-   SET_APP_HANDLER( eosio, eosio, deleteauth );
-   SET_APP_HANDLER( eosio, eosio, linkauth );
-   SET_APP_HANDLER( eosio, eosio, unlinkauth );
+   SET_APP_HANDLER( agrio, agrio, newaccount );
+   SET_APP_HANDLER( agrio, agrio, setcode );
+   SET_APP_HANDLER( agrio, agrio, setabi );
+   SET_APP_HANDLER( agrio, agrio, updateauth );
+   SET_APP_HANDLER( agrio, agrio, deleteauth );
+   SET_APP_HANDLER( agrio, agrio, linkauth );
+   SET_APP_HANDLER( agrio, agrio, unlinkauth );
 /*
-   SET_APP_HANDLER( eosio, eosio, postrecovery );
-   SET_APP_HANDLER( eosio, eosio, passrecovery );
-   SET_APP_HANDLER( eosio, eosio, vetorecovery );
+   SET_APP_HANDLER( agrio, agrio, postrecovery );
+   SET_APP_HANDLER( agrio, agrio, passrecovery );
+   SET_APP_HANDLER( agrio, agrio, vetorecovery );
 */
 
-   SET_APP_HANDLER( eosio, eosio, canceldelay );
+   SET_APP_HANDLER( agrio, agrio, canceldelay );
 
    fork_db.irreversible.connect( [&]( auto b ) {
                                  on_irreversible(b);
@@ -213,7 +213,7 @@ struct controller_impl {
          blog.read_head();
 
       const auto& log_head = blog.head();
-      EOS_ASSERT( log_head, block_log_exception, "block log head can not be found" );
+      AGR_ASSERT( log_head, block_log_exception, "block log head can not be found" );
       auto lh_block_num = log_head->block_num();
 
       db.commit( s->block_num );
@@ -224,8 +224,8 @@ struct controller_impl {
          return;
       }
 
-      EOS_ASSERT( s->block_num - 1  == lh_block_num, unlinkable_block_exception, "unlinkable block", ("s->block_num",s->block_num)("lh_block_num", lh_block_num) );
-      EOS_ASSERT( s->block->previous == log_head->id(), unlinkable_block_exception, "irreversible doesn't link to block log head" );
+      AGR_ASSERT( s->block_num - 1  == lh_block_num, unlinkable_block_exception, "unlinkable block", ("s->block_num",s->block_num)("lh_block_num", lh_block_num) );
+      AGR_ASSERT( s->block->previous == log_head->id(), unlinkable_block_exception, "irreversible doesn't link to block log head" );
       blog.append(s->block);
 
       const auto& ubi = reversible_blocks.get_index<reversible_block_index,by_num>();
@@ -298,17 +298,17 @@ struct controller_impl {
       const auto& ubi = reversible_blocks.get_index<reversible_block_index,by_num>();
       auto objitr = ubi.rbegin();
       if( objitr != ubi.rend() ) {
-         EOS_ASSERT( objitr->blocknum == head->block_num, fork_database_exception,
+         AGR_ASSERT( objitr->blocknum == head->block_num, fork_database_exception,
                     "reversible block database is inconsistent with fork database, replay blockchain",
                     ("head",head->block_num)("unconfimed", objitr->blocknum)         );
       } else {
          auto end = blog.read_head();
-         EOS_ASSERT( end && end->block_num() == head->block_num, fork_database_exception,
+         AGR_ASSERT( end && end->block_num() == head->block_num, fork_database_exception,
                     "fork database exists but reversible block database does not, replay blockchain",
                     ("blog_head",end->block_num())("head",head->block_num)  );
       }
 
-      EOS_ASSERT( db.revision() >= head->block_num, fork_database_exception, "fork database is inconsistent with shared memory",
+      AGR_ASSERT( db.revision() >= head->block_num, fork_database_exception, "fork database is inconsistent with shared memory",
                  ("db",db.revision())("head",head->block_num) );
 
       if( db.revision() > head->block_num ) {
@@ -396,7 +396,7 @@ struct controller_impl {
          a.privileged = is_privileged;
 
          if( name == config::system_account_name ) {
-            a.set_abi(eosio_contract_abi(abi_def()));
+            a.set_abi(agrio_contract_abi(abi_def()));
          }
       });
       db.create<account_sequence_object>([&](auto & a) {
@@ -476,7 +476,7 @@ struct controller_impl {
             auto new_bsp = fork_db.add(pending->_pending_block_state);
             emit(self.accepted_block_header, pending->_pending_block_state);
             head = fork_db.head();
-            EOS_ASSERT(new_bsp == head, fork_database_exception, "committed block did not become the new head in fork database");
+            AGR_ASSERT(new_bsp == head, fork_database_exception, "committed block did not become the new head in fork database");
          }
 
          if( !replaying ) {
@@ -593,7 +593,7 @@ struct controller_impl {
    transaction_trace_ptr push_scheduled_transaction( const transaction_id_type& trxid, fc::time_point deadline, uint32_t billed_cpu_time_us, bool explicit_billed_cpu_time = false ) {
       const auto& idx = db.get_index<generated_transaction_multi_index,by_trx_id>();
       auto itr = idx.find( trxid );
-      EOS_ASSERT( itr != idx.end(), unknown_transaction_exception, "unknown transaction" );
+      AGR_ASSERT( itr != idx.end(), unknown_transaction_exception, "unknown transaction" );
       return push_scheduled_transaction( *itr, deadline, billed_cpu_time_us, explicit_billed_cpu_time );
    }
 
@@ -615,7 +615,7 @@ struct controller_impl {
 
       fc::datastream<const char*> ds( gtrx.packed_trx.data(), gtrx.packed_trx.size() );
 
-      EOS_ASSERT( gtrx.delay_until <= self.pending_block_time(), transaction_exception, "this transaction isn't ready",
+      AGR_ASSERT( gtrx.delay_until <= self.pending_block_time(), transaction_exception, "this transaction isn't ready",
                  ("gtrx.delay_until",gtrx.delay_until)("pbt",self.pending_block_time())          );
 
       signed_transaction dtrx;
@@ -746,7 +746,7 @@ struct controller_impl {
    const transaction_receipt& push_receipt( const T& trx, transaction_receipt_header::status_enum status,
                                             uint64_t cpu_usage_us, uint64_t net_usage ) {
       uint64_t net_usage_words = net_usage / 8;
-      EOS_ASSERT( net_usage_words*8 == net_usage, transaction_exception, "net_usage is not divisible by 8" );
+      AGR_ASSERT( net_usage_words*8 == net_usage, transaction_exception, "net_usage is not divisible by 8" );
       pending->_pending_block_state->block->transactions.emplace_back( trx );
       transaction_receipt& r = pending->_pending_block_state->block->transactions.back();
       r.cpu_usage_us         = cpu_usage_us;
@@ -765,7 +765,7 @@ struct controller_impl {
                                            uint32_t billed_cpu_time_us,
                                            bool explicit_billed_cpu_time = false )
    {
-      EOS_ASSERT(deadline != fc::time_point(), transaction_exception, "deadline cannot be uninitialized");
+      AGR_ASSERT(deadline != fc::time_point(), transaction_exception, "deadline cannot be uninitialized");
 
       transaction_trace_ptr trace;
       try {
@@ -868,14 +868,14 @@ struct controller_impl {
 
 
    void start_block( block_timestamp_type when, uint16_t confirm_block_count, controller::block_status s ) {
-      EOS_ASSERT( !pending, block_validate_exception, "pending block already exists" );
+      AGR_ASSERT( !pending, block_validate_exception, "pending block already exists" );
 
       auto guard_pending = fc::make_scoped_exit([this](){
          pending.reset();
       });
 
       if (!self.skip_db_sessions(s)) {
-         EOS_ASSERT( db.revision() == head->block_num, database_exception, "db revision is not on par with head block",
+         AGR_ASSERT( db.revision() == head->block_num, database_exception, "db revision is not on par with head block",
                      ("db.revision()", db.revision())("controller_head_block", head->block_num)("fork_db_head_block", fork_db.head()->block_num) );
 
          pending.emplace(maybe_session(db));
@@ -951,7 +951,7 @@ struct controller_impl {
 
    void apply_block( const signed_block_ptr& b, controller::block_status s ) { try {
       try {
-         EOS_ASSERT( b->block_extensions.size() == 0, block_validate_exception, "no supported extensions" );
+         AGR_ASSERT( b->block_extensions.size() == 0, block_validate_exception, "no supported extensions" );
          start_block( b->timestamp, b->confirmed, s );
 
          transaction_trace_ptr trace;
@@ -965,7 +965,7 @@ struct controller_impl {
             } else if( receipt.trx.contains<transaction_id_type>() ) {
                trace = push_scheduled_transaction( receipt.trx.get<transaction_id_type>(), fc::time_point::maximum(), receipt.cpu_usage_us, true );
             } else {
-               EOS_ASSERT( false, block_validate_exception, "encountered unexpected receipt type" );
+               AGR_ASSERT( false, block_validate_exception, "encountered unexpected receipt type" );
             }
 
             bool transaction_failed =  trace && trace->except;
@@ -975,16 +975,16 @@ struct controller_impl {
                throw *trace->except;
             }
 
-            EOS_ASSERT( pending->_pending_block_state->block->transactions.size() > 0,
+            AGR_ASSERT( pending->_pending_block_state->block->transactions.size() > 0,
                         block_validate_exception, "expected a receipt",
                         ("block", *b)("expected_receipt", receipt)
                       );
-            EOS_ASSERT( pending->_pending_block_state->block->transactions.size() == num_pending_receipts + 1,
+            AGR_ASSERT( pending->_pending_block_state->block->transactions.size() == num_pending_receipts + 1,
                         block_validate_exception, "expected receipt was not added",
                         ("block", *b)("expected_receipt", receipt)
                       );
             const transaction_receipt_header& r = pending->_pending_block_state->block->transactions.back();
-            EOS_ASSERT( r == static_cast<const transaction_receipt_header&>(receipt),
+            AGR_ASSERT( r == static_cast<const transaction_receipt_header&>(receipt),
                         block_validate_exception, "receipt does not match",
                         ("producer_receipt", receipt)("validator_receipt", pending->_pending_block_state->block->transactions.back()) );
          }
@@ -992,7 +992,7 @@ struct controller_impl {
          finalize_block();
 
          // this implicitly asserts that all header fields (less the signature) are identical
-         EOS_ASSERT(b->id() == pending->_pending_block_state->header.id(),
+         AGR_ASSERT(b->id() == pending->_pending_block_state->header.id(),
                    block_validate_exception, "Block ID does not match",
                    ("producer_block_id",b->id())("validator_block_id",pending->_pending_block_state->header.id()));
 
@@ -1018,10 +1018,10 @@ struct controller_impl {
 
    void push_block( const signed_block_ptr& b, controller::block_status s ) {
     //  idump((fc::json::to_pretty_string(*b)));
-      EOS_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
+      AGR_ASSERT(!pending, block_validate_exception, "it is not valid to push a block when there is a pending block");
       try {
-         EOS_ASSERT( b, block_validate_exception, "trying to push empty block" );
-         EOS_ASSERT( s != controller::block_status::incomplete, block_validate_exception, "invalid block status for a completed block" );
+         AGR_ASSERT( b, block_validate_exception, "trying to push empty block" );
+         AGR_ASSERT( s != controller::block_status::incomplete, block_validate_exception, "invalid block status for a completed block" );
          emit( self.pre_accepted_block, b );
          bool trust = !conf.force_all_checks && (s == controller::block_status::irreversible || s == controller::block_status::validated);
          auto new_header_state = fork_db.add( b, trust );
@@ -1037,7 +1037,7 @@ struct controller_impl {
    }
 
    void push_confirmation( const header_confirmation& c ) {
-      EOS_ASSERT(!pending, block_validate_exception, "it is not valid to push a confirmation when there is a pending block");
+      AGR_ASSERT(!pending, block_validate_exception, "it is not valid to push a confirmation when there is a pending block");
       fork_db.add( c );
       emit( self.accepted_confirmation, c );
       if ( read_mode != db_read_mode::IRREVERSIBLE ) {
@@ -1067,7 +1067,7 @@ struct controller_impl {
             fork_db.mark_in_current_chain( *itr , false );
             pop_block();
          }
-         EOS_ASSERT( self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
+         AGR_ASSERT( self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
                     "loss of sync between fork_db and chainbase during fork switch" ); // _should_ never fail
 
          for( auto ritr = branches.first.rbegin(); ritr != branches.first.rend(); ++ritr) {
@@ -1093,7 +1093,7 @@ struct controller_impl {
                   fork_db.mark_in_current_chain( *itr , false );
                   pop_block();
                }
-               EOS_ASSERT( self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
+               AGR_ASSERT( self.head_block_id() == branches.second.back()->header.previous, fork_database_exception,
                           "loss of sync between fork_db and chainbase during fork switch reversal" ); // _should_ never fail
 
                // re-apply good blocks
@@ -1146,7 +1146,7 @@ struct controller_impl {
 
    void finalize_block()
    {
-      EOS_ASSERT(pending, block_validate_exception, "it is not valid to finalize when there is no pending block");
+      AGR_ASSERT(pending, block_validate_exception, "it is not valid to finalize when there is no pending block");
       try {
 
 
@@ -1168,10 +1168,10 @@ struct controller_impl {
       resource_limits.process_account_limit_updates();
       const auto& chain_config = self.get_global_properties().configuration;
       uint32_t max_virtual_mult = 1000;
-      uint64_t CPU_TARGET = EOS_PERCENT(chain_config.max_block_cpu_usage, chain_config.target_block_cpu_usage_pct);
+      uint64_t CPU_TARGET = AGR_PERCENT(chain_config.max_block_cpu_usage, chain_config.target_block_cpu_usage_pct);
       resource_limits.set_block_parameters(
          { CPU_TARGET, chain_config.max_block_cpu_usage, config::block_cpu_usage_average_window_ms / config::block_interval_ms, max_virtual_mult, {99, 100}, {1000, 999}},
-         {EOS_PERCENT(chain_config.max_block_net_usage, chain_config.target_block_net_usage_pct), chain_config.max_block_net_usage, config::block_size_average_window_ms / config::block_interval_ms, max_virtual_mult, {99, 100}, {1000, 999}}
+         {AGR_PERCENT(chain_config.max_block_net_usage, chain_config.target_block_net_usage_pct), chain_config.max_block_net_usage, config::block_size_average_window_ms / config::block_interval_ms, max_virtual_mult, {99, 100}, {1000, 999}}
       );
       resource_limits.process_block_usage(pending->_pending_block_state->block_num);
 
@@ -1248,7 +1248,7 @@ struct controller_impl {
          set_difference( actors.begin(), actors.end(),
                          conf.actor_whitelist.begin(), conf.actor_whitelist.end(),
                          std::back_inserter(excluded) );
-         EOS_ASSERT( excluded.size() == 0, actor_whitelist_exception,
+         AGR_ASSERT( excluded.size() == 0, actor_whitelist_exception,
                      "authorizing actor(s) in transaction are not on the actor whitelist: ${actors}",
                      ("actors", excluded)
                    );
@@ -1259,7 +1259,7 @@ struct controller_impl {
                            conf.actor_blacklist.begin(), conf.actor_blacklist.end(),
                            std::back_inserter(blacklisted)
                          );
-         EOS_ASSERT( blacklisted.size() == 0, actor_blacklist_exception,
+         AGR_ASSERT( blacklisted.size() == 0, actor_blacklist_exception,
                      "authorizing actor(s) in transaction are on the actor blacklist: ${actors}",
                      ("actors", blacklisted)
                    );
@@ -1268,12 +1268,12 @@ struct controller_impl {
 
    void check_contract_list( account_name code )const {
       if( conf.contract_whitelist.size() > 0 ) {
-         EOS_ASSERT( conf.contract_whitelist.find( code ) != conf.contract_whitelist.end(),
+         AGR_ASSERT( conf.contract_whitelist.find( code ) != conf.contract_whitelist.end(),
                      contract_whitelist_exception,
                      "account '${code}' is not on the contract whitelist", ("code", code)
                    );
       } else if( conf.contract_blacklist.size() > 0 ) {
-         EOS_ASSERT( conf.contract_blacklist.find( code ) == conf.contract_blacklist.end(),
+         AGR_ASSERT( conf.contract_blacklist.find( code ) == conf.contract_blacklist.end(),
                      contract_blacklist_exception,
                      "account '${code}' is on the contract blacklist", ("code", code)
                    );
@@ -1282,7 +1282,7 @@ struct controller_impl {
 
    void check_action_list( account_name code, action_name action )const {
       if( conf.action_blacklist.size() > 0 ) {
-         EOS_ASSERT( conf.action_blacklist.find( std::make_pair(code, action) ) == conf.action_blacklist.end(),
+         AGR_ASSERT( conf.action_blacklist.find( std::make_pair(code, action) ) == conf.action_blacklist.end(),
                      action_blacklist_exception,
                      "action '${code}::${action}' is on the action blacklist",
                      ("code", code)("action", action)
@@ -1292,7 +1292,7 @@ struct controller_impl {
 
    void check_key_list( const public_key_type& key )const {
       if( conf.key_blacklist.size() > 0 ) {
-         EOS_ASSERT( conf.key_blacklist.find( key ) == conf.key_blacklist.end(),
+         AGR_ASSERT( conf.key_blacklist.find( key ) == conf.key_blacklist.end(),
                      key_blacklist_exception,
                      "public key '${key}' is on the key blacklist",
                      ("key", key)
@@ -1309,7 +1309,7 @@ struct controller_impl {
       const auto& tapos_block_summary = db.get<block_summary_object>((uint16_t)trx.ref_block_num);
 
       //Verify TaPoS block summary has correct ID prefix, and that this block's time is not past the expiration
-      EOS_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
+      AGR_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
                  "Transaction's reference block did not match. Is this transaction from a different fork?",
                  ("tapos_summary", tapos_block_summary));
    }
@@ -1423,8 +1423,8 @@ void controller::push_confirmation( const header_confirmation& c ) {
 
 transaction_trace_ptr controller::push_transaction( const transaction_metadata_ptr& trx, fc::time_point deadline, uint32_t billed_cpu_time_us ) {
    validate_db_available_size();
-   EOS_ASSERT( get_read_mode() != chain::db_read_mode::READ_ONLY, transaction_type_exception, "push transaction not allowed in read-only mode" );
-   EOS_ASSERT( trx && !trx->implicit && !trx->scheduled, transaction_type_exception, "Implicit/Scheduled transaction not allowed" );
+   AGR_ASSERT( get_read_mode() != chain::db_read_mode::READ_ONLY, transaction_type_exception, "push transaction not allowed in read-only mode" );
+   AGR_ASSERT( trx && !trx->implicit && !trx->scheduled, transaction_type_exception, "Implicit/Scheduled transaction not allowed" );
    return my->push_transaction(trx, deadline, billed_cpu_time_us, billed_cpu_time_us > 0 );
 }
 
@@ -1467,8 +1467,8 @@ void controller::set_contract_blacklist( const flat_set<account_name>& new_contr
 }
 void controller::set_action_blacklist( const flat_set< pair<account_name, action_name> >& new_action_blacklist ) {
    for (auto& act: new_action_blacklist) {
-      EOS_ASSERT(act.first != account_name(), name_type_exception, "Action blacklist - contract name should not be empty");
-      EOS_ASSERT(act.second != action_name(), action_type_exception, "Action blacklist - action name should not be empty");
+      AGR_ASSERT(act.first != account_name(), name_type_exception, "Action blacklist - contract name should not be empty");
+      AGR_ASSERT(act.second != action_name(), action_type_exception, "Action blacklist - action name should not be empty");
    }
    my->conf.action_blacklist = new_action_blacklist;
 }
@@ -1516,7 +1516,7 @@ block_state_ptr controller::pending_block_state()const {
    return block_state_ptr();
 }
 time_point controller::pending_block_time()const {
-   EOS_ASSERT( my->pending, block_validate_exception, "no pending block" );
+   AGR_ASSERT( my->pending, block_validate_exception, "no pending block" );
    return my->pending->_pending_block_state->header.timestamp;
 }
 
@@ -1577,7 +1577,7 @@ block_id_type controller::get_block_id_for_num( uint32_t block_num )const { try 
 
    auto signed_blk = my->blog.read_block_by_num(block_num);
 
-   EOS_ASSERT( BOOST_LIKELY( signed_blk != nullptr ), unknown_block_exception,
+   AGR_ASSERT( BOOST_LIKELY( signed_blk != nullptr ), unknown_block_exception,
                "Could not find block: ${block}", ("block", block_num) );
 
    return signed_blk->id();
@@ -1733,7 +1733,7 @@ vector<transaction_metadata_ptr> controller::get_unapplied_transactions() const 
          result.emplace_back(entry.second);
       }
    } else {
-      EOS_ASSERT( my->unapplied_transactions.empty(), transaction_exception, "not empty unapplied_transactions in non-speculative mode" ); //should never happen
+      AGR_ASSERT( my->unapplied_transactions.empty(), transaction_exception, "not empty unapplied_transactions in non-speculative mode" ); //should never happen
    }
    return result;
 }
@@ -1779,38 +1779,38 @@ bool controller::is_producing_block()const {
 void controller::validate_referenced_accounts( const transaction& trx )const {
    for( const auto& a : trx.context_free_actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
-      EOS_ASSERT( code != nullptr, transaction_exception,
+      AGR_ASSERT( code != nullptr, transaction_exception,
                   "action's code account '${account}' does not exist", ("account", a.account) );
-      EOS_ASSERT( a.authorization.size() == 0, transaction_exception,
+      AGR_ASSERT( a.authorization.size() == 0, transaction_exception,
                   "context-free actions cannot have authorizations" );
    }
    bool one_auth = false;
    for( const auto& a : trx.actions ) {
       auto* code = my->db.find<account_object, by_name>(a.account);
-      EOS_ASSERT( code != nullptr, transaction_exception,
+      AGR_ASSERT( code != nullptr, transaction_exception,
                   "action's code account '${account}' does not exist", ("account", a.account) );
       for( const auto& auth : a.authorization ) {
          one_auth = true;
          auto* actor = my->db.find<account_object, by_name>(auth.actor);
-         EOS_ASSERT( actor  != nullptr, transaction_exception,
+         AGR_ASSERT( actor  != nullptr, transaction_exception,
                      "action's authorizing actor '${account}' does not exist", ("account", auth.actor) );
-         EOS_ASSERT( my->authorization.find_permission(auth) != nullptr, transaction_exception,
+         AGR_ASSERT( my->authorization.find_permission(auth) != nullptr, transaction_exception,
                      "action's authorizations include a non-existent permission: {permission}",
                      ("permission", auth) );
       }
    }
-   EOS_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
+   AGR_ASSERT( one_auth, tx_no_auths, "transaction must have at least one authorization" );
 }
 
 void controller::validate_expiration( const transaction& trx )const { try {
    const auto& chain_configuration = get_global_properties().configuration;
 
-   EOS_ASSERT( time_point(trx.expiration) >= pending_block_time(),
+   AGR_ASSERT( time_point(trx.expiration) >= pending_block_time(),
                expired_tx_exception,
                "transaction has expired, "
                "expiration is ${trx.expiration} and pending block time is ${pending_block_time}",
                ("trx.expiration",trx.expiration)("pending_block_time",pending_block_time()));
-   EOS_ASSERT( time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
+   AGR_ASSERT( time_point(trx.expiration) <= pending_block_time() + fc::seconds(chain_configuration.max_transaction_lifetime),
                tx_exp_too_far_exception,
                "Transaction expiration is too far in the future relative to the reference time of ${reference_time}, "
                "expiration is ${trx.expiration} and the maximum transaction lifetime is ${max_til_exp} seconds",
@@ -1822,7 +1822,7 @@ void controller::validate_tapos( const transaction& trx )const { try {
    const auto& tapos_block_summary = db().get<block_summary_object>((uint16_t)trx.ref_block_num);
 
    //Verify TaPoS block summary has correct ID prefix, and that this block's time is not past the expiration
-   EOS_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
+   AGR_ASSERT(trx.verify_reference_block(tapos_block_summary.block_id), invalid_ref_block_exception,
               "Transaction's reference block did not match. Is this transaction from a different fork?",
               ("tapos_summary", tapos_block_summary));
 } FC_CAPTURE_AND_RETHROW() }
@@ -1830,13 +1830,13 @@ void controller::validate_tapos( const transaction& trx )const { try {
 void controller::validate_db_available_size() const {
    const auto free = db().get_segment_manager()->get_free_memory();
    const auto guard = my->conf.state_guard_size;
-   EOS_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   AGR_ASSERT(free >= guard, database_guard_exception, "database free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 void controller::validate_reversible_available_size() const {
    const auto free = my->reversible_blocks.get_segment_manager()->get_free_memory();
    const auto guard = my->conf.reversible_guard_size;
-   EOS_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
+   AGR_ASSERT(free >= guard, reversible_guard_exception, "reversible free: ${f}, guard size: ${g}", ("f", free)("g",guard));
 }
 
 bool controller::is_known_unexpired_transaction( const transaction_id_type& id) const {
@@ -1863,4 +1863,4 @@ const flat_set<account_name> &controller::get_resource_greylist() const {
    return  my->conf.resource_greylist;
 }
 
-} } /// eosio::chain
+} } /// agrio::chain

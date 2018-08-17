@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #include "tic_tac_toe.hpp"
 
-using namespace eosio;
+using namespace agrio;
 
 /**
  * @brief Check if cell is empty
@@ -88,12 +88,12 @@ account_name get_winner(const tic_tac_toe::game& current_game) {
  */
 void tic_tac_toe::create(const account_name& challenger, const account_name& host) {
    require_auth(host);
-   eosio_assert(challenger != host, "challenger shouldn't be the same as host");
+   agrio_assert(challenger != host, "challenger shouldn't be the same as host");
 
    // Check if game already exists
    games existing_host_games(_self, host);
    auto itr = existing_host_games.find( challenger );
-   eosio_assert(itr == existing_host_games.end(), "game already exists");
+   agrio_assert(itr == existing_host_games.end(), "game already exists");
 
    existing_host_games.emplace(host, [&]( auto& g ) {
       g.challenger = challenger;
@@ -111,10 +111,10 @@ void tic_tac_toe::restart(const account_name& challenger, const account_name& ho
    // Check if game exists
    games existing_host_games(_self, host);
    auto itr = existing_host_games.find( challenger );
-   eosio_assert(itr != existing_host_games.end(), "game doesn't exists");
+   agrio_assert(itr != existing_host_games.end(), "game doesn't exists");
 
    // Check if this game belongs to the action sender
-   eosio_assert(by == itr->host || by == itr->challenger, "this is not your game!");
+   agrio_assert(by == itr->host || by == itr->challenger, "this is not your game!");
 
    // Reset game
    existing_host_games.modify(itr, itr->host, []( auto& g ) {
@@ -131,7 +131,7 @@ void tic_tac_toe::close(const account_name& challenger, const account_name& host
    // Check if game exists
    games existing_host_games(_self, host);
    auto itr = existing_host_games.find( challenger );
-   eosio_assert(itr != existing_host_games.end(), "game doesn't exists");
+   agrio_assert(itr != existing_host_games.end(), "game doesn't exists");
 
    // Remove game
    existing_host_games.erase(itr);
@@ -146,18 +146,18 @@ void tic_tac_toe::move(const account_name& challenger, const account_name& host,
    // Check if game exists
    games existing_host_games(_self, host);
    auto itr = existing_host_games.find( challenger );
-   eosio_assert(itr != existing_host_games.end(), "game doesn't exists");
+   agrio_assert(itr != existing_host_games.end(), "game doesn't exists");
 
    // Check if this game hasn't ended yet
-   eosio_assert(itr->winner == N(none), "the game has ended!");
+   agrio_assert(itr->winner == N(none), "the game has ended!");
    // Check if this game belongs to the action sender
-   eosio_assert(by == itr->host || by == itr->challenger, "this is not your game!");
+   agrio_assert(by == itr->host || by == itr->challenger, "this is not your game!");
    // Check if this is the  action sender's turn
-   eosio_assert(by == itr->turn, "it's not your turn yet!");
+   agrio_assert(by == itr->turn, "it's not your turn yet!");
 
 
    // Check if user makes a valid movement
-   eosio_assert(is_valid_movement(row, column, itr->board), "not a valid movement!");
+   agrio_assert(is_valid_movement(row, column, itr->board), "not a valid movement!");
 
    // Fill the cell, 1 for host, 2 for challenger
    const uint8_t cell_value = itr->turn == itr->host ? 1 : 2;
@@ -170,4 +170,4 @@ void tic_tac_toe::move(const account_name& challenger, const account_name& host,
 }
 
 
-EOSIO_ABI( tic_tac_toe, (create)(restart)(close)(move))
+AGRIO_ABI( tic_tac_toe, (create)(restart)(close)(move))

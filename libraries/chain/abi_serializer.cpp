@@ -1,21 +1,21 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/contract_types.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/asset.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/contract_types.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/chain_config.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/chain/asset.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include <fc/io/raw.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <fc/io/varint.hpp>
 
 using namespace boost;
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    const size_t abi_serializer::max_recursion_depth;
 
@@ -115,8 +115,8 @@ namespace eosio { namespace chain {
          structs[st.name] = st;
 
       for( const auto& td : abi.types ) {
-         EOS_ASSERT(_is_type(td.type, 0, deadline, max_serialization_time), invalid_type_inside_abi, "invalid type", ("type",td.type));
-         EOS_ASSERT(!_is_type(td.new_type_name, 0, deadline, max_serialization_time), duplicate_abi_type_def_exception, "type already exists", ("new_type_name",td.new_type_name));
+         AGR_ASSERT(_is_type(td.type, 0, deadline, max_serialization_time), invalid_type_inside_abi, "invalid type", ("type",td.type));
+         AGR_ASSERT(!_is_type(td.new_type_name, 0, deadline, max_serialization_time), duplicate_abi_type_def_exception, "type already exists", ("new_type_name",td.new_type_name));
          typedefs[td.new_type_name] = td.type;
       }
 
@@ -133,11 +133,11 @@ namespace eosio { namespace chain {
        *  The ABI vector may contain duplicates which would make it
        *  an invalid ABI
        */
-      EOS_ASSERT( typedefs.size() == abi.types.size(), duplicate_abi_type_def_exception, "duplicate type definition detected" );
-      EOS_ASSERT( structs.size() == abi.structs.size(), duplicate_abi_struct_def_exception, "duplicate struct definition detected" );
-      EOS_ASSERT( actions.size() == abi.actions.size(), duplicate_abi_action_def_exception, "duplicate action definition detected" );
-      EOS_ASSERT( tables.size() == abi.tables.size(), duplicate_abi_table_def_exception, "duplicate table definition detected" );
-      EOS_ASSERT( error_messages.size() == abi.error_messages.size(), duplicate_abi_err_msg_def_exception, "duplicate error message definition detected" );
+      AGR_ASSERT( typedefs.size() == abi.types.size(), duplicate_abi_type_def_exception, "duplicate type definition detected" );
+      AGR_ASSERT( structs.size() == abi.structs.size(), duplicate_abi_struct_def_exception, "duplicate struct definition detected" );
+      AGR_ASSERT( actions.size() == abi.actions.size(), duplicate_abi_action_def_exception, "duplicate action definition detected" );
+      AGR_ASSERT( tables.size() == abi.tables.size(), duplicate_abi_table_def_exception, "duplicate table definition detected" );
+      AGR_ASSERT( error_messages.size() == abi.error_messages.size(), duplicate_abi_err_msg_def_exception, "duplicate error message definition detected" );
 
       validate(deadline, max_serialization_time);
    }
@@ -153,7 +153,7 @@ namespace eosio { namespace chain {
 
    int abi_serializer::get_integer_size(const type_name& type) const {
       string stype = type;
-      EOS_ASSERT( is_integer(type), invalid_type_inside_abi, "${stype} is not an integer type", ("stype",stype));
+      AGR_ASSERT( is_integer(type), invalid_type_inside_abi, "${stype} is not an integer type", ("stype",stype));
       if( boost::starts_with(stype, "uint") ) {
          return boost::lexical_cast<int>(stype.substr(4));
       } else {
@@ -184,7 +184,7 @@ namespace eosio { namespace chain {
    }
 
    bool abi_serializer::_is_type(const type_name& rtype, size_t recursion_depth, const fc::time_point& deadline, const fc::microseconds& max_serialization_time)const {
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       if( ++recursion_depth > max_recursion_depth) return false;
       auto type = fundamental_type(rtype);
       if( built_in_types.find(type) != built_in_types.end() ) return true;
@@ -195,7 +195,7 @@ namespace eosio { namespace chain {
 
    const struct_def& abi_serializer::get_struct(const type_name& type)const {
       auto itr = structs.find(resolve_type(type) );
-      EOS_ASSERT( itr != structs.end(), invalid_type_inside_abi, "Unknown struct ${type}", ("type",type) );
+      AGR_ASSERT( itr != structs.end(), invalid_type_inside_abi, "Unknown struct ${type}", ("type",type) );
       return itr->second;
    }
 
@@ -204,40 +204,40 @@ namespace eosio { namespace chain {
          vector<type_name> types_seen{t.first, t.second};
          auto itr = typedefs.find(t.second);
          while( itr != typedefs.end() ) {
-            EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
-            EOS_ASSERT( find(types_seen.begin(), types_seen.end(), itr->second) == types_seen.end(), abi_circular_def_exception, "Circular reference in type ${type}", ("type",t.first) );
+            AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+            AGR_ASSERT( find(types_seen.begin(), types_seen.end(), itr->second) == types_seen.end(), abi_circular_def_exception, "Circular reference in type ${type}", ("type",t.first) );
             types_seen.emplace_back(itr->second);
             itr = typedefs.find(itr->second);
          }
       } FC_CAPTURE_AND_RETHROW( (t) ) }
       for( const auto& t : typedefs ) { try {
-         EOS_ASSERT(_is_type(t.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",t.second) );
+         AGR_ASSERT(_is_type(t.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",t.second) );
       } FC_CAPTURE_AND_RETHROW( (t) ) }
       for( const auto& s : structs ) { try {
          if( s.second.base != type_name() ) {
             struct_def current = s.second;
             vector<type_name> types_seen{current.name};
             while( current.base != type_name() ) {
-               EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+               AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
                const auto& base = get_struct(current.base); //<-- force struct to inherit from another struct
-               EOS_ASSERT( find(types_seen.begin(), types_seen.end(), base.name) == types_seen.end(), abi_circular_def_exception, "Circular reference in struct ${type}", ("type",s.second.name) );
+               AGR_ASSERT( find(types_seen.begin(), types_seen.end(), base.name) == types_seen.end(), abi_circular_def_exception, "Circular reference in struct ${type}", ("type",s.second.name) );
                types_seen.emplace_back(base.name);
                current = base;
             }
          }
          for( const auto& field : s.second.fields ) { try {
-            EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
-            EOS_ASSERT(_is_type(field.type, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",field.type) );
+            AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+            AGR_ASSERT(_is_type(field.type, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",field.type) );
          } FC_CAPTURE_AND_RETHROW( (field) ) }
       } FC_CAPTURE_AND_RETHROW( (s) ) }
       for( const auto& a : actions ) { try {
-        EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
-        EOS_ASSERT(_is_type(a.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",a.second) );
+        AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+        AGR_ASSERT(_is_type(a.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",a.second) );
       } FC_CAPTURE_AND_RETHROW( (a)  ) }
 
       for( const auto& t : tables ) { try {
-        EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
-        EOS_ASSERT(_is_type(t.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",t.second) );
+        AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+        AGR_ASSERT(_is_type(t.second, 0, deadline, max_serialization_time), invalid_type_inside_abi, "", ("type",t.second) );
       } FC_CAPTURE_AND_RETHROW( (t)  ) }
    }
 
@@ -257,8 +257,8 @@ namespace eosio { namespace chain {
                                             fc::mutable_variant_object& obj, size_t recursion_depth,
                                             const fc::time_point& deadline, const fc::microseconds& max_serialization_time )const
    {
-      EOS_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       const auto& st = get_struct(type);
       if( st.base != type_name() ) {
          _binary_to_variant(resolve_type(st.base), stream, obj, recursion_depth, deadline, max_serialization_time);
@@ -271,8 +271,8 @@ namespace eosio { namespace chain {
    fc::variant abi_serializer::_binary_to_variant( const type_name& type, fc::datastream<const char *>& stream,
                                                    size_t recursion_depth, const fc::time_point& deadline, const fc::microseconds& max_serialization_time )const
    {
-      EOS_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       type_name rtype = resolve_type(type);
       auto ftype = fundamental_type(rtype);
       auto btype = built_in_types.find(ftype );
@@ -285,10 +285,10 @@ namespace eosio { namespace chain {
         vector<fc::variant> vars;
         for( decltype(size.value) i = 0; i < size; ++i ) {
            auto v = _binary_to_variant(ftype, stream, recursion_depth, deadline, max_serialization_time);
-           EOS_ASSERT( !v.is_null(), unpack_exception, "Invalid packed array" );
+           AGR_ASSERT( !v.is_null(), unpack_exception, "Invalid packed array" );
            vars.emplace_back(std::move(v));
         }
-        EOS_ASSERT( vars.size() == size.value,
+        AGR_ASSERT( vars.size() == size.value,
                     unpack_exception, 
                     "packed size does not match unpacked array size, packed size ${p} actual size ${a}",
                     ("p", size)("a", vars.size()) );
@@ -301,15 +301,15 @@ namespace eosio { namespace chain {
 
       fc::mutable_variant_object mvo;
       _binary_to_variant(rtype, stream, mvo, recursion_depth, deadline, max_serialization_time);
-      EOS_ASSERT( mvo.size() > 0, unpack_exception, "Unable to unpack stream ${type}", ("type", type) );
+      AGR_ASSERT( mvo.size() > 0, unpack_exception, "Unable to unpack stream ${type}", ("type", type) );
       return fc::variant( std::move(mvo) );
    }
 
    fc::variant abi_serializer::_binary_to_variant( const type_name& type, const bytes& binary,
                                                    size_t recursion_depth, const fc::time_point& deadline, const fc::microseconds& max_serialization_time )const
    {
-      EOS_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       fc::datastream<const char*> ds( binary.data(), binary.size() );
       return _binary_to_variant(type, ds, recursion_depth, deadline, max_serialization_time);
    }
@@ -317,8 +317,8 @@ namespace eosio { namespace chain {
    void abi_serializer::_variant_to_binary( const type_name& type, const fc::variant& var, fc::datastream<char *>& ds,
                                             size_t recursion_depth, const fc::time_point& deadline, const fc::microseconds& max_serialization_time )const
    { try {
-      EOS_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       auto rtype = resolve_type(type);
 
       auto btype = built_in_types.find(fundamental_type(rtype));
@@ -346,12 +346,12 @@ namespace eosio { namespace chain {
                else {
                   _variant_to_binary(field.type, fc::variant(), ds, recursion_depth, deadline, max_serialization_time);
                   /// TODO: default construct field and write it out
-                  EOS_THROW( pack_exception, "Missing '${f}' in variant object", ("f",field.name) );
+                  AGR_THROW( pack_exception, "Missing '${f}' in variant object", ("f",field.name) );
                }
             }
          } else if( var.is_array() ) {
             const auto& va = var.get_array();
-            EOS_ASSERT( st.base == type_name(), invalid_type_inside_abi, "support for base class as array not yet implemented" );
+            AGR_ASSERT( st.base == type_name(), invalid_type_inside_abi, "support for base class as array not yet implemented" );
             uint32_t i = 0;
             if (va.size() > 0) {
                for( const auto& field : st.fields ) {
@@ -369,8 +369,8 @@ namespace eosio { namespace chain {
    bytes abi_serializer::_variant_to_binary( const type_name& type, const fc::variant& var,
                                              size_t recursion_depth, const fc::time_point& deadline, const fc::microseconds& max_serialization_time )const
    { try {
-      EOS_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
-      EOS_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
+      AGR_ASSERT( ++recursion_depth < max_recursion_depth, abi_recursion_depth_exception, "recursive definition, max_recursion_depth ${r} ", ("r", max_recursion_depth) );
+      AGR_ASSERT( fc::time_point::now() < deadline, abi_serialization_deadline_exception, "serialization time limit ${t}us exceeded", ("t", max_serialization_time) );
       if( !_is_type(type, recursion_depth, deadline, max_serialization_time) ) {
          return var.as<bytes>();
       }

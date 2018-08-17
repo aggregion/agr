@@ -45,10 +45,10 @@
  *
  */
 
-#include <eosio/bnet_plugin/bnet_plugin.hpp>
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/trace.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/bnet_plugin/bnet_plugin.hpp>
+#include <agrio/chain/controller.hpp>
+#include <agrio/chain/trace.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 
 #include <fc/io/json.hpp>
 
@@ -61,17 +61,17 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-#include <eosio/chain/plugin_interface.hpp>
+#include <agrio/chain/plugin_interface.hpp>
 
 using tcp = boost::asio::ip::tcp;
 namespace ws  = boost::beast::websocket;
 
-namespace eosio {
+namespace agrio {
    using namespace chain;
 
    static appbase::abstract_plugin& _bnet_plugin = app().register_plugin<bnet_plugin>();
 
-} /// namespace eosio
+} /// namespace agrio
 
 namespace fc {
    extern std::unordered_map<std::string,logger>& get_logger_map();
@@ -106,14 +106,14 @@ std::string peer_log_format;
   FC_MULTILINE_MACRO_END
 
 
-using eosio::public_key_type;
-using eosio::chain_id_type;
-using eosio::block_id_type;
-using eosio::block_timestamp_type;
+using agrio::public_key_type;
+using agrio::chain_id_type;
+using agrio::block_id_type;
+using agrio::block_timestamp_type;
 using std::string;
-using eosio::sha256;
-using eosio::signed_block_ptr;
-using eosio::packed_transaction_ptr;
+using agrio::sha256;
+using agrio::signed_block_ptr;
+using agrio::packed_transaction_ptr;
 using std::vector;
 
 struct hello {
@@ -183,7 +183,7 @@ struct by_num;
 struct by_received;
 struct by_expired;
 
-namespace eosio {
+namespace agrio {
   using namespace chain::plugin_interface;
 
   class bnet_plugin_impl;
@@ -991,7 +991,7 @@ namespace eosio {
            peer_ilog(this, "received signed_block_ptr");
            if (!b) {
               peer_elog(this, "bad signed_block_ptr : null pointer");
-              EOS_THROW(block_validate_exception, "bad block" );
+              AGR_THROW(block_validate_exception, "bad block" );
            }
            status( "received block " + std::to_string(b->block_num()) );
            //ilog( "recv block ${n}", ("n", b->block_num()) );
@@ -1036,7 +1036,7 @@ namespace eosio {
            peer_ilog(this, "received packed_transaction_ptr");
            if (!p) {
               peer_elog(this, "bad packed_transaction_ptr : null pointer");
-              EOS_THROW(transaction_exception, "bad transaction");
+              AGR_THROW(transaction_exception, "bad transaction");
            }
            if( app().get_plugin<chain_plugin>().chain().get_read_mode() == chain::db_read_mode::READ_ONLY )
               return;
@@ -1120,7 +1120,7 @@ namespace eosio {
         }
 
         void run() {
-           EOS_ASSERT( _acceptor.is_open(), plugin_exception, "unable top open listen socket" );
+           AGR_ASSERT( _acceptor.is_open(), plugin_exception, "unable top open listen socket" );
            do_accept();
         }
 
@@ -1426,7 +1426,7 @@ namespace eosio {
       wlog( "done joining threads" );
 
       my->for_each_session([](auto ses){
-         EOS_ASSERT( false, plugin_exception, "session ${ses} still active", ("ses", ses->_session_num) );
+         AGR_ASSERT( false, plugin_exception, "session ${ses} still active", ("ses", ses->_session_num) );
       });
 
       // lifetime of _ioc is guarded by shared_ptr of bnet_plugin_impl
@@ -1526,4 +1526,4 @@ namespace eosio {
 
    }
 
-} /// namespace eosio
+} /// namespace agrio

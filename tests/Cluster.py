@@ -32,17 +32,17 @@ class Cluster(object):
     __BiosPort=8788
 
     # pylint: disable=too-many-arguments
-    # walletd [True|False] Is keosd running. If not load the wallet plugin
+    # walletd [True|False] Is kagrd running. If not load the wallet plugin
     def __init__(self, walletd=False, localCluster=True, host="localhost", port=8888, walletHost="localhost", walletPort=9899, enableMongo=False
-                 , mongoHost="localhost", mongoPort=27017, mongoDb="EOStest", defproduceraPrvtKey=None, defproducerbPrvtKey=None, staging=False):
+                 , mongoHost="localhost", mongoPort=27017, mongoDb="AGRtest", defproduceraPrvtKey=None, defproducerbPrvtKey=None, staging=False):
         """Cluster container.
-        walletd [True|False] Is wallet keosd running. If not load the wallet plugin
+        walletd [True|False] Is wallet kagrd running. If not load the wallet plugin
         localCluster [True|False] Is cluster local to host.
-        host: eos server host
-        port: eos server port
-        walletHost: eos wallet host
+        host: agr server host
+        port: agr server port
+        walletHost: agr wallet host
         walletPort: wos wallet port
-        enableMongo: Include mongoDb support, configures eos mongo plugin
+        enableMongo: Include mongoDb support, configures agr mongo plugin
         mongoHost: MongoDB host
         mongoPort: MongoDB port
         defproduceraPrvtKey: Defproducera account private key
@@ -75,7 +75,7 @@ class Cluster(object):
         self.defProducerAccounts={}
         self.defproduceraAccount=self.defProducerAccounts["defproducera"]= Account("defproducera")
         self.defproducerbAccount=self.defProducerAccounts["defproducerb"]= Account("defproducerb")
-        self.eosioAccount=self.defProducerAccounts["eosio"]= Account("eosio")
+        self.agrioAccount=self.defProducerAccounts["agrio"]= Account("agrio")
 
         self.defproduceraAccount.ownerPrivateKey=defproduceraPrvtKey
         self.defproduceraAccount.activePrivateKey=defproduceraPrvtKey
@@ -97,7 +97,7 @@ class Cluster(object):
     # pylint: disable=too-many-branches
     # pylint: disable=too-many-statements
     def launch(self, pnodes=1, totalNodes=1, prodCount=1, topo="mesh", p2pPlugin="net", delay=1, onlyBios=False, dontKill=False
-               , dontBootstrap=False, totalProducers=None, extraNodeosArgs=None):
+               , dontBootstrap=False, totalProducers=None, extraNodagrArgs=None):
         """Launch cluster.
         pnodes: producer nodes count
         totalNodes: producer + non-producer nodes count
@@ -107,7 +107,7 @@ class Cluster(object):
           delay 0 exposes a bootstrap bug where producer handover may have a large gap confusing nodes and bringing system to a halt.
         """
         if not self.localCluster:
-            Utils.Print("WARNING: Cluster not local, not launching %s." % (Utils.EosServerName))
+            Utils.Print("WARNING: Cluster not local, not launching %s." % (Utils.AgrServerName))
             return True
 
         if len(self.nodes) > 0:
@@ -119,30 +119,30 @@ class Cluster(object):
             producerFlag="--producers %s" % (totalProducers)
 
         if not Cluster.arePortsAvailable(set(range(self.port, self.port+totalNodes+1))):
-            Utils.Print("ERROR: Another process is listening on nodeos default port.")
+            Utils.Print("ERROR: Another process is listening on nodagr default port.")
             return False
 
         cmd="%s -p %s -n %s -s %s -d %s -i %s -f --p2p-plugin %s %s" % (
-            Utils.EosLauncherPath, pnodes, totalNodes, topo, delay, datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
+            Utils.AgrLauncherPath, pnodes, totalNodes, topo, delay, datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             p2pPlugin, producerFlag)
         cmdArr=cmd.split()
         if self.staging:
             cmdArr.append("--nogen")
 
-        nodeosArgs="--max-transaction-time 50000 --abi-serializer-max-time-ms 990000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
+        nodagrArgs="--max-transaction-time 50000 --abi-serializer-max-time-ms 990000 --filter-on * --p2p-max-nodes-per-host %d" % (totalNodes)
         if not self.walletd:
-            nodeosArgs += " --plugin eosio::wallet_api_plugin"
+            nodagrArgs += " --plugin agrio::wallet_api_plugin"
         if self.enableMongo:
-            nodeosArgs += " --plugin eosio::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
-        if extraNodeosArgs is not None:
-            assert(isinstance(extraNodeosArgs, str))
-            nodeosArgs += extraNodeosArgs
+            nodagrArgs += " --plugin agrio::mongo_db_plugin --mongodb-wipe --delete-all-blocks --mongodb-uri %s" % self.mongoUri
+        if extraNodagrArgs is not None:
+            assert(isinstance(extraNodagrArgs, str))
+            nodagrArgs += extraNodagrArgs
         if Utils.Debug:
-            nodeosArgs += " --contracts-console"
+            nodagrArgs += " --contracts-console"
 
-        if nodeosArgs:
-            cmdArr.append("--nodeos")
-            cmdArr.append(nodeosArgs)
+        if nodagrArgs:
+            cmdArr.append("--nodagr")
+            cmdArr.append(nodagrArgs)
 
         s=" ".join(cmdArr)
         if Utils.Debug: Utils.Print("cmd: %s" % (s))
@@ -155,7 +155,7 @@ class Cluster(object):
         nodes=self.discoverLocalNodes(totalNodes, timeout=Utils.systemWaitTimeout)
         if nodes is None or totalNodes != len(nodes):
             Utils.Print("ERROR: Unable to validate %s instances, expected: %d, actual: %d" %
-                          (Utils.EosServerName, totalNodes, len(nodes)))
+                          (Utils.AgrServerName, totalNodes, len(nodes)))
             return False
 
         self.nodes=nodes
@@ -203,7 +203,7 @@ class Cluster(object):
             initAccountKeys(account, producerKeys[name])
             self.defProducerAccounts[name] = account
 
-        self.eosioAccount=self.defProducerAccounts["eosio"]
+        self.agrioAccount=self.defProducerAccounts["agrio"]
         self.defproduceraAccount=self.defProducerAccounts["defproducera"]
         self.defproducerbAccount=self.defProducerAccounts["defproducerb"]
 
@@ -330,7 +330,7 @@ class Cluster(object):
         """Returns client version (string)"""
         p = re.compile(r'^Build version:\s(\w+)\n$')
         try:
-            cmd="%s version client" % (Utils.EosClientPath)
+            cmd="%s version client" % (Utils.AgrClientPath)
             if verbose: Utils.Print("cmd: %s" % (cmd))
             response=Utils.checkOutput(cmd.split())
             assert(response)
@@ -354,7 +354,7 @@ class Cluster(object):
         p = re.compile('Private key: (.+)\nPublic key: (.+)\n', re.MULTILINE)
         for _ in range(0, count):
             try:
-                cmd="%s create key --to-console" % (Utils.EosClientPath)
+                cmd="%s create key --to-console" % (Utils.AgrClientPath)
                 if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
                 keyStr=Utils.checkOutput(cmd.split())
                 m=p.search(keyStr)
@@ -365,7 +365,7 @@ class Cluster(object):
                 ownerPrivate=m.group(1)
                 ownerPublic=m.group(2)
 
-                cmd="%s create key --to-console" % (Utils.EosClientPath)
+                cmd="%s create key --to-console" % (Utils.AgrClientPath)
                 if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
                 keyStr=Utils.checkOutput(cmd.split())
                 m=p.match(keyStr)
@@ -458,7 +458,7 @@ class Cluster(object):
         node=self.nodes[0]
         fromm=source
         to=accounts[0]
-        Utils.Print("Transfer %s units from account %s to %s on eos server port %d" % (
+        Utils.Print("Transfer %s units from account %s to %s on agr server port %d" % (
             transferAmountStr, fromm.name, to.name, node.port))
         trans=node.transferFunds(fromm, to, transferAmountStr)
         transId=Node.getTransId(trans)
@@ -467,15 +467,15 @@ class Cluster(object):
 
         if Utils.Debug: Utils.Print("Funds transfered on transaction id %s." % (transId))
 
-        nextEosIdx=-1
+        nextAgrIdx=-1
         for i in range(0, count):
             account=accounts[i]
             nextInstanceFound=False
             for _ in range(0, count):
-                #Utils.Print("nextEosIdx: %d, n: %d" % (nextEosIdx, n))
-                nextEosIdx=(nextEosIdx + 1)%count
-                if not self.nodes[nextEosIdx].killed:
-                    #Utils.Print("nextEosIdx: %d" % (nextEosIdx))
+                #Utils.Print("nextAgrIdx: %d, n: %d" % (nextAgrIdx, n))
+                nextAgrIdx=(nextAgrIdx + 1)%count
+                if not self.nodes[nextAgrIdx].killed:
+                    #Utils.Print("nextAgrIdx: %d" % (nextAgrIdx))
                     nextInstanceFound=True
                     break
 
@@ -483,8 +483,8 @@ class Cluster(object):
                 Utils.Print("ERROR: No active nodes found.")
                 return False
 
-            #Utils.Print("nextEosIdx: %d, count: %d" % (nextEosIdx, count))
-            node=self.nodes[nextEosIdx]
+            #Utils.Print("nextAgrIdx: %d, count: %d" % (nextAgrIdx, count))
+            node=self.nodes[nextAgrIdx]
             if Utils.Debug: Utils.Print("Wait for transaction id %s on node port %d" % (transId, node.port))
             if node.waitForTransInBlock(transId) is False:
                 Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, node.port))
@@ -494,7 +494,7 @@ class Cluster(object):
             transferAmountStr=Node.currencyIntToStr(transferAmount, CORE_SYMBOL)
             fromm=account
             to=accounts[i+1] if i < (count-1) else source
-            Utils.Print("Transfer %s units from account %s to %s on eos server port %d." %
+            Utils.Print("Transfer %s units from account %s to %s on agr server port %d." %
                     (transferAmountStr, fromm.name, to.name, node.port))
 
             trans=node.transferFunds(fromm, to, transferAmountStr)
@@ -530,10 +530,10 @@ class Cluster(object):
                 continue
 
             if Utils.Debug: Utils.Print("Validate funds on %s server port %d." %
-                                        (Utils.EosServerName, node.port))
+                                        (Utils.AgrServerName, node.port))
 
             if node.validateFunds(initialBalances, transferAmount, source, accounts) is False:
-                Utils.Print("ERROR: Failed to validate funds on eos node port: %d" % (node.port))
+                Utils.Print("ERROR: Failed to validate funds on agr node port: %d" % (node.port))
                 return False
 
         return True
@@ -543,7 +543,7 @@ class Cluster(object):
         receiving transferAmount*n SYS and forwarding x-transferAmount funds. Transfer actions are spread round-robin across the cluster to vaidate system cohesiveness."""
 
         if Utils.Debug: Utils.Print("Get initial system balances.")
-        initialBalances=self.nodes[0].getEosBalances([self.defproduceraAccount] + self.accounts)
+        initialBalances=self.nodes[0].getAgrBalances([self.defproduceraAccount] + self.accounts)
         assert(initialBalances)
         assert(isinstance(initialBalances, dict))
 
@@ -565,7 +565,7 @@ class Cluster(object):
 
         myAccounts = []
         if testSysAccounts:
-            myAccounts += [self.eosioAccount, self.defproduceraAccount, self.defproducerbAccount]
+            myAccounts += [self.agrioAccount, self.defproduceraAccount, self.defproducerbAccount]
         if accounts:
             assert(isinstance(accounts, list))
             myAccounts += accounts
@@ -646,7 +646,7 @@ class Cluster(object):
         """Parse node config file for producers."""
 
         node="node_%02d" % (nodeNum)
-        configFile="etc/eosio/%s/config.ini" % (node)
+        configFile="etc/agrio/%s/config.ini" % (node)
         if Utils.Debug: Utils.Print("Parsing config file %s" % configFile)
         configStr=None
         with open(configFile, 'r') as f:
@@ -665,16 +665,16 @@ class Cluster(object):
         """Parse cluster config file. Updates producer keys data members."""
 
         node="node_bios"
-        configFile="etc/eosio/%s/config.ini" % (node)
+        configFile="etc/agrio/%s/config.ini" % (node)
         if Utils.Debug: Utils.Print("Parsing config file %s" % configFile)
         producerKeys=Cluster.parseProducerKeys(configFile, node)
         if producerKeys is None:
-            Utils.Print("ERROR: Failed to parse eosio private keys from cluster config files.")
+            Utils.Print("ERROR: Failed to parse agrio private keys from cluster config files.")
             return None
 
         for i in range(0, totalNodes):
             node="node_%02d" % (i)
-            configFile="etc/eosio/%s/config.ini" % (node)
+            configFile="etc/agrio/%s/config.ini" % (node)
             if Utils.Debug: Utils.Print("Parsing config file %s" % configFile)
 
             keys=Cluster.parseProducerKeys(configFile, node)
@@ -712,24 +712,24 @@ class Cluster(object):
         try:
             ignWallet=walletMgr.create("ignition")
 
-            eosioName="eosio"
-            eosioKeys=producerKeys[eosioName]
-            eosioAccount=Account(eosioName)
-            eosioAccount.ownerPrivateKey=eosioKeys["private"]
-            eosioAccount.ownerPublicKey=eosioKeys["public"]
-            eosioAccount.activePrivateKey=eosioKeys["private"]
-            eosioAccount.activePublicKey=eosioKeys["public"]
+            agrioName="agrio"
+            agrioKeys=producerKeys[agrioName]
+            agrioAccount=Account(agrioName)
+            agrioAccount.ownerPrivateKey=agrioKeys["private"]
+            agrioAccount.ownerPublicKey=agrioKeys["public"]
+            agrioAccount.activePrivateKey=agrioKeys["private"]
+            agrioAccount.activePublicKey=agrioKeys["public"]
 
-            if not walletMgr.importKey(eosioAccount, ignWallet):
-                Utils.Print("ERROR: Failed to import %s account keys into ignition wallet." % (eosioName))
+            if not walletMgr.importKey(agrioAccount, ignWallet):
+                Utils.Print("ERROR: Failed to import %s account keys into ignition wallet." % (agrioName))
                 return None
 
-            contract="eosio.bios"
+            contract="agrio.bios"
             contractDir="contracts/%s" % (contract)
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-            trans=biosNode.publishContract(eosioAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
+            trans=biosNode.publishContract(agrioAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
@@ -737,7 +737,7 @@ class Cluster(object):
             Node.validateTransaction(trans)
 
             Utils.Print("Creating accounts: %s " % ", ".join(producerKeys.keys()))
-            producerKeys.pop(eosioName)
+            producerKeys.pop(agrioName)
             accounts=[]
             for name, keys in producerKeys.items():
                 initx = None
@@ -746,7 +746,7 @@ class Cluster(object):
                 initx.ownerPublicKey=keys["public"]
                 initx.activePrivateKey=keys["private"]
                 initx.activePublicKey=keys["public"]
-                trans=biosNode.createAccount(initx, eosioAccount, 0)
+                trans=biosNode.createAccount(initx, agrioAccount, 0)
                 if trans is None:
                     Utils.Print("ERROR: Failed to create account %s" % (name))
                     return None
@@ -769,8 +769,8 @@ class Cluster(object):
                         setProdsStr=f.read()
 
                         Utils.Print("Setting producers.")
-                        opts="--permission eosio@active"
-                        myTrans=biosNode.pushMessage("eosio", "setprods", setProdsStr, opts)
+                        opts="--permission agrio@active"
+                        myTrans=biosNode.pushMessage("agrio", "setprods", setProdsStr, opts)
                         if myTrans is None or not myTrans[0]:
                             Utils.Print("ERROR: Failed to set producers.")
                             return None
@@ -794,9 +794,9 @@ class Cluster(object):
                     setProdsStr += ' ] }'
                     if Utils.Debug: Utils.Print("setprods: %s" % (setProdsStr))
                     Utils.Print("Setting producers: %s." % (", ".join(prodNames)))
-                    opts="--permission eosio@active"
+                    opts="--permission agrio@active"
                     # pylint: disable=redefined-variable-type
-                    trans=biosNode.pushMessage("eosio", "setprods", setProdsStr, opts)
+                    trans=biosNode.pushMessage("agrio", "setprods", setProdsStr, opts)
                     if trans is None or not trans[0]:
                         Utils.Print("ERROR: Failed to set producer %s." % (keys["name"]))
                         return None
@@ -807,39 +807,39 @@ class Cluster(object):
                     Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                     return None
 
-                # wait for block production handover (essentially a block produced by anyone but eosio).
-                lam = lambda: biosNode.getInfo(exitOnError=True)["head_block_producer"] != "eosio"
+                # wait for block production handover (essentially a block produced by anyone but agrio).
+                lam = lambda: biosNode.getInfo(exitOnError=True)["head_block_producer"] != "agrio"
                 ret=Utils.waitForBool(lam)
                 if not ret:
                     Utils.Print("ERROR: Block production handover failed.")
                     return None
 
-            eosioTokenAccount=copy.deepcopy(eosioAccount)
-            eosioTokenAccount.name="eosio.token"
-            trans=biosNode.createAccount(eosioTokenAccount, eosioAccount, 0)
+            agrioTokenAccount=copy.deepcopy(agrioAccount)
+            agrioTokenAccount.name="agrio.token"
+            trans=biosNode.createAccount(agrioTokenAccount, agrioAccount, 0)
             if trans is None:
-                Utils.Print("ERROR: Failed to create account %s" % (eosioTokenAccount.name))
+                Utils.Print("ERROR: Failed to create account %s" % (agrioTokenAccount.name))
                 return None
 
-            eosioRamAccount=copy.deepcopy(eosioAccount)
-            eosioRamAccount.name="eosio.ram"
-            trans=biosNode.createAccount(eosioRamAccount, eosioAccount, 0)
+            agrioRamAccount=copy.deepcopy(agrioAccount)
+            agrioRamAccount.name="agrio.ram"
+            trans=biosNode.createAccount(agrioRamAccount, agrioAccount, 0)
             if trans is None:
-                Utils.Print("ERROR: Failed to create account %s" % (eosioRamAccount.name))
+                Utils.Print("ERROR: Failed to create account %s" % (agrioRamAccount.name))
                 return None
 
-            eosioRamfeeAccount=copy.deepcopy(eosioAccount)
-            eosioRamfeeAccount.name="eosio.ramfee"
-            trans=biosNode.createAccount(eosioRamfeeAccount, eosioAccount, 0)
+            agrioRamfeeAccount=copy.deepcopy(agrioAccount)
+            agrioRamfeeAccount.name="agrio.ramfee"
+            trans=biosNode.createAccount(agrioRamfeeAccount, agrioAccount, 0)
             if trans is None:
-                Utils.Print("ERROR: Failed to create account %s" % (eosioRamfeeAccount.name))
+                Utils.Print("ERROR: Failed to create account %s" % (agrioRamfeeAccount.name))
                 return None
 
-            eosioStakeAccount=copy.deepcopy(eosioAccount)
-            eosioStakeAccount.name="eosio.stake"
-            trans=biosNode.createAccount(eosioStakeAccount, eosioAccount, 0)
+            agrioStakeAccount=copy.deepcopy(agrioAccount)
+            agrioStakeAccount.name="agrio.stake"
+            trans=biosNode.createAccount(agrioStakeAccount, agrioAccount, 0)
             if trans is None:
-                Utils.Print("ERROR: Failed to create account %s" % (eosioStakeAccount.name))
+                Utils.Print("ERROR: Failed to create account %s" % (agrioStakeAccount.name))
                 return None
 
             Node.validateTransaction(trans)
@@ -848,25 +848,25 @@ class Cluster(object):
                 Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                 return None
 
-            contract="eosio.token"
+            contract="agrio.token"
             contractDir="contracts/%s" % (contract)
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-            trans=biosNode.publishContract(eosioTokenAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
+            trans=biosNode.publishContract(agrioTokenAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
 
             # Create currency0000, followed by issue currency0000
-            contract=eosioTokenAccount.name
+            contract=agrioTokenAccount.name
             Utils.Print("push create action to %s contract" % (contract))
             action="create"
-            data="{\"issuer\":\"%s\",\"maximum_supply\":\"1000000000.0000 %s\",\"can_freeze\":\"0\",\"can_recall\":\"0\",\"can_whitelist\":\"0\"}" % (eosioTokenAccount.name, CORE_SYMBOL)
+            data="{\"issuer\":\"%s\",\"maximum_supply\":\"1000000000.0000 %s\",\"can_freeze\":\"0\",\"can_recall\":\"0\",\"can_whitelist\":\"0\"}" % (agrioTokenAccount.name, CORE_SYMBOL)
             opts="--permission %s@active" % (contract)
             trans=biosNode.pushMessage(contract, action, data, opts)
             if trans is None or not trans[0]:
-                Utils.Print("ERROR: Failed to push create action to eosio contract.")
+                Utils.Print("ERROR: Failed to push create action to agrio contract.")
                 return None
 
             Node.validateTransaction(trans[1])
@@ -875,14 +875,14 @@ class Cluster(object):
                 Utils.Print("ERROR: Failed to validate transaction %s got rolled into a block on server port %d." % (transId, biosNode.port))
                 return None
 
-            contract=eosioTokenAccount.name
+            contract=agrioTokenAccount.name
             Utils.Print("push issue action to %s contract" % (contract))
             action="issue"
-            data="{\"to\":\"%s\",\"quantity\":\"1000000000.0000 %s\",\"memo\":\"initial issue\"}" % (eosioAccount.name, CORE_SYMBOL)
+            data="{\"to\":\"%s\",\"quantity\":\"1000000000.0000 %s\",\"memo\":\"initial issue\"}" % (agrioAccount.name, CORE_SYMBOL)
             opts="--permission %s@active" % (contract)
             trans=biosNode.pushMessage(contract, action, data, opts)
             if trans is None or not trans[0]:
-                Utils.Print("ERROR: Failed to push issue action to eosio contract.")
+                Utils.Print("ERROR: Failed to push issue action to agrio contract.")
                 return None
 
             Node.validateTransaction(trans[1])
@@ -896,19 +896,19 @@ class Cluster(object):
                 return None
 
             expectedAmount="1000000000.0000 {0}".format(CORE_SYMBOL)
-            Utils.Print("Verify eosio issue, Expected: %s" % (expectedAmount))
-            actualAmount=biosNode.getAccountEosBalanceStr(eosioAccount.name)
+            Utils.Print("Verify agrio issue, Expected: %s" % (expectedAmount))
+            actualAmount=biosNode.getAccountAgrBalanceStr(agrioAccount.name)
             if expectedAmount != actualAmount:
                 Utils.Print("ERROR: Issue verification failed. Excepted %s, actual: %s" %
                             (expectedAmount, actualAmount))
                 return None
 
-            contract="eosio.system"
+            contract="agrio.system"
             contractDir="contracts/%s" % (contract)
             wasmFile="%s.wasm" % (contract)
             abiFile="%s.abi" % (contract)
             Utils.Print("Publish %s contract" % (contract))
-            trans=biosNode.publishContract(eosioAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
+            trans=biosNode.publishContract(agrioAccount.name, contractDir, wasmFile, abiFile, waitForTransBlock=True)
             if trans is None:
                 Utils.Print("ERROR: Failed to publish contract %s." % (contract))
                 return None
@@ -918,14 +918,14 @@ class Cluster(object):
             initialFunds="1000000.0000 {0}".format(CORE_SYMBOL)
             Utils.Print("Transfer initial fund %s to individual accounts." % (initialFunds))
             trans=None
-            contract=eosioTokenAccount.name
+            contract=agrioTokenAccount.name
             action="transfer"
             for name, keys in producerKeys.items():
-                data="{\"from\":\"%s\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (eosioAccount.name, name, initialFunds, "init transfer")
-                opts="--permission %s@active" % (eosioAccount.name)
+                data="{\"from\":\"%s\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (agrioAccount.name, name, initialFunds, "init transfer")
+                opts="--permission %s@active" % (agrioAccount.name)
                 trans=biosNode.pushMessage(contract, action, data, opts)
                 if trans is None or not trans[0]:
-                    Utils.Print("ERROR: Failed to transfer funds from %s to %s." % (eosioTokenAccount.name, name))
+                    Utils.Print("ERROR: Failed to transfer funds from %s to %s." % (agrioTokenAccount.name, name))
                     return None
 
                 Node.validateTransaction(trans[1])
@@ -945,7 +945,7 @@ class Cluster(object):
         return biosNode
 
 
-    # Populates list of EosInstanceInfo objects, matched to actual running instances
+    # Populates list of AgrInstanceInfo objects, matched to actual running instances
     def discoverLocalNodes(self, totalNodes, timeout=0):
         nodes=[]
 
@@ -954,7 +954,7 @@ class Cluster(object):
         if platform.linux_distribution()[0] in ["Ubuntu", "LinuxMint", "Fedora","CentOS Linux","arch"]:
             pgrepOpts="-a"
 
-        cmd="pgrep %s %s" % (pgrepOpts, Utils.EosServerName)
+        cmd="pgrep %s %s" % (pgrepOpts, Utils.AgrServerName)
 
         def myFunc():
             psOut=None
@@ -976,7 +976,7 @@ class Cluster(object):
             pattern=r"[\n]?(\d+) (.* --data-dir var/lib/node_%02d .*)\n" % (i)
             m=re.search(pattern, psOut, re.MULTILINE)
             if m is None:
-                Utils.Print("ERROR: Failed to find %s pid. Pattern %s" % (Utils.EosServerName, pattern))
+                Utils.Print("ERROR: Failed to find %s pid. Pattern %s" % (Utils.AgrServerName, pattern))
                 break
             instance=Node(self.host, self.port + i, pid=int(m.group(1)), cmd=m.group(2), enableMongo=self.enableMongo, mongoHost=self.mongoHost, mongoPort=self.mongoPort, mongoDb=self.mongoDb)
             instance.setWalletEndpointArgs(self.walletEndpointArgs)
@@ -985,12 +985,12 @@ class Cluster(object):
 
         return nodes
 
-    # Kills a percentange of Eos instances starting from the tail and update eosInstanceInfos state
-    def killSomeEosInstances(self, killCount, killSignalStr=Utils.SigKillTag):
+    # Kills a percentange of Agr instances starting from the tail and update agrInstanceInfos state
+    def killSomeAgrInstances(self, killCount, killSignalStr=Utils.SigKillTag):
         killSignal=signal.SIGKILL
         if killSignalStr == Utils.SigTermTag:
             killSignal=signal.SIGTERM
-        Utils.Print("Kill %d %s instances with signal %s." % (killCount, Utils.EosServerName, killSignal))
+        Utils.Print("Kill %d %s instances with signal %s." % (killCount, Utils.AgrServerName, killSignal))
 
         killedCount=0
         for node in reversed(self.nodes):
@@ -1004,7 +1004,7 @@ class Cluster(object):
         time.sleep(1) # Give processes time to stand down
         return True
 
-    def relaunchEosInstances(self):
+    def relaunchAgrInstances(self):
 
         chainArg=self.__chainSyncStrategy.arg
 
@@ -1027,30 +1027,30 @@ class Cluster(object):
             Utils.Print("File %s not found." % (fileName))
 
     def dumpErrorDetails(self):
-        fileName="etc/eosio/node_bios/config.ini"
+        fileName="etc/agrio/node_bios/config.ini"
         Cluster.dumpErrorDetailImpl(fileName)
         fileName="var/lib/node_bios/stderr.txt"
         Cluster.dumpErrorDetailImpl(fileName)
 
         for i in range(0, len(self.nodes)):
-            fileName="etc/eosio/node_%02d/config.ini" % (i)
+            fileName="etc/agrio/node_%02d/config.ini" % (i)
             Cluster.dumpErrorDetailImpl(fileName)
             fileName="var/lib/node_%02d/stderr.txt" % (i)
             Cluster.dumpErrorDetailImpl(fileName)
 
     def killall(self, silent=True, allInstances=False):
-        """Kill cluster nodeos instances. allInstances will kill all nodeos instances running on the system."""
-        cmd="%s -k 9" % (Utils.EosLauncherPath)
+        """Kill cluster nodagr instances. allInstances will kill all nodagr instances running on the system."""
+        cmd="%s -k 9" % (Utils.AgrLauncherPath)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         if 0 != subprocess.call(cmd.split(), stdout=Utils.FNull):
-            if not silent: Utils.Print("Launcher failed to shut down eos cluster.")
+            if not silent: Utils.Print("Launcher failed to shut down agr cluster.")
 
         if allInstances:
-            # ocassionally the launcher cannot kill the eos server
-            cmd="pkill -9 %s" % (Utils.EosServerName)
+            # ocassionally the launcher cannot kill the agr server
+            cmd="pkill -9 %s" % (Utils.AgrServerName)
             if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
             if 0 != subprocess.call(cmd.split(), stdout=Utils.FNull):
-                if not silent: Utils.Print("Failed to shut down eos cluster.")
+                if not silent: Utils.Print("Failed to shut down agr cluster.")
 
         # another explicit nodes shutdown
         for node in self.nodes:
@@ -1080,7 +1080,7 @@ class Cluster(object):
     def cleanup(self):
         for f in glob.glob("var/lib/node_*"):
             shutil.rmtree(f)
-        for f in glob.glob("etc/eosio/node_*"):
+        for f in glob.glob("etc/agrio/node_*"):
             shutil.rmtree(f)
 
         if self.enableMongo:

@@ -1,8 +1,8 @@
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
-using namespace eosio;
+using namespace agrio;
 
-class hello : public eosio::contract {
+class hello : public agrio::contract {
   public:
       using contract::contract;
 
@@ -12,4 +12,4 @@ class hello : public eosio::contract {
       }
 };
 
-EOSIO_ABI( hello, (hi) )
+AGRIO_ABI( hello, (hi) )

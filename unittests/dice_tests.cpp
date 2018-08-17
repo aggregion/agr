@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/contract_table_objects.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/contract_table_objects.hpp>
 
 #include <dice/dice.wast.hpp>
 #include <dice/dice.abi.hpp>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <agrio.token/agrio.token.wast.hpp>
+#include <agrio.token/agrio.token.abi.hpp>
 
 #include <Runtime/Runtime.h>
 
@@ -19,9 +19,9 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio;
+using namespace agrio::chain;
+using namespace agrio::testing;
 using namespace fc;
 using namespace std;
 using mvo = fc::mutable_variant_object;
@@ -73,11 +73,11 @@ FC_REFLECT( withdraw_t, (to)(amount) );
 
 struct __attribute((packed)) account_t {
    account_name owner;
-   asset        eos_balance;
+   asset        agr_balance;
    uint32_t     open_offers;
    uint32_t     open_games;
 };
-FC_REFLECT(account_t, (owner)(eos_balance)(open_offers)(open_games));
+FC_REFLECT(account_t, (owner)(agr_balance)(open_offers)(open_games));
 
 struct player_t {
    checksum_type commitment;
@@ -195,7 +195,7 @@ struct dice_tester : TESTER {
    asset balance_of(account_name account) {
       account_t acnt;
       if(!dice_account(account, acnt)) return asset();
-      return acnt.eos_balance;
+      return acnt.agr_balance;
    }
 
    checksum_type commitment_for( const char* secret ) {
@@ -224,10 +224,10 @@ BOOST_AUTO_TEST_SUITE(dice_tests)
 
 BOOST_FIXTURE_TEST_CASE( dice_test, dice_tester ) try {
 
-   create_accounts( {N(eosio.token), N(dice),N(alice),N(bob),N(carol),N(david)}, false);
+   create_accounts( {N(agrio.token), N(dice),N(alice),N(bob),N(carol),N(david)}, false);
 
-   set_code(N(eosio.token), eosio_token_wast);
-   set_abi(N(eosio.token), eosio_token_abi);
+   set_code(N(agrio.token), agrio_token_wast);
+   set_abi(N(agrio.token), agrio_token_abi);
 
    produce_block();
 
@@ -235,20 +235,20 @@ BOOST_FIXTURE_TEST_CASE( dice_test, dice_tester ) try {
    add_dice_authority(N(bob));
    add_dice_authority(N(carol));
 
-   push_action(N(eosio.token), N(create), N(eosio.token), mvo()
-     ("issuer", "eosio.token")
+   push_action(N(agrio.token), N(create), N(agrio.token), mvo()
+     ("issuer", "agrio.token")
      ("maximum_supply", core_from_string("1000000000.0000"))
    );
 
-   push_action(N(eosio.token), N(issue), N(eosio.token), mvo()
-     ("to", "eosio")
+   push_action(N(agrio.token), N(issue), N(agrio.token), mvo()
+     ("to", "agrio")
      ("quantity", core_from_string("1000000000.0000"))
      ("memo", "")
    );
 
-   transfer( config::system_account_name, N(alice), core_from_string("10000.0000"), "", N(eosio.token) );
-   transfer( config::system_account_name, N(bob),   core_from_string("10000.0000"), "", N(eosio.token) );
-   transfer( config::system_account_name, N(carol), core_from_string("10000.0000"), "", N(eosio.token) );
+   transfer( config::system_account_name, N(alice), core_from_string("10000.0000"), "", N(agrio.token) );
+   transfer( config::system_account_name, N(bob),   core_from_string("10000.0000"), "", N(agrio.token) );
+   transfer( config::system_account_name, N(carol), core_from_string("10000.0000"), "", N(agrio.token) );
 
    produce_block();
 
@@ -387,7 +387,7 @@ BOOST_FIXTURE_TEST_CASE( dice_test, dice_tester ) try {
    BOOST_REQUIRE_EQUAL( balance_of(N(alice)), core_from_string("1.0000"));
 
    BOOST_REQUIRE_EQUAL(
-      get_currency_balance(N(eosio.token), symbol(CORE_SYMBOL), N(alice)),
+      get_currency_balance(N(agrio.token), symbol(CORE_SYMBOL), N(alice)),
       core_from_string("10009.0000")
    );
 
@@ -399,7 +399,7 @@ BOOST_FIXTURE_TEST_CASE( dice_test, dice_tester ) try {
    withdraw( N(alice), core_from_string("1.0000"));
 
    BOOST_REQUIRE_EQUAL(
-      get_currency_balance(N(eosio.token), symbol(CORE_SYMBOL), N(alice)),
+      get_currency_balance(N(agrio.token), symbol(CORE_SYMBOL), N(alice)),
       core_from_string("10010.0000")
    );
 

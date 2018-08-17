@@ -12,20 +12,20 @@ from testUtils import Utils
 Wallet=namedtuple("Wallet", "name password host port")
 # pylint: disable=too-many-instance-attributes
 class WalletMgr(object):
-    __walletLogFile="test_keosd_output.log"
+    __walletLogFile="test_kagrd_output.log"
     __walletDataDir="test_wallet_0"
 
     # pylint: disable=too-many-arguments
-    # walletd [True|False] True=Launch wallet(keosd) process; False=Manage launch process externally.
-    def __init__(self, walletd, nodeosPort=8888, nodeosHost="localhost", port=9899, host="localhost"):
+    # walletd [True|False] True=Launch wallet(kagrd) process; False=Manage launch process externally.
+    def __init__(self, walletd, nodagrPort=8888, nodagrHost="localhost", port=9899, host="localhost"):
         self.walletd=walletd
-        self.nodeosPort=nodeosPort
-        self.nodeosHost=nodeosHost
+        self.nodagrPort=nodagrPort
+        self.nodagrHost=nodagrHost
         self.port=port
         self.host=host
         self.wallets={}
         self.__walletPid=None
-        self.endpointArgs="--url http://%s:%d" % (self.nodeosHost, self.nodeosPort)
+        self.endpointArgs="--url http://%s:%d" % (self.nodagrHost, self.nodagrPort)
         self.walletEndpointArgs=""
         if self.walletd:
             self.walletEndpointArgs += " --wallet-url http://%s:%d" % (self.host, self.port)
@@ -33,17 +33,17 @@ class WalletMgr(object):
 
     def launch(self):
         if not self.walletd:
-            Utils.Print("ERROR: Wallet Manager wasn't configured to launch keosd")
+            Utils.Print("ERROR: Wallet Manager wasn't configured to launch kagrd")
             return False
 
         cmd="%s --data-dir %s --config-dir %s --http-server-address=%s:%d --verbose-http-errors" % (
-            Utils.EosWalletPath, WalletMgr.__walletDataDir, WalletMgr.__walletDataDir, self.host, self.port)
+            Utils.AgrWalletPath, WalletMgr.__walletDataDir, WalletMgr.__walletDataDir, self.host, self.port)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         with open(WalletMgr.__walletLogFile, 'w') as sout, open(WalletMgr.__walletLogFile, 'w') as serr:
             popen=subprocess.Popen(cmd.split(), stdout=sout, stderr=serr)
             self.__walletPid=popen.pid
 
-        # Give keosd time to warm up
+        # Give kagrd time to warm up
         time.sleep(1)
         return True
 
@@ -53,7 +53,7 @@ class WalletMgr(object):
             if Utils.Debug: Utils.Print("Wallet \"%s\" already exists. Returning same." % name)
             return wallet
         p = re.compile(r'\n\"(\w+)\"\n', re.MULTILINE)
-        cmd="%s %s wallet create --name %s --to-console" % (Utils.EosClientPath, self.endpointArgs, name)
+        cmd="%s %s wallet create --name %s --to-console" % (Utils.AgrClientPath, self.endpointArgs, name)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         retStr=Utils.checkOutput(cmd.split())
         #Utils.Print("create: %s" % (retStr))
@@ -84,7 +84,7 @@ class WalletMgr(object):
     def importKey(self, account, wallet, ignoreDupKeyWarning=False):
         warningMsg="Key already in wallet"
         cmd="%s %s wallet import --name %s --private-key %s" % (
-            Utils.EosClientPath, self.endpointArgs, wallet.name, account.ownerPrivateKey)
+            Utils.AgrClientPath, self.endpointArgs, wallet.name, account.ownerPrivateKey)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         try:
             Utils.checkOutput(cmd.split())
@@ -101,7 +101,7 @@ class WalletMgr(object):
             Utils.Print("WARNING: Active private key is not defined for account \"%s\"" % (account.name))
         else:
             cmd="%s %s wallet import --name %s  --private-key %s" % (
-                Utils.EosClientPath, self.endpointArgs, wallet.name, account.activePrivateKey)
+                Utils.AgrClientPath, self.endpointArgs, wallet.name, account.activePrivateKey)
             if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
             try:
                 Utils.checkOutput(cmd.split())
@@ -118,7 +118,7 @@ class WalletMgr(object):
         return True
 
     def lockWallet(self, wallet):
-        cmd="%s %s wallet lock --name %s" % (Utils.EosClientPath, self.endpointArgs, wallet.name)
+        cmd="%s %s wallet lock --name %s" % (Utils.AgrClientPath, self.endpointArgs, wallet.name)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         if 0 != subprocess.call(cmd.split(), stdout=Utils.FNull):
             Utils.Print("ERROR: Failed to lock wallet %s." % (wallet.name))
@@ -127,7 +127,7 @@ class WalletMgr(object):
         return True
 
     def unlockWallet(self, wallet):
-        cmd="%s %s wallet unlock --name %s" % (Utils.EosClientPath, self.endpointArgs, wallet.name)
+        cmd="%s %s wallet unlock --name %s" % (Utils.AgrClientPath, self.endpointArgs, wallet.name)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         popen=subprocess.Popen(cmd.split(), stdout=Utils.FNull, stdin=subprocess.PIPE)
         _, errs = popen.communicate(input=wallet.password.encode("utf-8"))
@@ -138,7 +138,7 @@ class WalletMgr(object):
         return True
 
     def lockAllWallets(self):
-        cmd="%s %s wallet lock_all" % (Utils.EosClientPath, self.endpointArgs)
+        cmd="%s %s wallet lock_all" % (Utils.AgrClientPath, self.endpointArgs)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         if 0 != subprocess.call(cmd.split(), stdout=Utils.FNull):
             Utils.Print("ERROR: Failed to lock all wallets.")
@@ -150,7 +150,7 @@ class WalletMgr(object):
         wallets=[]
 
         p = re.compile(r'\s+\"(\w+)\s\*\",?\n', re.MULTILINE)
-        cmd="%s %s wallet list" % (Utils.EosClientPath, self.endpointArgs)
+        cmd="%s %s wallet list" % (Utils.AgrClientPath, self.endpointArgs)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         retStr=Utils.checkOutput(cmd.split())
         #Utils.Print("retStr: %s" % (retStr))
@@ -166,7 +166,7 @@ class WalletMgr(object):
         keys=[]
 
         p = re.compile(r'\n\s+\"(\w+)\"\n', re.MULTILINE)
-        cmd="%s %s wallet private_keys --name %s --password %s " % (Utils.EosClientPath, self.endpointArgs, wallet.name, wallet.password)
+        cmd="%s %s wallet private_keys --name %s --password %s " % (Utils.AgrClientPath, self.endpointArgs, wallet.name, wallet.password)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         retStr=Utils.checkOutput(cmd.split())
         #Utils.Print("retStr: %s" % (retStr))
@@ -188,13 +188,13 @@ class WalletMgr(object):
                 shutil.copyfileobj(f, sys.stdout)
 
     def killall(self, allInstances=False):
-        """Kill keos instances. allInstances will kill all keos instances running on the system."""
+        """Kill kagr instances. allInstances will kill all kagr instances running on the system."""
         if self.__walletPid:
             Utils.Print("Killing wallet manager process %d" % (self.__walletPid))
             os.kill(self.__walletPid, signal.SIGKILL)
 
         if allInstances:
-            cmd="pkill -9 %s" % (Utils.EosWalletName)
+            cmd="pkill -9 %s" % (Utils.AgrWalletName)
             if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
             subprocess.call(cmd.split())
 

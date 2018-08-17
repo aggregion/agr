@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
@@ -16,11 +16,11 @@
 #include <boost/iostreams/device/back_inserter.hpp>
 #include <boost/iostreams/filter/zlib.hpp>
 
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/transaction.hpp>
+#include <agrio/chain/config.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/transaction.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 using namespace boost::multi_index;
 
@@ -59,7 +59,7 @@ bool transaction_header::verify_reference_block( const block_id_type& reference_
 }
 
 void transaction_header::validate()const {
-   EOS_ASSERT( max_net_usage_words.value < UINT32_MAX / 8UL, transaction_exception,
+   AGR_ASSERT( max_net_usage_words.value < UINT32_MAX / 8UL, transaction_exception,
                "declared max_net_usage_words overflows when expanded to max net usage" );
 }
 
@@ -106,7 +106,7 @@ flat_set<public_key_type> transaction::get_signature_keys( const vector<signatur
       }
       bool successful_insertion = false;
       std::tie(std::ignore, successful_insertion) = recovered_pub_keys.insert(recov);
-      EOS_ASSERT( allow_duplicate_keys || successful_insertion, tx_duplicate_sig,
+      AGR_ASSERT( allow_duplicate_keys || successful_insertion, tx_duplicate_sig,
                   "transaction includes more than one signature signed using the same key associated with public key: ${key}",
                   ("key", recov)
                );
@@ -138,14 +138,14 @@ flat_set<public_key_type> signed_transaction::get_signature_keys( const chain_id
 uint32_t packed_transaction::get_unprunable_size()const {
    uint64_t size = config::fixed_net_overhead_of_packed_trx;
    size += packed_trx.size();
-   EOS_ASSERT( size <= std::numeric_limits<uint32_t>::max(), tx_too_big, "packed_transaction is too big" );
+   AGR_ASSERT( size <= std::numeric_limits<uint32_t>::max(), tx_too_big, "packed_transaction is too big" );
    return static_cast<uint32_t>(size);
 }
 
 uint32_t packed_transaction::get_prunable_size()const {
    uint64_t size = fc::raw::pack_size(signatures);
    size += packed_context_free_data.size();
-   EOS_ASSERT( size <= std::numeric_limits<uint32_t>::max(), tx_too_big, "packed_transaction is too big" );
+   AGR_ASSERT( size <= std::numeric_limits<uint32_t>::max(), tx_too_big, "packed_transaction is too big" );
    return static_cast<uint32_t>(size);
 }
 
@@ -172,7 +172,7 @@ struct read_limiter {
    template<typename Sink>
    size_t write(Sink &sink, const char* s, size_t count)
    {
-      EOS_ASSERT(_total + count <= Limit, tx_decompression_error, "Exceeded maximum decompressed transaction size");
+      AGR_ASSERT(_total + count <= Limit, tx_decompression_error, "Exceeded maximum decompressed transaction size");
       _total += count;
       return bio::write(sink, s, count);
    }
@@ -267,7 +267,7 @@ bytes packed_transaction::get_raw_transaction() const
          case zlib:
             return zlib_decompress(packed_trx);
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
       }
    } FC_CAPTURE_AND_RETHROW((compression)(packed_trx))
 }
@@ -281,7 +281,7 @@ vector<bytes> packed_transaction::get_context_free_data()const
          case zlib:
             return zlib_decompress_context_free_data(packed_context_free_data);
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
       }
    } FC_CAPTURE_AND_RETHROW((compression)(packed_context_free_data))
 }
@@ -310,7 +310,7 @@ void packed_transaction::local_unpack()const
             unpacked_trx = zlib_decompress_transaction(packed_trx);
             break;
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
          }
       } FC_CAPTURE_AND_RETHROW((compression)(packed_trx))
    }
@@ -331,7 +331,7 @@ signed_transaction packed_transaction::get_signed_transaction() const
          case zlib:
             return signed_transaction(get_transaction(), signatures, zlib_decompress_context_free_data(packed_context_free_data));
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
       }
    } FC_CAPTURE_AND_RETHROW((compression)(packed_trx)(packed_context_free_data))
 
@@ -348,7 +348,7 @@ void packed_transaction::set_transaction(const transaction& t, packed_transactio
             packed_trx = zlib_compress_transaction(t);
             break;
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
       }
    } FC_CAPTURE_AND_RETHROW((_compression)(t))
    packed_context_free_data.clear();
@@ -368,11 +368,11 @@ void packed_transaction::set_transaction(const transaction& t, const vector<byte
             packed_context_free_data = zlib_compress_context_free_data(cfd);
             break;
          default:
-            EOS_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
+            AGR_THROW(unknown_transaction_compression, "Unknown transaction compression algorithm");
       }
    } FC_CAPTURE_AND_RETHROW((_compression)(t))
    compression = _compression;
 }
 
 
-} } // eosio::chain
+} } // agrio::chain

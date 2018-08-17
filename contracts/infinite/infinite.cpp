@@ -1,8 +1,8 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosiolib/print.hpp> /// defines transfer struct (abi)
+#include <agriolib/print.hpp> /// defines transfer struct (abi)
 
 extern "C" {
 
@@ -10,7 +10,7 @@ extern "C" {
     void apply( uint64_t, uint64_t, uint64_t ) {
        int idx = 0;
        while(true) {
-          eosio::print(idx++);
+          agrio::print(idx++);
        }
     }
 }
