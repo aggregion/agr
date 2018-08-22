@@ -9,15 +9,14 @@
 [submodule "contracts/musl/upstream"]
 	path = contracts/musl/upstream
 	url = https://github.com/aggregion/musl.git
-	branch = agrio
+	branch = eosio
 [submodule "contracts/libc++/upstream"]
 	path = contracts/libc++/upstream
 	url = https://github.com/aggregion/libcxx.git
-	branch = agrio
+	branch = eosio
 [submodule "externals/binaryen"]
 	path = externals/binaryen
 	url = https://github.com/aggregion/binaryen
-	branch = asm2wasm-import-wasm-mem
 
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
