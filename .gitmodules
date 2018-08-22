@@ -9,15 +9,15 @@
 [submodule "contracts/musl/upstream"]
 	path = contracts/musl/upstream
 	url = https://github.com/aggregion/musl.git
-	branch = eosio
+	branch = agrio
 [submodule "contracts/libc++/upstream"]
 	path = contracts/libc++/upstream
 	url = https://github.com/aggregion/libcxx.git
-	branch = eosio
+	branch = agrio
 [submodule "externals/binaryen"]
 	path = externals/binaryen
 	url = https://github.com/aggregion/binaryen
-
+	branch = agrio
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
 	url = https://github.com/aggregion/berkeley-softfloat-3
