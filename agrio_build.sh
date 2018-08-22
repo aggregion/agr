@@ -29,7 +29,6 @@
 #
 # https://github.com/AGRIO/agr/blob/master/LICENSE
 ##########################################################################
-
    SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
    function usage()

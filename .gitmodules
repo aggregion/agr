@@ -17,6 +17,7 @@
 [submodule "externals/binaryen"]
 	path = externals/binaryen
 	url = https://github.com/aggregion/binaryen
+	branch = asm2wasm-import-wasm-mem
 
 [submodule "libraries/softfloat"]
 	path = libraries/softfloat
