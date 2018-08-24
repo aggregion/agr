@@ -16,6 +16,7 @@ add_subdirectory(agrio.system)
 add_subdirectory(identity)
 add_subdirectory(stltest)
 add_subdirectory(exchange)
+#add_subdirectory(license_pool)
 add_subdirectory(test.inline)
 
 #add_subdirectory(bancor)

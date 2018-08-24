@@ -91,18 +91,16 @@
 
    install_symlinks   
 
-   printf "\n\n${bldred}\t _______  _______  _______ _________ _______\n"
-   printf '\t(  ____ \(  ___  )(  ____ \\\\__   __/(  ___  )\n'
-   printf "\t| (    \/| (   ) || (    \/   ) (   | (   ) |\n"
-   printf "\t| (__    | |   | || (_____    | |   | |   | |\n"
-   printf "\t|  __)   | |   | |(_____  )   | |   | |   | |\n"
-   printf "\t| (      | |   | |      ) |   | |   | |   | |\n"
-   printf "\t| (____/\| (___) |/\____) |___) (___| (___) |\n"
-   printf "\t(_______/(_______)\_______)\_______/(_______)\n${txtrst}"
+
+   printf "\n\n${bldred}\t _______  _______  _______ _________ _______ \n"
+   printf '\t(  ___  )(  ____ \(  ____ )\__   __/(  ___  )\n'
+   printf '\t| (   ) || (    \/| (    )|   ) (   | (   ) |\n'
+   printf '\t| (___) || |      | (____)|   | |   | |   | |\n'
+   printf '\t|  ___  || | ____ |     __)   | |   | |   | |\n'
+   printf '\t| (   ) || | \_  )| (\ (      | |   | |   | |\n'
+   printf '\t| )   ( || (___) || ) \ \_____) (___| (___) |\n'
+   printf "\t|/     \\|(_______)|/   \\__/\\_______/(_______)\n\n${txtrst}"
 
    printf "\\tFor more information:\\n"
-   printf "\\tAGRIO website: https://agr.io\\n"
-   printf "\\tAGRIO Telegram channel @ https://t.me/AGRProject\\n"
-   printf "\\tAGRIO resources: https://agr.io/resources/\\n"
-   printf "\\tAGRIO Stack Exchange: https://agrio.stackexchange.com\\n"
-   printf "\\tAGRIO wiki: https://github.com/AGRIO/agr/wiki\\n\\n\\n"
+   printf "\\tAGRIO website: https://www.aggregion.com\\n"
+   printf "\\tAGRIO Telegram channel @ https://t.me/aggregion\\n"
