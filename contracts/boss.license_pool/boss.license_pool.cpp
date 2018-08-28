@@ -1,10 +1,10 @@
 #include "boss.license_pool.hpp"
-#include <eosiolib/action.hpp>
-#include <eosiolib/transaction.hpp>
+#include <agriolib/action.hpp>
+#include <agriolib/transaction.hpp>
 #include <initializer_list>
 
 using namespace std;
-using namespace eosio;
+using namespace agrio;
 namespace boss {
 license_pool::license_pool(account_name issuer)
   : tools::claimable(issuer),
@@ -17,7 +17,7 @@ license_pool::license_pool(account_name issuer)
   configs::get(_state, _self, N(state));
 }
 
-void license_pool::initialize(string name, string description) {
+void license_pool::initialize(const string &name, string description) {
   require_auth(_self);
 
   if (configs::get(_state, _self, N(state))) {
@@ -52,7 +52,7 @@ void license_pool::liccreate(uint128_t licenseUUID, string name, string descript
   auto idx = _licenses.template get_index<N(bylicuuid)>();
   auto it  = idx.find(licenseUUID);
 
-  eosio_assert(it == idx.end(), "License UUID must be unique");
+  agrio_assert(it == idx.end(), "License UUID must be unique");
 
   // add new license
   _licenses.emplace(_self, [&](auto& lic) {
@@ -71,7 +71,7 @@ void license_pool::licsetprop(uint128_t licenseUUID,
   auto lic_idx = _licenses.template get_index<N(bylicuuid)>();
   auto lic_it  = lic_idx.find(licenseUUID);
 
-  eosio_assert(lic_it != lic_idx.end(), "License must exists");
+  agrio_assert(lic_it != lic_idx.end(), "License must exists");
 
   // find settings
   auto idx = _lic_settings.template get_index<N(byuuidkey)>();
@@ -98,10 +98,10 @@ void license_pool::typeadd(uint128_t licenseUUID,
   auto idx = _licenses.template get_index<N(bylicuuid)>();
   auto it  = idx.find(licenseUUID);
 
-  eosio_assert(it != idx.end(), "License must exists");
+  agrio_assert(it != idx.end(), "License must exists");
 
   for (auto& t: it->types) {
-    eosio_assert(t != licenseType, "Type already exists");
+    agrio_assert(t != licenseType, "Type already exists");
   }
 
   idx.modify(it, 0, [&](auto& lic) {
@@ -115,7 +115,7 @@ void license_pool::typeremove(uint128_t licenseUUID, string licenseType) {
   auto idx = _licenses.template get_index<N(bylicuuid)>();
   auto it  = idx.find(licenseUUID);
 
-  eosio_assert(it != idx.end(), "License must exists");
+  agrio_assert(it != idx.end(), "License must exists");
 
   idx.modify(it, 0, [&](auto& lic) {
       for (auto t = lic.types.begin(), e = lic.types.end(); t != e; t++) {
@@ -200,13 +200,13 @@ void license_pool::recadd(uint128_t    licenseUUID,
                           uint128_t    recordUUID,
                           account_name user,
                           string       licenseType,
-                          string       extra) {
+                          string       /*extra*/) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto lic_idx = _licenses.template get_index<N(bylicuuid)>();
   auto lic_it  = lic_idx.find(licenseUUID);
 
-  eosio_assert(lic_it != lic_idx.end(), "License must exists");
+  agrio_assert(lic_it != lic_idx.end(), "License must exists");
 
   // check type
   bool found = false;
@@ -217,11 +217,11 @@ void license_pool::recadd(uint128_t    licenseUUID,
       break;
     }
   }
-  eosio_assert(found, "License type must exists");
+  agrio_assert(found, "License type must exists");
 
   auto rec_idx = _records.template get_index<N(byrecuuid)>();
   auto rec_it  = rec_idx.find(recordUUID);
-  eosio_assert(rec_it == rec_idx.end(), "Record UUID must be unique");
+  agrio_assert(rec_it == rec_idx.end(), "Record UUID must be unique");
 
   _records.emplace(ctx.user, [&](auto& rec) {
       rec.id          = _records.available_primary_key();
@@ -241,7 +241,7 @@ void license_pool::recsetprop(uint128_t recordUUID,
   auto rec_idx = _records.template get_index<N(byrecuuid)>();
   auto rec_it  = rec_idx.find(recordUUID);
 
-  eosio_assert(rec_it != rec_idx.end(), "Record must exists");
+  agrio_assert(rec_it != rec_idx.end(), "Record must exists");
 
   // find settings
   auto idx = _record_settings.template get_index<N(byrecuuid)>();
@@ -268,7 +268,7 @@ void license_pool::recremove(uint128_t recordUUID) {
   auto rec_idx = _records.template get_index<N(byrecuuid)>();
   auto rec_it  = rec_idx.find(recordUUID);
 
-  eosio_assert(rec_it != rec_idx.end(), "Record must exists");
+  agrio_assert(rec_it != rec_idx.end(), "Record must exists");
 
   rec_idx.erase(rec_it);
 
@@ -294,7 +294,7 @@ bool license_pool::check_role(account_name user, const string& role) {
 }
 
 license_pool::user_context license_pool::check_caller_role(initializer_list<string>allowRolesList) {
-  eosio::action act = eosio::get_action(1, 0);
+  agrio::action act = agrio::get_action(1, 0);
   user_context  ctx;
 
   for (auto& auth : act.authorization) {
@@ -308,10 +308,10 @@ license_pool::user_context license_pool::check_caller_role(initializer_list<stri
       }
     }
   }
-  eosio_assert(ctx.user > 0, "No valid permissions for authorized users with action permission!");
+  agrio_assert(ctx.user > 0, "No valid permissions for authorized users with action permission!");
 
   require_auth(ctx.user);
   return ctx;
 }
 }
-EOSIO_ABI(boss::license_pool,(initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))
+AGRIO_ABI(boss::license_pool,(initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))

@@ -34,7 +34,7 @@ public:
 
   license_pool(account_name issuer);
 
-  void initialize(string name,
+  void initialize(const string &name,
                   string description);
 
   void liccreate(uint128_t licenseUUID,
@@ -92,7 +92,7 @@ public:
 
   // @abi table license i64
   struct license {
-    int64_t       id;
+    uint64_t      id;
     uint128_t     licenseUUID;
     string        name;
     string        description;
@@ -120,7 +120,7 @@ public:
     string    value;
 
     uint64_t primary_key() const {
-      return id;
+     return  id;
     }
 
     key256 byuuidkey() const {
@@ -141,7 +141,7 @@ public:
     string   actions;
 
     uint64_t primary_key() const {
-      return id;
+     return  id;
     }
 
     AGRLIB_SERIALIZE(rule, (id)(property)(condition)(value)(actions))
@@ -156,7 +156,7 @@ public:
     string       value;
 
     uint64_t primary_key() const {
-      return id;
+     return  id;
     }
 
     key256 by_setting() const {

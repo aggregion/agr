@@ -23,7 +23,7 @@ public:
 
   /**
    * @dev Allows the current owner to set the pendingOwner address.
-   * @param newOwner The address to transfer ownership to.
+   * @param new_owner The address to transfer ownership to.
    */
   inline void setowner(account_name new_owner) {
     require_auth(_self);
@@ -49,3 +49,4 @@ public:
   }
 };
 }
+
