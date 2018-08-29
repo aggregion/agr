@@ -1,4 +1,5 @@
 #!/bin/sh
+
 cd /opt/agrio/bin
 
 if [ -f '/opt/agrio/bin/data-dir/config.ini' ]; then
