@@ -17,7 +17,7 @@ license_pool::license_pool(account_name issuer)
   configs::get(_state, _self, N(state));
 }
 
-void license_pool::initialize(const string &name, string description) {
+void license_pool::initialize(const string& name, const string& description) {
   require_auth(_self);
 
   if (configs::get(_state, _self, N(state))) {
@@ -45,7 +45,7 @@ void license_pool::initialize(const string &name, string description) {
   }
 }
 
-void license_pool::liccreate(uint128_t licenseUUID, string name, string description) {
+void license_pool::liccreate(uint128_t licenseUUID, const string& name, const string& description) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   // check if the same name exists
@@ -63,9 +63,9 @@ void license_pool::liccreate(uint128_t licenseUUID, string name, string descript
     });
 }
 
-void license_pool::licsetprop(uint128_t licenseUUID,
-                              uint128_t key,
-                              string    value) {
+void license_pool::licsetprop(uint128_t     licenseUUID,
+                              uint128_t     key,
+                              const string& value) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto lic_idx = _licenses.template get_index<N(bylicuuid)>();
@@ -91,8 +91,8 @@ void license_pool::licsetprop(uint128_t licenseUUID,
   }
 }
 
-void license_pool::typeadd(uint128_t licenseUUID,
-                           string    licenseType) {
+void license_pool::typeadd(uint128_t     licenseUUID,
+                           const string& licenseType) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto idx = _licenses.template get_index<N(bylicuuid)>();
@@ -109,7 +109,7 @@ void license_pool::typeadd(uint128_t licenseUUID,
     });
 }
 
-void license_pool::typeremove(uint128_t licenseUUID, string licenseType) {
+void license_pool::typeremove(uint128_t licenseUUID, const string& licenseType) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto idx = _licenses.template get_index<N(bylicuuid)>();
@@ -127,10 +127,10 @@ void license_pool::typeremove(uint128_t licenseUUID, string licenseType) {
     });
 }
 
-void license_pool::ruleadd(string   property,
-                           uint16_t condition,
-                           string   value,
-                           string   actions) {
+void license_pool::ruleadd(const string& property,
+                           uint16_t      condition,
+                           const string& value,
+                           const string& actions) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   // add new rule
@@ -143,9 +143,9 @@ void license_pool::ruleadd(string   property,
     });
 }
 
-void license_pool::rulesremove(string   property,
-                               uint16_t condition,
-                               string   value) {
+void license_pool::rulesremove(const string& property,
+                               uint16_t      condition,
+                               const string& value) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   for (auto it = _rules.begin(); it != _rules.end();) {
@@ -166,9 +166,9 @@ void license_pool::rulesremove(string   property,
   }
 }
 
-void license_pool::usrsetprop(account_name user,
-                              uint128_t    key,
-                              string       value) {
+void license_pool::usrsetprop(account_name  user,
+                              uint128_t     key,
+                              const string& value) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
   setting s;
 
@@ -196,11 +196,11 @@ void license_pool::usrsetprop(account_name user,
   }
 }
 
-void license_pool::recadd(uint128_t    licenseUUID,
-                          uint128_t    recordUUID,
-                          account_name user,
-                          string       licenseType,
-                          string       /*extra*/) {
+void license_pool::recadd(uint128_t     licenseUUID,
+                          uint128_t     recordUUID,
+                          account_name  user,
+                          const string& licenseType,
+                          const string& /*extra*/) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto lic_idx = _licenses.template get_index<N(bylicuuid)>();
@@ -233,9 +233,9 @@ void license_pool::recadd(uint128_t    licenseUUID,
     });
 }
 
-void license_pool::recsetprop(uint128_t recordUUID,
-                              uint128_t key,
-                              string    value) {
+void license_pool::recsetprop(uint128_t     recordUUID,
+                              uint128_t     key,
+                              const string& value) {
   auto ctx = check_caller_role({ "Owner", "Manager" });
 
   auto rec_idx = _records.template get_index<N(byrecuuid)>();
@@ -314,4 +314,5 @@ license_pool::user_context license_pool::check_caller_role(initializer_list<stri
   return ctx;
 }
 }
-AGRIO_ABI(boss::license_pool,(initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))
+AGRIO_ABI(boss::license_pool,
+          (initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))

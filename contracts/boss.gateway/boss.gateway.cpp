@@ -27,9 +27,9 @@ void gateway::purchase(account_name from,
                        account_name beneficiary,
                        uint64_t     amount) {
   require_auth(from);
-  agrio_assert(is_account(beneficiary),                      "to account does not exist");
-  agrio_assert(amount > 0,                             "must purchase positive quantity");
-  agrio_assert(_state.exchange_rate > 0,                   "gateway must be active now!");
+  agrio_assert(is_account(beneficiary),              "to account does not exist");
+  agrio_assert(amount > 0,                           "must purchase positive quantity");
+  agrio_assert(_state.exchange_rate > 0,             "gateway must be active now!");
   agrio_assert(amount <= ULLONG_MAX - _state.supply, "quantity exceeds available supply");
 
   // calculate token amount to be created
@@ -66,9 +66,9 @@ void gateway::transfer(account_name from,
 
 void gateway::withdraw(account_name to, uint64_t amount) {
   require_auth(to);
-  agrio_assert(amount > 0,           "must withdraw positive quantity");
+  agrio_assert(amount > 0,               "must withdraw positive quantity");
   agrio_assert(_state.exchange_rate > 0, "gateway must be active now!");
-  agrio_assert(_state.supply >= amount,         "Amount must be valid");
+  agrio_assert(_state.supply >= amount,  "Amount must be valid");
 
   int64_t coins = coins_amount(amount);
 

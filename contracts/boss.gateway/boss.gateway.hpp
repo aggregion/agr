@@ -5,13 +5,8 @@
 #pragma once
 #include <agriolib/asset.hpp>
 #include <agriolib/agrio.hpp>
-#include <string>
-#include <map>
 
 #include "../tools/claimable.hpp"
-
-using std::string;
-using std::map;
 
 namespace boss {
 class gateway : public tools::claimable {

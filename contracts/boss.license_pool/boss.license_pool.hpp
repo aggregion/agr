@@ -34,41 +34,41 @@ public:
 
   license_pool(account_name issuer);
 
-  void initialize(const string &name,
-                  string description);
+  void initialize(const string& name,
+                  const string& description);
 
-  void liccreate(uint128_t licenseUUID,
-                 string    name,
-                 string    description);
-  void licsetprop(uint128_t licenseUUID,
-                  uint128_t key,
-                  string    value);
+  void liccreate(uint128_t     licenseUUID,
+                 const string& name,
+                 const string& description);
+  void licsetprop(uint128_t     licenseUUID,
+                  uint128_t     key,
+                  const string& value);
 
-  void typeadd(uint128_t licenseUUID,
-               string    licenseType);
-  void typeremove(uint128_t licenseUUID,
-                  string    licenseType);
+  void typeadd(uint128_t     licenseUUID,
+               const string& licenseType);
+  void typeremove(uint128_t     licenseUUID,
+                  const string& licenseType);
 
-  void ruleadd(string   property,
-               uint16_t condition,
-               string   value,
-               string   actions);
-  void rulesremove(string   property,
-                   uint16_t condition,
-                   string   value);
+  void ruleadd(const string& property,
+               uint16_t      condition,
+               const string& value,
+               const string& actions);
+  void rulesremove(const string& property,
+                   uint16_t      condition,
+                   const string& value);
 
-  void usrsetprop(account_name user,
-                  uint128_t    key,
-                  string       value);
+  void usrsetprop(account_name  user,
+                  uint128_t     key,
+                  const string& value);
 
-  void recadd(uint128_t    licenseUUID,
-              uint128_t    recordUUID,
-              account_name user,
-              string       licenseType,
-              string       extra);
-  void recsetprop(uint128_t recordUUID,
-                  uint128_t key,
-                  string    value);
+  void recadd(uint128_t     licenseUUID,
+              uint128_t     recordUUID,
+              account_name  user,
+              const string& licenseType,
+              const string& extra);
+  void recsetprop(uint128_t     recordUUID,
+                  uint128_t     key,
+                  const string& value);
   void recremove(uint128_t recordUUID);
 
   // @abi table state i64
@@ -120,7 +120,7 @@ public:
     string    value;
 
     uint64_t primary_key() const {
-     return  id;
+      return id;
     }
 
     key256 byuuidkey() const {
@@ -141,7 +141,7 @@ public:
     string   actions;
 
     uint64_t primary_key() const {
-     return  id;
+      return id;
     }
 
     AGRLIB_SERIALIZE(rule, (id)(property)(condition)(value)(actions))
@@ -156,7 +156,7 @@ public:
     string       value;
 
     uint64_t primary_key() const {
-     return  id;
+      return id;
     }
 
     key256 by_setting() const {
