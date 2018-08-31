@@ -1,6 +1,6 @@
 FROM agrio/builder as builder
 ARG branch=master
-ARG symbol=SYS
+ARG symbol=AGR
 
 RUN git clone -b $branch https://github.com/aggregion/agr.git --recursive \
     && cd agr && echo "$branch:$(git rev-parse HEAD)" > /etc/agrio-version \

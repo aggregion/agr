@@ -33,6 +33,12 @@ services:
       - kagrd-data-volume:/opt/agrio/bin/data-dir
     stop_grace_period: 10m
 
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    links:
+      - nodagrd
+
 volumes:
   nodagr-data-volume:
     external: true
