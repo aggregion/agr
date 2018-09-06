@@ -314,5 +314,4 @@ license_pool::user_context license_pool::check_caller_role(initializer_list<stri
   return ctx;
 }
 }
-AGRIO_ABI(boss::license_pool,
-          (initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))
+AGRIO_ABI(boss::license_pool, (initialize)(liccreate)(licsetprop)(typeadd)(typeremove)(ruleadd)(rulesremove)(usrsetprop)(recadd)(recsetprop)(recremove)(setowner)(claim))
