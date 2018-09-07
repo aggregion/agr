@@ -74,7 +74,7 @@ def startWallet():
     run('mkdir -p ' + os.path.abspath(args.wallet_dir))
     background(args.kagrd + ' --unlock-timeout %d --http-server-address 127.0.0.1:6666 --wallet-dir %s' % (unlockTimeout, os.path.abspath(args.wallet_dir)))
     sleep(.4)
-    run(args.clagr + 'wallet create')
+    run(args.clagr + 'wallet create --to-console')
 
 def importKeys():
     run(args.clagr + 'wallet import --private-key ' + args.private_key)
@@ -347,7 +347,7 @@ commands = [
 
 parser.add_argument('--public-key', metavar='', help="AGRIO Public Key", default='AGR8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
 parser.add_argument('--private-Key', metavar='', help="AGRIO Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
-parser.add_argument('--clagr', metavar='', help="Clagr command", default='../../build/programs/clagr/clagr --wallet-url http://localhost:6666 ')
+parser.add_argument('--clagr', metavar='', help="Clagr command", default='../../build/programs/clagr/clagr --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--nodagr', metavar='', help="Path to nodagr binary", default='../../build/programs/nodagr/nodagr')
 parser.add_argument('--kagrd', metavar='', help="Path to kagrd binary", default='../../build/programs/kagrd/kagrd')
 parser.add_argument('--contracts-dir', metavar='', help="Path to contracts directory", default='../../build/contracts/')
@@ -381,7 +381,7 @@ for (flag, command, function, inAll, help) in commands:
         
 args = parser.parse_args()
 
-args.clagr += '--url http://localhost:%d ' % args.http_port
+args.clagr += '--url http://127.0.0.1:%d ' % args.http_port
 
 logFile = open(args.log_path, 'a')
 

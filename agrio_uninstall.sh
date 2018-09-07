@@ -26,9 +26,14 @@ if [ -d "/usr/local/agrio" ]; then
             for binary in ${binaries[@]}; do
                rm ${binary}
             done
+            # Handle cleanup of directories created from installation
+            if [ "$1" == "--full" ]; then
+               if [ -d ~/Library/Application\ Support/agrio ]; then rm -rf ~/Library/Application\ Support/agrio; fi # Mac OS
+               if [ -d ~/.local/share/agrio ]; then rm -rf ~/.local/share/agrio; fi # Linux
+            fi
             popd &> /dev/null
             break;;
-         [Nn]* ) 
+         [Nn]* )
             printf "\tAborting uninstall\n\n"
             exit -1;;
       esac
