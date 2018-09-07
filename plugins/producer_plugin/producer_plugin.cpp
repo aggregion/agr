@@ -1166,12 +1166,12 @@ void producer_plugin_impl::schedule_production_loop() {
       static const boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
       if (result == start_block_result::succeeded) {
          // ship this block off no later than its deadline
-         EOS_ASSERT( chain.pending_block_state(), missing_pending_block_state, "producing without pending_block_state, start_block succeeded" );
+         AGR_ASSERT( chain.pending_block_state(), missing_pending_block_state, "producing without pending_block_state, start_block succeeded" );
          auto deadline = chain.pending_block_time().time_since_epoch().count() + (last_block ? _last_block_time_offset_us : _produce_time_offset_us);
          _timer.expires_at( epoch + boost::posix_time::microseconds( deadline ));
          fc_dlog(_log, "Scheduling Block Production on Normal Block #${num} for ${time}", ("num", chain.pending_block_state()->block_num)("time",deadline));
       } else {
-         EOS_ASSERT( chain.pending_block_state(), missing_pending_block_state, "producing without pending_block_state" );
+         AGR_ASSERT( chain.pending_block_state(), missing_pending_block_state, "producing without pending_block_state" );
          auto expect_time = chain.pending_block_time() - fc::microseconds(config::block_interval_us);
          // ship this block off up to 1 block time earlier or immediately
          if (fc::time_point::now() >= expect_time) {
@@ -1194,7 +1194,7 @@ void producer_plugin_impl::schedule_production_loop() {
       });
    } else if (_pending_block_mode == pending_block_mode::speculating && !_producers.empty() && !production_disabled_by_policy()){
       fc_dlog(_log, "Specualtive Block Created; Scheduling Speculative/Production Change");
-      EOS_ASSERT( chain.pending_block_state(), missing_pending_block_state, "speculating without pending_block_state" );
+      AGR_ASSERT( chain.pending_block_state(), missing_pending_block_state, "speculating without pending_block_state" );
       const auto& pbs = chain.pending_block_state();
       schedule_delayed_production_loop(weak_this, pbs->header.timestamp);
    } else {

@@ -28,8 +28,8 @@ if [ -d "/usr/local/agrio" ]; then
             done
             # Handle cleanup of directories created from installation
             if [ "$1" == "--full" ]; then
-               if [ -d ~/Library/Application\ Support/eosio ]; then rm -rf ~/Library/Application\ Support/eosio; fi # Mac OS
-               if [ -d ~/.local/share/eosio ]; then rm -rf ~/.local/share/eosio; fi # Linux
+               if [ -d ~/Library/Application\ Support/agrio ]; then rm -rf ~/Library/Application\ Support/agrio; fi # Mac OS
+               if [ -d ~/.local/share/agrio ]; then rm -rf ~/.local/share/agrio; fi # Linux
             fi
             popd &> /dev/null
             break;;

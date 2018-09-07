@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/wasm_eosio_constraints.hpp>
-#include <eosio/chain/resource_limits.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/wasm_agrio_constraints.hpp>
+#include <agrio/chain/resource_limits.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/wast_to_wasm.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 
 #include <asserter/asserter.wast.hpp>
 #include <asserter/asserter.abi.hpp>
@@ -18,8 +18,8 @@
 #include <noop/noop.wast.hpp>
 #include <noop/noop.abi.hpp>
 
-#include <eosio.system/eosio.system.wast.hpp>
-#include <eosio.system/eosio.system.abi.hpp>
+#include <agrio.system/agrio.system.wast.hpp>
+#include <agrio.system/agrio.system.abi.hpp>
 
 #include <fc/io/fstream.hpp>
 
@@ -37,9 +37,9 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio;
+using namespace agrio::chain;
+using namespace agrio::testing;
 using namespace fc;
 
 BOOST_AUTO_TEST_SUITE(chain_plugin_tests)

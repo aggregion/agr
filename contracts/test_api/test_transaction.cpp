@@ -319,7 +319,7 @@ void test_transaction::active_new_feature() {
 }
 
 void test_transaction::repeat_deferred_transaction(uint64_t receiver, uint64_t code, uint64_t action) {
-   using namespace eosio;
+   using namespace agrio;
 
    uint128_t sender_id = 0;
 
