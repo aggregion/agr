@@ -105,7 +105,7 @@ public:
    /// Imports a WIF Private Key into specified wallet.
    /// Wallet must be opened and unlocked.
    /// @param name the name of the wallet to import into.
-   /// @param wif_key the WIF Private Key to import, e.g. 5J8k2nXo7uapvxzYs5EDy8PqWgpMgYKEtbGj54cC9bAdGzCYDZq
+   /// @param wif_key the WIF Private Key to import, e.g. 5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS
    /// @throws fc::exception if wallet not found or locked.
    void import_key(const std::string& name, const std::string& wif_key);
 
@@ -113,7 +113,7 @@ public:
    /// Wallet must be opened and unlocked.
    /// @param name the name of the wallet to remove the key from.
    /// @param password the plaintext password returned from ::create.
-   /// @param key the Public Key to remove, e.g. AGR5yoLebJ8WcyqM4advqzt1M3FJLX1xgoMLwPtBnhyiF1uiJewmG
+   /// @param key the Public Key to remove, e.g. AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq
    /// @throws fc::exception if wallet not found or locked or key is not removed.
    void remove_key(const std::string& name, const std::string& password, const std::string& key);
 

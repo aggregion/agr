@@ -203,7 +203,7 @@ endif()
 message( STATUS "Using '${CORE_SYMBOL_NAME}' as CORE symbol name" )
 
 if ("${AGRIO_ROOT_KEY}" STREQUAL "")
-   set(AGRIO_ROOT_KEY "AGR6GXyXQY3bDSfSeF9Be1cekaYhS5eR4swASLbJzLm29bpxS9uj3")
+   set(AGRIO_ROOT_KEY "AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq")
 endif()
 
 message( STATUS "Using '${AGRIO_ROOT_KEY}' as public key for 'agrio' account" )

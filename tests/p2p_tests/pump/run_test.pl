@@ -112,7 +112,7 @@ sub write_config {
     if (defined $producer) {
         print $cfg "enable-stale-production = true\n";
         print $cfg "required-participation = true\n";
-        print $cfg "private-key = [\"AGR5yoLebJ8WcyqM4advqzt1M3FJLX1xgoMLwPtBnhyiF1uiJewmG\",\"5J8k2nXo7uapvxzYs5EDy8PqWgpMgYKEtbGj54cC9bAdGzCYDZq\"]\n";
+        print $cfg "private-key = [\"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq\",\"5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS\"]\n";
 
         print $cfg "plugin = agrio::producer_plugin\n";
         print $cfg "plugin = agrio::chain_api_plugin\n";
