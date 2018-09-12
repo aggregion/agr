@@ -77,7 +77,7 @@ class wallet_api
 
       /** Imports a WIF Private Key into the wallet to be used to sign transactions by an account.
        *
-       * example: import_key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+       * example: import_key 5J8k2nXo7uapvxzYs5EDy8PqWgpMgYKEtbGj54cC9bAdGzCYDZq
        *
        * @param wif_key the WIF Private Key to import
        */
@@ -85,7 +85,7 @@ class wallet_api
 
       /** Removes a key from the wallet.
        *
-       * example: remove_key AGR6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+       * example: remove_key AGR5yoLebJ8WcyqM4advqzt1M3FJLX1xgoMLwPtBnhyiF1uiJewmG
        *
        * @param key the Public Key to remove
        */

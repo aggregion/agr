@@ -48,7 +48,7 @@ Example game session using clagr
 #### Prerequisites
 * Wallet must be unlock and have at least the following private keys
 
-	**5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3**
+	**5J8k2nXo7uapvxzYs5EDy8PqWgpMgYKEtbGj54cC9bAdGzCYDZq**
 	**5Jmsawgsp1tQ3GD6JyGCwy1dcvqKZgX6ugMVMdjirx85iv5VyPR**
 
 ##### Upload bios contract
