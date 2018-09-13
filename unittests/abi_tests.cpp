@@ -1948,21 +1948,21 @@ BOOST_AUTO_TEST_CASE(general)
         "transaction_extensions": []
       }],
       "keyweight": {"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},
-      "keyweight_arr": [{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
+      "keyweight_arr": [{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
       "authority": {
          "threshold":"10",
-         "keys":[{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":100},{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":200}],
+         "keys":[{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":100},{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":200}],
          "accounts":[{"permission":{"actor":"acc1","permission":"permname1"},"weight":"1"},{"permission":{"actor":"acc2","permission":"permname2"},"weight":"2"}],
          "waits":[]
        },
       "authority_arr": [{
          "threshold":"10",
-         "keys":[{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
+         "keys":[{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
          "accounts":[{"permission":{"actor":"acc1","permission":"permname1"},"weight":"1"},{"permission":{"actor":"acc2","permission":"permname2"},"weight":"2"}],
          "waits":[]
        },{
          "threshold":"10",
-         "keys":[{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGRAGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
+         "keys":[{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"100"},{"key":"AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq", "weight":"200"}],
          "accounts":[{"permission":{"actor":"acc1","permission":"permname1"},"weight":"1"},{"permission":{"actor":"acc2","permission":"permname2"},"weight":"2"}],
          "waits":[]
        }],
