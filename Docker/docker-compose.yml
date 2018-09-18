@@ -23,6 +23,7 @@ services:
     cap_add:
       - IPC_LOCK
     stop_grace_period: 10m
+    restart: always
 
   kagrd:
     image: agrio/agr
