@@ -4,11 +4,16 @@ This document describes how to run your own node for test network (testnet) or m
 
 # Prerequisites
 
-Please make sure you have installed next utilities:
-* docker & docker-compose (How to install on ubuntu-like systems https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-* git (`apt-get install git` on ubuntu-like systems)
+### Hardware requirements
+* CPU with 4 cores or more
+* 8GB RAM or more 
+* At least 500GB free disk space
 
-Also make sure that you have at least 500 GB free space for docker containers.
+### Software requirements
+* Any operating system that supports Docker
+* Installed docker & docker-compose (How to install on ubuntu-like systems https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+* Installed git (`apt-get install git` on ubuntu-like systems)
+
 
 # Installation
 ```sh
