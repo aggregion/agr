@@ -26,7 +26,7 @@ cp config.sample.testnet.ini config.ini
 
 Run testnet docker-containers:
 ```sh
-sudo docker-compose up -f docker-compose.testnet.yml -d
+sudo docker-compose -f docker-compose.testnet.yml up -d
 ```
 
 Check that node is running:
@@ -69,7 +69,7 @@ Run mainnet docker-containers:
 ```sh
 sudo docker volume create nodagr-data-volume
 sudo docker volume create kagrd-data-volume
-sudo docker-compose up -f docker-compose.yml -d
+sudo docker-compose -f docker-compose.yml up -d
 ```
 
 Check that node is running:
