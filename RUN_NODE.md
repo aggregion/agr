@@ -8,8 +8,8 @@ Also make sure that you have at least 500 GB free space for docker containers.
 
 # Installation
 ```sh
-sudo mkdir -p /opt/agr
-cd /opt/agr
+mkdir -p ~/agr
+cd ~/agr
 git clone https://github.com/aggregion/agr.git .
 ```
 
@@ -26,7 +26,7 @@ cp config.sample.testnet.ini config.ini
 
 Run testnet docker-containers:
 ```sh
-docker-compose up -f docker-compose.testnet.yml -d
+sudo docker-compose up -f docker-compose.testnet.yml -d
 ```
 
 Check that node is running:
@@ -67,7 +67,9 @@ Edit next parameters in the config.ini file:
 
 Run mainnet docker-containers:
 ```sh
-docker-compose up -f docker-compose.yml -d
+sudo docker volume create nodagr-data-volume
+sudo docker volume create kagrd-data-volume
+sudo docker-compose up -f docker-compose.yml -d
 ```
 
 Check that node is running:
@@ -86,7 +88,7 @@ This command should output information about blockchain. For example:
 You can check that all containers are running using the following command:
 
 ```sh
-docker ps
+sudo docker ps
 ```
 
 Output should looks like this:
@@ -105,13 +107,13 @@ If you don't see any of this containers, it means that something went wrong.
 
 You can just try to run specific container again. For example docker_nodagrd_1:
 ```sh
-docker start docker_nodagrd_1
+sudo docker start docker_nodagrd_1
 ```
 
 If after this container did not apear in the list, then you need see logs for detailed information. For example if you need logs for docker_nodagrd_1, run this command:
 
 ```sh
-docker logs docker_nodagrd_1 --tail 200
+sudo docker logs docker_nodagrd_1 --tail 200
 ```
 
 For any questions you can contact us using e-mail support@aggregion.com.
