@@ -101,8 +101,8 @@ This command should output information about blockchain. For example:
 # Firewall settings
 
 To make your node available for other nodes, you should allow next ports in your firewall:
-* 9876:9876 (TCP and UDP)
-* 8888:8888 (TCP only)
+* 9876 (TCP and UDP)
+* 8888 (TCP only)
 
 # Troubleshooting
 
