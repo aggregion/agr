@@ -1,3 +1,7 @@
+# Introduction
+
+This document describes how to run your own node for test network (testnet) or main network (mainnet).
+
 # Prerequisites
 
 Please make sure you have installed next utilities:
