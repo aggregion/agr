@@ -56,8 +56,12 @@ This command should output information about blockchain. For example:
 ### Generate key
 
 First you need to generate AGR key-pair and account.
-You may do it within AGR Wallet desktop application.
-*Do not share your private key with anyone!*
+You may do it within AGR Wallet desktop application:
+* [Aggregion Wallet for Windows](http://links.aggregion.com/agr-wallet/windows/latest)
+* [Aggregion Wallet for Mac](http://links.aggregion.com/agr-wallet/mac/latest)
+
+
+**Do not share your private key with anyone!**
 
 ### Build and run containers
 
