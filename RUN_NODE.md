@@ -26,6 +26,8 @@ cp config.sample.testnet.ini config.ini
 
 Run testnet docker-containers:
 ```sh
+sudo docker volume create nodagr-data-volume
+sudo docker volume create kagrd-data-volume
 sudo docker-compose -f docker-compose.testnet.yml up -d
 ```
 
