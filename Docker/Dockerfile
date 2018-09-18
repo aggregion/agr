@@ -15,7 +15,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install openssl 
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 COPY --from=builder /tmp/build/bin /opt/agrio/bin
 COPY --from=builder /tmp/build/contracts /contracts
-COPY config.sample.testnet.ini /
+COPY config.ini /
 COPY --from=builder /etc/agrio-version /etc
 COPY --from=builder /agr/Docker/nodagrd.sh /opt/agrio/bin/nodagrd.sh
 ENV AGRIO_ROOT=/opt/agrio
