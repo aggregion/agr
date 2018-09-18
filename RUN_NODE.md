@@ -2,7 +2,7 @@
 
 Please make sure you have installed next utilities:
 * docker & docker-compose (How to install on ubuntu-like systems https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-* git
+* git (`apt-get install git` on ubuntu-like systems)
 
 Also make sure that you have at least 500 GB free space for docker containers.
 
