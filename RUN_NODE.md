@@ -85,6 +85,12 @@ This command should output information about blockchain. For example:
 {"server_version":"1fc065f4","chain_id":"41c4c54a375c767f11654a907541633bdddf158a8f0c394f657980bc484c91c9","head_block_num":1863547,"last_irreversible_block_num":1863546,"last_irreversible_block_id":"001c6f7ad42ba54ec3eb7adb7d93ae867bf0c8a6d05a9f9a68e9683e7af2b40a","head_block_id":"001c6f7b784f21192d8682cd843d5b1bbc77d66becbfe0d87538af1909b9121c","head_block_time":"2018-09-18T06:40:58.500","head_block_producer":"agrio","virtual_block_cpu_limit":200000000,"virtual_block_net_limit":1048576000,"block_cpu_limit":199900,"block_net_limit":1048576,"server_version_string":"v1.2.1-27-g1fc065f40"}
 ```
 
+# Firewall settings
+
+To make your node available for other nodes, you shoul allow next ports in your firewall:
+* 9876:9876 (TCP and UDP)
+* 8888:8888 (TCP only)
+
 # Troubleshooting
 
 You can check that all containers are running using the following command:
