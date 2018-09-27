@@ -9,6 +9,7 @@ services:
   nodagrd:
     build:
       context: .
+      dockerfile: Dockerfile-mainnet
     image: agrio/agr
     command: /opt/agrio/bin/nodagrd.sh --data-dir /opt/agrio/bin/data-dir -e --http-alias=nodagrd:8888 --http-alias=127.0.0.1:8888 --http-alias=localhost:8888
     hostname: nodagrd
@@ -22,6 +23,7 @@ services:
     cap_add:
       - IPC_LOCK
     stop_grace_period: 10m
+    restart: always
 
   kagrd:
     image: agrio/agr

@@ -1,8 +1,15 @@
 version: "3"
 
 services:
+  builder:
+    build:
+      context: builder
+    image: agrio/builder
+
   nodagrd:
-    image: agrio/agr:latest
+    build:
+      context: .
+    image: agrio/agr
     command: /opt/agrio/bin/nodagrd.sh --data-dir /opt/agrio/bin/data-dir -e --http-alias=nodagrd:8888 --http-alias=127.0.0.1:8888 --http-alias=localhost:8888
     hostname: nodagrd
     ports:
@@ -15,9 +22,10 @@ services:
     cap_add:
       - IPC_LOCK
     stop_grace_period: 10m
+    restart: always
 
   kagrd:
-    image: agrio/agr:latest
+    image: agrio/agr
     command: /opt/agrio/bin/kagrd --wallet-dir /opt/agrio/bin/data-dir --http-server-address=127.0.0.1:8900 --http-alias=kagrd:8900 --http-alias=localhost:8900
     hostname: kagrd
     links:
@@ -26,8 +34,14 @@ services:
       - kagrd-data-volume:/opt/agrio/bin/data-dir
     stop_grace_period: 10m
 
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    links:
+      - nodagrd
+
 volumes:
- nodagr-data-volume:
-   external: true
- kagrd-data-volume:
-   external: true
+  nodagr-data-volume:
+    external: true
+  kagrd-data-volume:
+    external: true
