@@ -1203,8 +1203,8 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, agrio_system_tester, * boost::unit_test::t
    BOOST_REQUIRE_EQUAL("defproducera", prod["owner"].as_string());
    BOOST_REQUIRE_EQUAL(0, prod["total_votes"].as_double());
 
-   transfer( config::system_account_name, "producvotera", core_from_string("400000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("100000000.0000"), core_from_string("100000000.0000")));
+   transfer( config::system_account_name, "producvotera", core_from_string("450000000.0000"), config::system_account_name);
+   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("440000000.0000"), core_from_string("10000000.0000")));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvotera), { N(defproducera) }));
 
    // defproducera is the only active producer
