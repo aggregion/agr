@@ -14,13 +14,18 @@ After finalising registration process you will receive a code, that you should s
 
 1. At the end of the installation process, select "Request new account" option
 <br />
+
 ![enter image description here](https://lh3.googleusercontent.com/SiBF5nEA2eRt3aFZF-j4nyHWfDmJvCdgi76zGcCL_azvOnbru0HbNsc6Z992blTwBM8r1gO2f5SXcg)
-*Note:  your PC should be connected to the Internet.*
+
 <br />
+*Note:  your PC should be connected to the Internet.*
 2. Choose a name for your account.
 *Important! Name should contain 12 characters. Only lower case latin letters and numbers from 1 to 5 are permitted.*
-3. Check account name for availability and compliance with requirements. To do that, please click "Check availability" button.<br />
+3. Check account name for availability and compliance with requirements. To do that, please click "Check availability" button.
+<br />
+
 ![enter image description here](https://lh3.googleusercontent.com/mWcE-D8eLH5lkHn5TAA01ghkCtjIxQ7qBQi-oZ7Dk7MubnfiOwrt7FHx8Vn5TyNuFLe1VlGkO9vn0w)
+
 <br />
 *If needed, please correct errors in the account name.* 
 4. After successful verification of the account name, proceed to the next step 
