@@ -495,7 +495,7 @@ public:
                                                mvo()
                                                ("from", name{config::system_account_name})
                                                ("receiver", "producer1111")
-                                               ("stake_net_quantity", core_from_string("150000000.0000") )
+                                               ("stake_net_quantity", core_from_string("450000000.0000") )
                                                ("stake_cpu_quantity", core_from_string("0.0000") )
                                                ("transfer", 1 )
                                              )
@@ -513,7 +513,7 @@ public:
                                                mvo()
                                                ("from", "producer1111")
                                                ("receiver", "producer1111")
-                                               ("unstake_net_quantity", core_from_string("150000000.0000") )
+                                               ("unstake_net_quantity", core_from_string("450000000.0000") )
                                                ("unstake_cpu_quantity", core_from_string("0.0000") )
                                              )
                                  );
