@@ -18,17 +18,19 @@ After finalising registration process you will receive a code, that you should s
 ![enter image description here](https://lh3.googleusercontent.com/SiBF5nEA2eRt3aFZF-j4nyHWfDmJvCdgi76zGcCL_azvOnbru0HbNsc6Z992blTwBM8r1gO2f5SXcg)
 
 <br />
-*Note:  your PC should be connected to the Internet.*
+Note:  your PC should be connected to the Internet.
 <br />
 2. Choose a name for your account.
-*Important! Name should contain 12 characters. Only lower case latin letters and numbers from 1 to 5 are permitted.*
+<br />
+Important! Name should contain 12 characters. Only lower case latin letters and numbers from 1 to 5 are permitted.
+<br />
 3. Check account name for availability and compliance with requirements. To do that, please click "Check availability" button.
 <br />
 
 ![enter image description here](https://lh3.googleusercontent.com/mWcE-D8eLH5lkHn5TAA01ghkCtjIxQ7qBQi-oZ7Dk7MubnfiOwrt7FHx8Vn5TyNuFLe1VlGkO9vn0w)
 
 <br />
-*If needed, please correct errors in the account name.* 
+If needed, please correct errors in the account name. 
 <br />
 4. After successful verification of the account name, proceed to the next step 
 <br />
@@ -38,7 +40,7 @@ After finalising registration process you will receive a code, that you should s
 <br />
 5. At this stage public and private sets of keys will be generated. To do that, please click "Generate key pairs" button.
 <br />
-*Important! Due to security considerations, we recommend to disconnect your PC from the Internet at this stage.*
+Important! Due to security considerations, we recommend to disconnect your PC from the Internet at this stage.
 <br />
 
 ![enter image description here](https://lh3.googleusercontent.com/H1yCQF6N1wL0tx_kxyka1WhhIX64diSYLd3wblkUf7cwONiF0AF87cwY_LvlS1Lwjhn5Fcveda7QkA)
@@ -46,7 +48,7 @@ After finalising registration process you will receive a code, that you should s
 <br />
 7. Save generated private keys in a secure place. 
 <br />
-*Important! Private key allows to use your wallet for payments, therefore you should store them securely. Loss of private keys can lead to loss of access or unauthorised use of your wallet's assets.*
+Important! Private key allows to use your wallet for payments, therefore you should store them securely. Loss of private keys can lead to loss of access or unauthorised use of your wallet's assets.
 <br />
 
 ![enter image description here](https://lh3.googleusercontent.com/FwsR5s4wboMBLXxAOo1-jTZof3q3a15JC96Hpy8Buxd65i4OxMTgyqAsrqx0xM69lVgQ8XEvy5kfaw)
