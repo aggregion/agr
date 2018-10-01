@@ -1812,8 +1812,8 @@ BOOST_FIXTURE_TEST_CASE(producer_onblock_check, agrio_system_tester) try {
    BOOST_REQUIRE_EQUAL(0, get_producer_info( producer_names.back() )["total_votes"].as<double>());
 
 
-   transfer(config::system_account_name, "producvotera", core_from_string("200000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("70000000.0000"), core_from_string("70000000.0000") ));
+   transfer(config::system_account_name, "producvotera", core_from_string("400000000.0000"), config::system_account_name);
+   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("200000000.0000"), core_from_string("200000000.0000") ));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvotera), vector<account_name>(producer_names.begin(), producer_names.begin()+10)));
    BOOST_CHECK_EQUAL( wasm_assert_msg( "cannot undelegate bandwidth until the chain is activated (at least 15% of all tokens participate in voting)" ),
                       unstake( "producvotera", core_from_string("50.0000"), core_from_string("50.0000") ) );
@@ -1850,9 +1850,9 @@ BOOST_FIXTURE_TEST_CASE(producer_onblock_check, agrio_system_tester) try {
 
    // stake across 15% boundary
    transfer(config::system_account_name, "producvoterb", core_from_string("100000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvoterb", core_from_string("4000000.0000"), core_from_string("4000000.0000")));
+   BOOST_REQUIRE_EQUAL(success(), stake("producvoterb", core_from_string("20000000.0000"), core_from_string("20000000.0000")));
    transfer(config::system_account_name, "producvoterc", core_from_string("100000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvoterc", core_from_string("2000000.0000"), core_from_string("2000000.0000")));
+   BOOST_REQUIRE_EQUAL(success(), stake("producvoterc", core_from_string("6000000.0000"), core_from_string("6000000.0000")));
 
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvoterb), vector<account_name>(producer_names.begin(), producer_names.begin()+21)));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvoterc), vector<account_name>(producer_names.begin(), producer_names.end())));
