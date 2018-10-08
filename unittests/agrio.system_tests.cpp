@@ -2178,7 +2178,7 @@ BOOST_FIXTURE_TEST_CASE( buyname, agrio_system_tester ) try {
    create_accounts_with_resources( { N(dan), N(sam) } );
    transfer( config::system_account_name, "dan", core_from_string( "10000.0000" ) );
    transfer( config::system_account_name, "sam", core_from_string( "10000.0000" ) );
-   stake_with_transfer( config::system_account_name, "sam", core_from_string( "80000000.0000" ), core_from_string( "80000000.0000" ) );
+   stake_with_transfer( config::system_account_name, "sam", core_from_string( "480000000.0000" ), core_from_string( "80000000.0000" ) );
    stake_with_transfer( config::system_account_name, "dan", core_from_string( "80000000.0000" ), core_from_string( "80000000.0000" ) );
 
    regproducer( config::system_account_name );
