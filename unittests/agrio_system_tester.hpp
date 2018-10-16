@@ -62,7 +62,7 @@ public:
          token_abi_ser.set_abi(abi, abi_serializer_max_time);
       }
 
-      create_currency( N(agrio.token), config::system_account_name, core_from_string("10000000000.0000") );
+      create_currency( N(agrio.token), config::system_account_name, core_from_string("100000000000.0000") );
       issue(config::system_account_name,      core_from_string("1000000000.0000"));
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "agrio" ) );
 

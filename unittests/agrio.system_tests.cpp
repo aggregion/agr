@@ -2393,9 +2393,11 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
       }
    }
 
+   issue(config::system_account_name, core_from_string("10000000000.0000"));
+
    for (const auto& v: voters) {
-      transfer( config::system_account_name, v, core_from_string("200000000.0000"), config::system_account_name );
-      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("30000000.0000"), core_from_string("30000000.0000")) );
+      transfer( config::system_account_name, v, core_from_string("2390000000.0000"), config::system_account_name );
+      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("1150000000.0000"), core_from_string("1150000000.0000")) );
    }
 
    {
@@ -2406,7 +2408,8 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
 
    // give a chance for everyone to produce blocks
    {
-      produce_blocks(23 * 12 + 20);
+      produce_blocks(23 * 12 + 20 + 1000);
+
       bool all_21_produced = true;
       for (uint32_t i = 0; i < 21; ++i) {
          if (0 == get_producer_info(producer_names[i])["unpaid_blocks"].as<uint32_t>()) {
@@ -2419,7 +2422,8 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
             rest_didnt_produce = false;
          }
       }
-      BOOST_REQUIRE(all_21_produced && rest_didnt_produce);
+      BOOST_REQUIRE(all_21_produced);
+      BOOST_REQUIRE(rest_didnt_produce);
    }
 
    {
