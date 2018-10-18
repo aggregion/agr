@@ -36,7 +36,7 @@ struct genesis_account {
 };
 
 std::vector<genesis_account> test_genesis( {
-  {N(b1),    100'000'000'0000ll},
+  {N(b1),    400'000'000'0000ll},
   {N(whale4), 40'000'000'0000ll},
   {N(whale3), 30'000'000'0000ll},
   {N(whale2), 20'000'000'0000ll},
@@ -261,10 +261,10 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
         votepro( N(whale2), {N(runnerup1), N(runnerup2), N(runnerup3)} );
         votepro( N(whale3), {N(proda), N(prodb), N(prodc), N(prodd), N(prode)} );
 
-        // Total Stakes = b1 + whale2 + whale3 stake = (100,000,000 - 1,000) + (20,000,000 - 1,000) + (30,000,000 - 1,000)
-        BOOST_TEST(get_global_state()["total_activated_stake"].as<int64_t>() == 1499999997000);
+        // Total Stakes = b1 + whale2 + whale3 stake = (400,000,000 - 1,000) + (20,000,000 - 1,000) + (30,000,000 - 1,000)
+        BOOST_REQUIRE_EQUAL(4499999997000, get_global_state()["total_activated_stake"].as<int64_t>());
 
-        // No producers will be set, since the total activated stake is less than 150,000,000
+        // No producers will be set, since the total activated stake is less than 450,000,000
         produce_blocks_for_n_rounds(2); // 2 rounds since new producer schedule is set when the first block of next round is irreversible
         auto active_schedule = control->head_block_state()->active_schedule;
         BOOST_TEST(active_schedule.producers.size() == 1);
@@ -277,7 +277,7 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
 
         // This will increase the total vote stake by (40,000,000 - 1,000)
         votepro( N(whale4), {N(prodq), N(prodr), N(prods), N(prodt), N(produ)} );
-        BOOST_TEST(get_global_state()["total_activated_stake"].as<int64_t>() == 1899999996000);
+        BOOST_TEST(get_global_state()["total_activated_stake"].as<int64_t>() == 4899999996000);
 
         // Since the total vote stake is more than 150,000,000, the new producer set will be set
         produce_blocks_for_n_rounds(2); // 2 rounds since new producer schedule is set when the first block of next round is irreversible
@@ -318,13 +318,13 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
 
         // This should thrown an error, since block one can only unstake all his stake after 10 years
 
-        BOOST_REQUIRE_THROW(undelegate_bandwidth(N(b1), N(b1), core_from_string("49999500.0000"), core_from_string("49999500.0000")), agrio_assert_message_exception);
+        BOOST_REQUIRE_THROW(undelegate_bandwidth(N(b1), N(b1), core_from_string("199999500.0000"), core_from_string("199999500.0000")), agrio_assert_message_exception);
 
         // Skip 10 years
         produce_block(first_june_2028 - control->head_block_time().time_since_epoch());
 
         // Block one should be able to unstake all his stake now
-        undelegate_bandwidth(N(b1), N(b1), core_from_string("49999500.0000"), core_from_string("49999500.0000"));
+        undelegate_bandwidth(N(b1), N(b1), core_from_string("199999500.0000"), core_from_string("199999500.0000"));
 
         return;
         produce_blocks(7000); /// produce blocks until virutal bandwidth can acomadate a small user

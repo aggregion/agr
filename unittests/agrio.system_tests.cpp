@@ -1203,8 +1203,8 @@ BOOST_FIXTURE_TEST_CASE(producer_pay, agrio_system_tester, * boost::unit_test::t
    BOOST_REQUIRE_EQUAL("defproducera", prod["owner"].as_string());
    BOOST_REQUIRE_EQUAL(0, prod["total_votes"].as_double());
 
-   transfer( config::system_account_name, "producvotera", core_from_string("400000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("100000000.0000"), core_from_string("100000000.0000")));
+   transfer( config::system_account_name, "producvotera", core_from_string("450000000.0000"), config::system_account_name);
+   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("440000000.0000"), core_from_string("10000000.0000")));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvotera), { N(defproducera) }));
 
    // defproducera is the only active producer
@@ -1390,8 +1390,8 @@ BOOST_FIXTURE_TEST_CASE(multiple_producer_pay, agrio_system_tester, * boost::uni
    const std::vector<account_name> voters = { N(producvotera), N(producvoterb), N(producvoterc), N(producvoterd) };
    for (const auto& v: voters) {
       create_account_with_resources( v, config::system_account_name, core_from_string("1.0000"), false, net, cpu );
-      transfer( config::system_account_name, v, core_from_string("100000000.0000"), config::system_account_name );
-      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("30000000.0000"), core_from_string("30000000.0000")) );
+      transfer( config::system_account_name, v, core_from_string("200000000.0000"), config::system_account_name );
+      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("60000000.0000"), core_from_string("60000000.0000")) );
    }
 
    // create accounts {defproducera, defproducerb, ..., defproducerz, abcproducera, ..., defproducern} and register as producers
@@ -1812,8 +1812,8 @@ BOOST_FIXTURE_TEST_CASE(producer_onblock_check, agrio_system_tester) try {
    BOOST_REQUIRE_EQUAL(0, get_producer_info( producer_names.back() )["total_votes"].as<double>());
 
 
-   transfer(config::system_account_name, "producvotera", core_from_string("200000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("70000000.0000"), core_from_string("70000000.0000") ));
+   transfer(config::system_account_name, "producvotera", core_from_string("400000000.0000"), config::system_account_name);
+   BOOST_REQUIRE_EQUAL(success(), stake("producvotera", core_from_string("200000000.0000"), core_from_string("200000000.0000") ));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvotera), vector<account_name>(producer_names.begin(), producer_names.begin()+10)));
    BOOST_CHECK_EQUAL( wasm_assert_msg( "cannot undelegate bandwidth until the chain is activated (at least 15% of all tokens participate in voting)" ),
                       unstake( "producvotera", core_from_string("50.0000"), core_from_string("50.0000") ) );
@@ -1850,9 +1850,9 @@ BOOST_FIXTURE_TEST_CASE(producer_onblock_check, agrio_system_tester) try {
 
    // stake across 15% boundary
    transfer(config::system_account_name, "producvoterb", core_from_string("100000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvoterb", core_from_string("4000000.0000"), core_from_string("4000000.0000")));
+   BOOST_REQUIRE_EQUAL(success(), stake("producvoterb", core_from_string("20000000.0000"), core_from_string("20000000.0000")));
    transfer(config::system_account_name, "producvoterc", core_from_string("100000000.0000"), config::system_account_name);
-   BOOST_REQUIRE_EQUAL(success(), stake("producvoterc", core_from_string("2000000.0000"), core_from_string("2000000.0000")));
+   BOOST_REQUIRE_EQUAL(success(), stake("producvoterc", core_from_string("6000000.0000"), core_from_string("6000000.0000")));
 
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvoterb), vector<account_name>(producer_names.begin(), producer_names.begin()+21)));
    BOOST_REQUIRE_EQUAL(success(), vote( N(producvoterc), vector<account_name>(producer_names.begin(), producer_names.end())));
@@ -2178,7 +2178,7 @@ BOOST_FIXTURE_TEST_CASE( buyname, agrio_system_tester ) try {
    create_accounts_with_resources( { N(dan), N(sam) } );
    transfer( config::system_account_name, "dan", core_from_string( "10000.0000" ) );
    transfer( config::system_account_name, "sam", core_from_string( "10000.0000" ) );
-   stake_with_transfer( config::system_account_name, "sam", core_from_string( "80000000.0000" ), core_from_string( "80000000.0000" ) );
+   stake_with_transfer( config::system_account_name, "sam", core_from_string( "480000000.0000" ), core_from_string( "80000000.0000" ) );
    stake_with_transfer( config::system_account_name, "dan", core_from_string( "80000000.0000" ), core_from_string( "80000000.0000" ) );
 
    regproducer( config::system_account_name );
@@ -2243,8 +2243,8 @@ BOOST_FIXTURE_TEST_CASE( multiple_namebids, agrio_system_tester ) try {
 
    produce_block();
    // stake but but not enough to go live
-   stake_with_transfer( config::system_account_name, "bob",  core_from_string( "35000000.0000" ), core_from_string( "35000000.0000" ) );
-   stake_with_transfer( config::system_account_name, "carl", core_from_string( "35000000.0000" ), core_from_string( "35000000.0000" ) );
+   stake_with_transfer( config::system_account_name, "bob",  core_from_string( "110000000.0000" ), core_from_string( "110000000.0000" ) );
+   stake_with_transfer( config::system_account_name, "carl", core_from_string( "110000000.0000" ), core_from_string( "110000000.0000" ) );
    BOOST_REQUIRE_EQUAL( success(), vote( N(bob), { N(producer) } ) );
    BOOST_REQUIRE_EQUAL( success(), vote( N(carl), { N(producer) } ) );
 
@@ -2393,9 +2393,11 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
       }
    }
 
+   issue(config::system_account_name, core_from_string("10000000000.0000"));
+
    for (const auto& v: voters) {
-      transfer( config::system_account_name, v, core_from_string("200000000.0000"), config::system_account_name );
-      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("30000000.0000"), core_from_string("30000000.0000")) );
+      transfer( config::system_account_name, v, core_from_string("2390000000.0000"), config::system_account_name );
+      BOOST_REQUIRE_EQUAL(success(), stake(v, core_from_string("1150000000.0000"), core_from_string("1150000000.0000")) );
    }
 
    {
@@ -2406,7 +2408,8 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
 
    // give a chance for everyone to produce blocks
    {
-      produce_blocks(23 * 12 + 20);
+      produce_blocks(23 * 12 + 20 + 1000);
+
       bool all_21_produced = true;
       for (uint32_t i = 0; i < 21; ++i) {
          if (0 == get_producer_info(producer_names[i])["unpaid_blocks"].as<uint32_t>()) {
@@ -2419,7 +2422,8 @@ BOOST_FIXTURE_TEST_CASE( vote_producers_in_and_out, agrio_system_tester ) try {
             rest_didnt_produce = false;
          }
       }
-      BOOST_REQUIRE(all_21_produced && rest_didnt_produce);
+      BOOST_REQUIRE(all_21_produced);
+      BOOST_REQUIRE(rest_didnt_produce);
    }
 
    {
