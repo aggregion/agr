@@ -711,7 +711,7 @@ BOOST_FIXTURE_TEST_CASE(checktime_pass_tests, TESTER) { try {
 } FC_LOG_AND_RETHROW() }
 
 template<class T>
-void call_test(TESTER& test, T ac, uint32_t billed_cpu_time_us , uint32_t max_cpu_usage_ms = 200 ) {
+void call_test(TESTER& test, T ac, uint32_t billed_cpu_time_us , uint32_t max_cpu_usage_ms = 400 ) {
    signed_transaction trx;
 
    auto pl = vector<permission_level>{{N(testapi), config::active_name}};
