@@ -228,15 +228,15 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/testnet.template ${CMAKE_CURRENT_BINA
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/agrio.version.in ${CMAKE_CURRENT_BINARY_DIR}/agrio.version.hpp)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/agrio.version.hpp DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 
-set(EOS_ROOT_DIR ${CMAKE_BINARY_DIR})
+set(AGR_ROOT_DIR ${CMAKE_BINARY_DIR})
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/agrio-config.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/agrio/agrio-config.cmake @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/EosioTesterBuild.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/agrio/EosioTester.cmake @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/AgrioTesterBuild.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/agrio/AgrioTester.cmake @ONLY)
 
-set(EOS_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
+set(AGR_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/agrio-config.cmake.in ${CMAKE_BINARY_DIR}/modules/agrio-config.cmake @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/modules/agrio-config.cmake DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/agrio)
-configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/EosioTester.cmake.in ${CMAKE_BINARY_DIR}/modules/EosioTester.cmake @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/modules/EosioTester.cmake DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/agrio)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/AgrioTester.cmake.in ${CMAKE_BINARY_DIR}/modules/AgrioTester.cmake @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/modules/AgrioTester.cmake DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/agrio)
 
 configure_file(${CMAKE_SOURCE_DIR}/LICENSE 
                ${CMAKE_BINARY_DIR}/licenses/agrio/LICENSE COPYONLY)

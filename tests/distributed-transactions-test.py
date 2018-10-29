@@ -28,9 +28,9 @@ keepLogs=args.keep_logs
 p2pPlugin=args.p2p_plugin
 
 killWallet=not dontKill
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 if nodesFile is not None:
-    killEosInstances=False
+    killAgrInstances=False
 
 Utils.Debug=debug
 testSuccessful=False
@@ -64,7 +64,7 @@ try:
 
         Print("Stand up cluster")
         if cluster.launch(pnodes, total_nodes, topo=topo, delay=delay, p2pPlugin=p2pPlugin) is False:
-            errorExit("Failed to stand up eos cluster.")
+            errorExit("Failed to stand up agr cluster.")
 
         Print ("Wait for Cluster stabilization")
         # wait for cluster to start producing blocks
@@ -108,6 +108,6 @@ try:
 
     testSuccessful=True
 finally:
-    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killEosInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killAgrInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
 
 exit(0)

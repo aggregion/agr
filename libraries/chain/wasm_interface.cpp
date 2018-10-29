@@ -931,7 +931,7 @@ public:
       if( BOOST_UNLIKELY( !condition ) ) {
          std::string message( msg );
          edump((message));
-         EOS_THROW( agrio_assert_message_exception, "assertion failure with message: ${s}", ("s",message) );
+         AGR_THROW( agrio_assert_message_exception, "assertion failure with message: ${s}", ("s",message) );
       }
    }
 
@@ -939,14 +939,14 @@ public:
       if( BOOST_UNLIKELY( !condition ) ) {
          std::string message( msg, msg_len );
          edump((message));
-         EOS_THROW( agrio_assert_message_exception, "assertion failure with message: ${s}", ("s",message) );
+         AGR_THROW( agrio_assert_message_exception, "assertion failure with message: ${s}", ("s",message) );
       }
    }
 
    void agrio_assert_code( bool condition, uint64_t error_code ) {
       if( BOOST_UNLIKELY( !condition ) ) {
          edump((error_code));
-         EOS_THROW( agrio_assert_code_exception,
+         AGR_THROW( agrio_assert_code_exception,
                     "assertion failure with error code: ${error_code}", ("error_code", error_code) );
       }
    }
@@ -1635,7 +1635,7 @@ class compiler_builtins : public context_aware_api {
 
 
 /*
- * This api will be removed with fix for `eos #2561`
+ * This api will be removed with fix for `agr #2561`
  */
 class call_depth_api : public context_aware_api {
    public:

@@ -449,7 +449,7 @@ namespace agrio {
             FC_ASSERT( input_id_length <= 64, "hex string is too long to represent an actual transaction id" );
             FC_ASSERT( input_id_length >= 8,  "hex string representing transaction id should be at least 8 characters long to avoid excessive collisions" );
             input_id = transaction_id_type(p.id);
-         } EOS_RETHROW_EXCEPTIONS(transaction_id_type_exception, "Invalid transaction ID: ${transaction_id}", ("transaction_id", p.id))
+         } AGR_RETHROW_EXCEPTIONS(transaction_id_type_exception, "Invalid transaction ID: ${transaction_id}", ("transaction_id", p.id))
 
          auto txn_id_matched = [&input_id, input_id_size = input_id_length/2, no_half_byte_at_end = (input_id_length % 2 == 0)]
                                ( const transaction_id_type &id ) -> bool // hex prefix comparison
@@ -469,7 +469,7 @@ namespace agrio {
          bool in_history = (itr != idx.end() && txn_id_matched(itr->trx_id) );
 
          if( !in_history && !p.block_num_hint ) {
-            EOS_THROW(tx_not_found, "Transaction ${id} not found in history and no block hint was given", ("id",p.id));
+            AGR_THROW(tx_not_found, "Transaction ${id} not found in history and no block hint was given", ("id",p.id));
          }
 
          get_transaction_result result;
@@ -554,7 +554,7 @@ namespace agrio {
             }
 
             if (!found) {
-               EOS_THROW(tx_not_found, "Transaction ${id} not found in history or in block number ${n}", ("id",p.id)("n", *p.block_num_hint));
+               AGR_THROW(tx_not_found, "Transaction ${id} not found in history or in block number ${n}", ("id",p.id)("n", *p.block_num_hint));
             }
          }
 

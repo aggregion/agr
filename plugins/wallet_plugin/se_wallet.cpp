@@ -281,7 +281,7 @@ static void check_signed() {
 
    if(is_valid != errSecSuccess) {
       wlog("Application does not have a valid signature; Secure Enclave support disabled");
-      EOS_THROW(secure_enclave_exception, "");
+      AGR_THROW(secure_enclave_exception, "");
    }
 }
 
@@ -307,7 +307,7 @@ se_wallet::se_wallet() : my(new detail::se_wallet_impl()) {
       }
    }
 
-   EOS_THROW(secure_enclave_exception, "Secure Enclave not supported on this hardware");
+   AGR_THROW(secure_enclave_exception, "Secure Enclave not supported on this hardware");
 }
 
 se_wallet::~se_wallet() {

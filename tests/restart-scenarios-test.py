@@ -36,7 +36,7 @@ debug=args.v
 total_nodes = pnodes
 killCount=args.kill_count if args.kill_count > 0 else 1
 killSignal=args.kill_sig
-killEosInstances= not args.leave_running
+killAgrInstances= not args.leave_running
 dumpErrorDetails=args.dump_error_details
 keepLogs=args.keep_logs
 killAll=args.clean_run
@@ -67,7 +67,7 @@ try:
 
     Print("Stand up cluster")
     if cluster.launch(pnodes, total_nodes, topo=topo, delay=delay, p2pPlugin=p2pPlugin) is False:
-        errorExit("Failed to stand up eos cluster.")
+        errorExit("Failed to stand up agr cluster.")
 
     Print ("Wait for Cluster stabilization")
     # wait for cluster to start producing blocks
@@ -100,8 +100,8 @@ try:
         errorExit("Cluster sync wait failed.")
 
     Print("Kill %d cluster node instances." % (killCount))
-    if cluster.killSomeEosInstances(killCount, killSignal) is False:
-        errorExit("Failed to kill Eos instances")
+    if cluster.killSomeAgrInstances(killCount, killSignal) is False:
+        errorExit("Failed to kill Agr instances")
     Print("nodagr instances killed.")
 
     Print("Spread funds and validate")
@@ -113,8 +113,8 @@ try:
         errorExit("Cluster sync wait failed.")
 
     Print ("Relaunch dead cluster nodes instances.")
-    if cluster.relaunchEosInstances() is False:
-        errorExit("Failed to relaunch Eos instances")
+    if cluster.relaunchAgrInstances() is False:
+        errorExit("Failed to relaunch Agr instances")
     Print("nodagr instances relaunched.")
 
     Print ("Resyncing cluster nodes.")
@@ -132,6 +132,6 @@ try:
 
     testSuccessful=True
 finally:
-    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killEosInstances, killEosInstances, keepLogs, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killAgrInstances, killAgrInstances, keepLogs, killAll, dumpErrorDetails)
 
 exit(0)

@@ -114,7 +114,7 @@ fi
 
    printf "\\tFor more information:\\n"
    printf "\\tAGRIO website: https://agr.io\\n"
-   printf "\\tAGRIO Telegram channel @ https://t.me/EOSProject\\n"
+   printf "\\tAGRIO Telegram channel @ https://t.me/AGRProject\\n"
    printf "\\tAGRIO resources: https://agr.io/resources/\\n"
    printf "\\tAGRIO Stack Exchange: https://agrio.stackexchange.com\\n"
    printf "\\tAGRIO wiki: https://github.com/aggregion/agr/wiki\\n\\n\\n"

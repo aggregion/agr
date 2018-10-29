@@ -1,8 +1,8 @@
 if(AGRIO_ROOT STREQUAL "" OR NOT AGRIO_ROOT)
-   set(AGRIO_ROOT "@EOS_ROOT_DIR@")
+   set(AGRIO_ROOT "@AGR_ROOT_DIR@")
 endif()
 list(APPEND CMAKE_MODULE_PATH ${AGRIO_ROOT}/lib/cmake/agrio)
-include(EosioTester)
+include(AgrioTester)
 
 function(EXTRACT_MAJOR_MINOR_FROM_VERSION version success major minor)
    string(REGEX REPLACE "^([0-9]+)\\..+$" "\\1" _major "${version}")

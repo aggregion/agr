@@ -18,21 +18,21 @@ class Utils:
     Debug=False
     FNull = open(os.devnull, 'w')
 
-    EosClientPath="programs/clagr/clagr"
-    MiscEosClientArgs="--no-auto-kagrd"
+    AgrClientPath="programs/clagr/clagr"
+    MiscAgrClientArgs="--no-auto-kagrd"
 
-    EosWalletName="kagrd"
-    EosWalletPath="programs/kagrd/"+ EosWalletName
+    AgrWalletName="kagrd"
+    AgrWalletPath="programs/kagrd/"+ AgrWalletName
 
-    EosServerName="nodagr"
-    EosServerPath="programs/nodagr/"+ EosServerName
+    AgrServerName="nodagr"
+    AgrServerPath="programs/nodagr/"+ AgrServerName
 
-    EosLauncherPath="programs/agrio-launcher/agrio-launcher"
+    AgrLauncherPath="programs/agrio-launcher/agrio-launcher"
     MongoPath="mongo"
     ShuttingDown=False
     CheckOutputDeque=deque(maxlen=10)
 
-    EosBlockLogPath="programs/agrio-blocklog/agrio-blocklog"
+    AgrBlockLogPath="programs/agrio-blocklog/agrio-blocklog"
 
     @staticmethod
     def Print(*args, **kwargs):
@@ -227,7 +227,7 @@ class Utils:
     @staticmethod
     def getBlockLog(blockLogLocation, silentErrors=False, exitOnError=False):
         assert(isinstance(blockLogLocation, str))
-        cmd="%s --blocks-dir %s --as-json-array" % (Utils.EosBlockLogPath, blockLogLocation)
+        cmd="%s --blocks-dir %s --as-json-array" % (Utils.AgrBlockLogPath, blockLogLocation)
         if Utils.Debug: Utils.Print("cmd: %s" % (cmd))
         rtn=None
         try:

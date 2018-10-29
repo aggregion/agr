@@ -7,7 +7,7 @@ Third parties are encouraged to make pull requests to this file (`develop` branc
 | Description | URL |
 | ----------- | --- |
 | BP Heartbeat  | https://github.com/bancorprotocol/agr-producer-heartbeat-plugin |
-| ElasticSearch | https://github.com/EOSLaoMao/elasticsearch_plugin |
+| ElasticSearch | https://github.com/AGRLaoMao/elasticsearch_plugin |
 | Kafka | https://github.com/TP-Lab/kafka_plugin |
 | MySQL | https://github.com/agrBLACK/agrio_mysqldb_plugin |
 | SQL | https://github.com/asiniscalchi/agrio_sql_plugin |

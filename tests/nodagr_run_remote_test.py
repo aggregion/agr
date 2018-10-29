@@ -24,7 +24,7 @@ killAll=args.clean_run
 
 Utils.Debug=debug
 
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 topo="mesh"
 delay=1
 prodCount=1 # producers per producer node
@@ -44,7 +44,7 @@ try:
     Print("Stand up cluster")
 
     if cluster.launch(pnodes=pnodes, totalNodes=total_nodes, prodCount=prodCount, topo=topo, delay=delay, onlyBios=onlyBios, dontKill=dontKill) is False:
-        errorExit("Failed to stand up eos cluster.")
+        errorExit("Failed to stand up agr cluster.")
 
     Print ("Wait for Cluster stabilization")
     # wait for cluster to start producing blocks
@@ -63,6 +63,6 @@ try:
 
     testSuccessful=True
 finally:
-    TestHelper.shutdown(cluster, None, testSuccessful, killEosInstances, False, False, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, None, testSuccessful, killAgrInstances, False, False, killAll, dumpErrorDetails)
 
 exit(0)

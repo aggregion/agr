@@ -26,7 +26,7 @@ total_nodes = pnodes
 killCount=1
 killSignal=Utils.SigKillTag
 
-killEosInstances= not args.leave_running
+killAgrInstances= not args.leave_running
 dumpErrorDetails=args.dump_error_details
 keepLogs=args.keep_logs
 killAll=args.clean_run
@@ -35,24 +35,24 @@ seed=1
 Utils.Debug=debug
 testSuccessful=False
 
-def runNodeosAndGetOutput(myTimeout=3):
+def runNodagrAndGetOutput(myTimeout=3):
     """Startup nodagr, wait for timeout (before forced shutdown) and collect output. Stdout, stderr and return code are returned in a dictionary."""
     Print("Launching nodagr process.")
     cmd="programs/nodagr/nodagr --config-dir etc/agrio/node_bios --data-dir var/lib/node_bios --verbose-http-errors --http-validate-host=false"
     Print("cmd: %s" % (cmd))
     proc=subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if debug: Print("Nodeos process launched.")
+    if debug: Print("Nodagr process launched.")
 
     output={}
     try:
         if debug: Print("Setting nodagr process timeout.")
         outs,errs = proc.communicate(timeout=myTimeout)
-        if debug: Print("Nodeos process has exited.")
+        if debug: Print("Nodagr process has exited.")
         output["stdout"] = outs.decode("utf-8")
         output["stderr"] = errs.decode("utf-8")
         output["returncode"] = proc.returncode
     except (subprocess.TimeoutExpired) as _:
-        Print("ERROR: Nodeos is running beyond the defined wait time. Hard killing nodagr instance.")
+        Print("ERROR: Nodagr is running beyond the defined wait time. Hard killing nodagr instance.")
         proc.send_signal(signal.SIGKILL)
         return (False, None)
 
@@ -75,7 +75,7 @@ try:
 
     Print("Stand up cluster")
     if cluster.launch(pnodes, total_nodes, topo=topo, delay=delay, dontBootstrap=True) is False:
-        errorExit("Failed to stand up eos cluster.")
+        errorExit("Failed to stand up agr cluster.")
 
     node=cluster.getNode(0)
 
@@ -87,7 +87,7 @@ try:
     
     for i in range(1,4):
         Print("Attempt %d." % (i))
-        ret = runNodeosAndGetOutput(timeout)
+        ret = runNodagrAndGetOutput(timeout)
         assert(ret)
         assert(isinstance(ret, tuple))
         assert(ret[0])
@@ -103,7 +103,7 @@ try:
     testSuccessful=True
 finally:
     if debug: Print("Cleanup in finally block.")
-    TestHelper.shutdown(cluster, None, testSuccessful, killEosInstances, False, keepLogs, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, None, testSuccessful, killAgrInstances, False, keepLogs, killAll, dumpErrorDetails)
 
 if debug: Print("Exiting test, exit value 0.")
 exit(0)

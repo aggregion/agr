@@ -9,15 +9,15 @@ use File::Spec;
 use File::Path;
 use Cwd;
 
-my $eos_home = defined $ENV{EOS_HOME} ? $ENV{EOS_HOME} : getcwd;
-my $agrd = $eos_home . "/programs/agrd/agrd";
-my $eosc = $eos_home . "/programs/agrc/agrc";
+my $agr_home = defined $ENV{AGR_HOME} ? $ENV{AGR_HOME} : getcwd;
+my $agrd = $agr_home . "/programs/agrd/agrd";
+my $agrc = $agr_home . "/programs/agrc/agrc";
 
-my $nodes = defined $ENV{EOS_TEST_RING} ? $ENV{EOS_TEST_RING} : "1";
-my $pnodes = defined $ENV{EOS_TEST_PRODUCERS} ? $ENV{EOS_TEST_PRODUCERS} : "1";
+my $nodes = defined $ENV{AGR_TEST_RING} ? $ENV{AGR_TEST_RING} : "1";
+my $pnodes = defined $ENV{AGR_TEST_PRODUCERS} ? $ENV{AGR_TEST_PRODUCERS} : "1";
 
 my $prods = 21;
-my $genesis = "$eos_home/genesis.json";
+my $genesis = "$agr_home/genesis.json";
 my $http_port_base = 8888;
 my $p2p_port_base = 9876;
 my $data_dir_base = "tdn";
@@ -247,7 +247,7 @@ sub perform_work {
         my $stoptime = time () + $run_duration;
         my $counter = 0;
         while (time () < $stoptime) {
-            `$eosc transfer eos inita 10 >> eosc.out 2>> eosc.err`;
+            `$agrc transfer agr inita 10 >> agrc.out 2>> agrc.err`;
             $counter++;
             if ($counter % 1000 == 0) {
                 print "$counter client iterations\n";

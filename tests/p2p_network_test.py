@@ -107,7 +107,7 @@ exchangeAccount.ownerPublicKey=PUB_KEY2
 print("Stand up walletd")
 if walletMgr.launch() is False:
     cmdError("%s" % (WalletdName))
-    errorExit("Failed to stand up eos walletd.")
+    errorExit("Failed to stand up agr walletd.")
 
 testWalletName="test"
 Print("Creating wallet \"%s\"." % (testWalletName))
@@ -140,7 +140,7 @@ agrio.name = "agrio"
 Print("Info of each node:")
 for i in range(len(hosts)):
     node = node0
-    cmd="%s %s get info" % (testUtils.Utils.EosClientPath, node.endpointArgs)
+    cmd="%s %s get info" % (testUtils.Utils.AgrClientPath, node.endpointArgs)
     trans = node.runCmdReturnJson(cmd)
     Print("host %s: %s" % (hosts[i], trans))
 

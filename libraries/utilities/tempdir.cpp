@@ -11,10 +11,10 @@ namespace agrio { namespace utilities {
 
 fc::path temp_directory_path()
 {
-   const char* eos_tempdir = getenv("EOS_TEMPDIR");
-   if( eos_tempdir != nullptr )
-      return fc::path( eos_tempdir );
-   return fc::temp_directory_path() / "eos-tmp";
+   const char* agr_tempdir = getenv("AGR_TEMPDIR");
+   if( agr_tempdir != nullptr )
+      return fc::path( agr_tempdir );
+   return fc::temp_directory_path() / "agr-tmp";
 }
 
 } } // agrio::utilities

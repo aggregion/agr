@@ -511,9 +511,9 @@ void producer_plugin::set_program_options(
           "Where:\n"
           "   <public-key>    \tis a string form of a vaild AGRIO public key\n\n"
           "   <provider-spec> \tis a string in the form <provider-type>:<data>\n\n"
-          "   <provider-type> \tis KEY, or KEOSD\n\n"
+          "   <provider-type> \tis KEY, or KAGRD\n\n"
           "   KEY:<data>      \tis a string form of a valid AGRIO private key which maps to the provided public key\n\n"
-          "   KEOSD:<data>    \tis the URL where kagrd is available and the approptiate wallet(s) are unlocked")
+          "   KAGRD:<data>    \tis the URL where kagrd is available and the approptiate wallet(s) are unlocked")
          ("kagrd-provider-timeout", boost::program_options::value<int32_t>()->default_value(5),
           "Limits the maximum time (in milliseconds) that is allowd for sending blocks to a kagrd provider for signing")
          ("greylist-account", boost::program_options::value<vector<string>>()->composing()->multitoken(),
@@ -632,7 +632,7 @@ void producer_plugin::plugin_initialize(const boost::program_options::variables_
 
             if (spec_type_str == "KEY") {
                my->_signature_providers[pubkey] = make_key_signature_provider(private_key_type(spec_data));
-            } else if (spec_type_str == "KEOSD") {
+            } else if (spec_type_str == "KAGRD") {
                my->_signature_providers[pubkey] = make_kagrd_signature_provider(my, spec_data, pubkey);
             }
 

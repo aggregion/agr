@@ -125,11 +125,11 @@ constexpr uint64_t billable_size_v = ((billable_size<T>::value + billable_alignm
 
 } } } // namespace agrio::chain::config
 
-constexpr uint64_t EOS_PERCENT(uint64_t value, uint32_t percentage) {
+constexpr uint64_t AGR_PERCENT(uint64_t value, uint32_t percentage) {
    return (value * percentage) / agrio::chain::config::percent_100;
 }
 
 template<typename Number>
-Number EOS_PERCENT_CEIL(Number value, uint32_t percentage) {
+Number AGR_PERCENT_CEIL(Number value, uint32_t percentage) {
    return ((value * percentage) + agrio::chain::config::percent_100 - agrio::chain::config::percent_1)  / agrio::chain::config::percent_100;
 }

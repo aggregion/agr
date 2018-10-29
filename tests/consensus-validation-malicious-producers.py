@@ -217,7 +217,7 @@ waitTimeout=args.w
 dumpErrorDetails=args.dump-error-details
 keepLogs=args.keep-logs
 amINoon=not args.not_noon
-killEosInstances= not args.dont-kill
+killAgrInstances= not args.dont-kill
 killWallet= not args.dont-kill
 
 testUtils.Utils.Debug=debug
@@ -247,7 +247,7 @@ def myTest(transWillEnterBlock):
         delay=0
         Print("Stand up cluster")
         if cluster.launch(pnodes, total_nodes, topo, delay) is False:
-            error("Failed to stand up eos cluster.")
+            error("Failed to stand up agr cluster.")
             return False
 
         accounts=testUtils.Cluster.createAccountKeys(1)
@@ -358,7 +358,7 @@ def myTest(transWillEnterBlock):
             walletMgr.dumpErrorDetails()
             Print("== Errors see above ==")
 
-        if killEosInstances:
+        if killAgrInstances:
             Print("Shut down the cluster%s" % (" and cleanup." if (testSuccessful and not keepLogs) else "."))
             cluster.killall()
             walletMgr.killall()

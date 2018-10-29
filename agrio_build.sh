@@ -120,7 +120,7 @@
 
    if [ ! -d "${SOURCE_DIR}/.git" ]; then
       printf "\\n\\tThis build script only works with sources cloned from git\\n"
-      printf "\\tPlease clone a new eos directory with 'git clone https://github.com/aggregion/agr --recursive'\\n"
+      printf "\\tPlease clone a new agr directory with 'git clone https://github.com/aggregion/agr --recursive'\\n"
       printf "\\tSee the wiki for instructions: https://github.com/aggregion/agr/wiki\\n"
       exit 1
    fi
@@ -301,7 +301,7 @@
 
    printf "\\tFor more information:\\n"
    printf "\\tAGRIO website: https://agr.io\\n"
-   printf "\\tAGRIO Telegram channel @ https://t.me/EOSProject\\n"
+   printf "\\tAGRIO Telegram channel @ https://t.me/AGRProject\\n"
    printf "\\tAGRIO resources: https://agr.io/resources/\\n"
    printf "\\tAGRIO Stack Exchange: https://agrio.stackexchange.com\\n"
    printf "\\tAGRIO wiki: https://github.com/aggregion/agr/wiki\\n\\n\\n"

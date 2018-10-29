@@ -1146,7 +1146,7 @@ BOOST_FIXTURE_TEST_CASE(noop, TESTER) try {
  } FC_LOG_AND_RETHROW()
 
 // abi_serializer::to_variant failed because agrio_system_abi modified via set_abi.
-// This test also verifies that chain_initializer::eos_contract_abi() does not conflict
+// This test also verifies that chain_initializer::agr_contract_abi() does not conflict
 // with agrio_system_abi as they are not allowed to contain duplicates.
 BOOST_FIXTURE_TEST_CASE(agrio_abi, TESTER) try {
    produce_blocks(2);
@@ -1171,7 +1171,7 @@ BOOST_FIXTURE_TEST_CASE(agrio_abi, TESTER) try {
    auto result = push_transaction( trx );
 
    fc::variant pretty_output;
-   // verify to_variant works on eos native contract type: newaccount
+   // verify to_variant works on agr native contract type: newaccount
    // see abi_serializer::to_abi()
    abi_serializer::to_variant(*result, pretty_output, get_resolver(), abi_serializer_max_time);
 
