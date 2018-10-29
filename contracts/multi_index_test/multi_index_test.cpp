@@ -30,7 +30,7 @@ struct limit_order {
       AGRLIB_SERIALIZE( test_k256, (id)(val) )
    };
 
-   class multi_index_test {
+   class snapshot_test {
       public:
 
          ACTION(N(multitest), trigger) {
@@ -170,7 +170,7 @@ namespace multi_index_test {
       /// The apply method implements the dispatch of events to this contract
       void apply( uint64_t /* receiver */, uint64_t code, uint64_t action ) {
          require_auth(code);
-         agrio_assert(agrio::dispatch<multi_index_test, multi_index_test::trigger>(code, action),
+         agrio_assert(agrio::dispatch<snapshot_test, snapshot_test::trigger>(code, action),
                       "Could not dispatch");
       }
    }

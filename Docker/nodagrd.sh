@@ -1,6 +1,9 @@
 #!/bin/sh
-
 cd /opt/agrio/bin
+
+if [ ! -d "/opt/agrio/bin/data-dir" ]; then
+    mkdir /opt/agrio/bin/data-dir
+fi
 
 if [ -f '/opt/agrio/bin/data-dir/config.ini' ]; then
     echo

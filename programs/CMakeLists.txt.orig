@@ -1,0 +1,9 @@
+add_subdirectory( nodagr )
+add_subdirectory( clagr )
+add_subdirectory( kagrd )
+add_subdirectory( agrio-launcher )
+add_subdirectory( agrio-abigen )
+<<<<<<< HEAD
+=======
+add_subdirectory( agrio-blocklog )
+>>>>>>> rel-14x

@@ -1,0 +1,7 @@
+#include <agrio.bios/agrio.bios.hpp>
+
+<<<<<<< HEAD
+AGRIO_ABI( agrio::bios, (setpriv)(setalimits)(setglimits)(setprods)(reqauth) )
+=======
+AGRIO_ABI( agrio::bios, (setpriv)(setalimits)(setglimits)(setprods)(setparams)(reqauth) )
+>>>>>>> rel-14x

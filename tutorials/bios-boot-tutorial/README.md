@@ -10,4 +10,4 @@ $ cd tutorials/bios-boot-tutorial
 $ ./bios-boot-tutorial.py
 ```
 
-See [AGRIO Documentation Wiki: Tutorial - Bios Boot](https://github.com/AGRIO/agr/wiki/Tutorial-Bios-Boot-Sequence) for additional information.
+See [AGRIO Documentation Wiki: Tutorial - Bios Boot](https://github.com/aggregion/agr/wiki/Tutorial-Bios-Boot-Sequence) for additional information.

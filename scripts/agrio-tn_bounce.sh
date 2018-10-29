@@ -41,4 +41,4 @@ else
 fi
 
 bash $AGRIO_HOME/scripts/agrio-tn_down.sh
-bash $AGRIO_HOME/scripts/agrio-tn_up.sh $*
+bash $AGRIO_HOME/scripts/agrio-tn_up.sh "$*"
