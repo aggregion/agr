@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-#include <eosio/utilities/parallel_markers.hpp>
+#include <agrio/utilities/parallel_markers.hpp>
 
 #include <fc/scoped_exit.hpp>
 
@@ -17,7 +17,7 @@
 
 #include <functional>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 namespace detail {
 
@@ -85,7 +85,7 @@ namespace detail {
          ,provided_delay(provided_delay)
          ,recursion_depth_limit(recursion_depth_limit)
          {
-            EOS_ASSERT( static_cast<bool>(checktime), authorization_exception, "checktime cannot be empty" );
+            AGR_ASSERT( static_cast<bool>(checktime), authorization_exception, "checktime cannot be empty" );
          }
 
          enum permission_cache_status {
@@ -290,4 +290,4 @@ namespace detail {
                                                             checktime );
    }
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain

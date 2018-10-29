@@ -1,17 +1,17 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/transaction.hpp>
-#include <eosio/wallet_plugin/wallet_api.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/wallet_plugin/wallet_api.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <chrono>
 
 namespace fc { class variant; }
 
-namespace eosio {
+namespace agrio {
 namespace wallet {
 
 /// Provides associate of wallet name to wallet and manages the interaction with each wallet.
@@ -146,6 +146,6 @@ private:
 };
 
 } // namespace wallet
-} // namespace eosio
+} // namespace agrio
 
 

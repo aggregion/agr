@@ -1,12 +1,12 @@
 #pragma once
-#include <eosiolib/core_symbol.hpp>
-#include <eosiolib/serialize.hpp>
-#include <eosiolib/print.hpp>
-#include <eosiolib/system.h>
+#include <agriolib/core_symbol.hpp>
+#include <agriolib/serialize.hpp>
+#include <agriolib/print.hpp>
+#include <agriolib/system.h>
 #include <tuple>
 #include <limits>
 
-namespace eosio {
+namespace agrio {
 
   /**
    *  @defgroup symbolapi Symbol API
@@ -50,7 +50,7 @@ namespace eosio {
     * @param precision - precision of symbol
     * @param str - the string representation of the symbol
     */
-   #define S(P,X) ::eosio::string_to_symbol(P,#X)
+   #define S(P,X) ::agrio::string_to_symbol(P,#X)
 
    /**
     * uint64_t representation of a symbol name
@@ -147,7 +147,7 @@ namespace eosio {
        */
       void print(bool show_precision=true)const {
          if( show_precision ){
-            ::eosio::print(precision());
+            ::agrio::print(precision());
             prints(",");
          }
 
@@ -161,7 +161,7 @@ namespace eosio {
          }
       }
 
-      EOSLIB_SERIALIZE( symbol_type, (value) )
+      AGRLIB_SERIALIZE( symbol_type, (value) )
    };
 
    /**
@@ -219,9 +219,9 @@ namespace eosio {
         return std::tie( a.value, a.contract ) < std::tie( b.value, b.contract );
       }
 
-      EOSLIB_SERIALIZE( extended_symbol, (value)(contract) )
+      AGRLIB_SERIALIZE( extended_symbol, (value)(contract) )
    };
 
    // }@ symbolapi
 
-} /// namespace eosio
+} /// namespace agrio

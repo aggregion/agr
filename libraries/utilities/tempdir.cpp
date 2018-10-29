@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
-#include <eosio/utilities/tempdir.hpp>
+#include <agrio/utilities/tempdir.hpp>
 
 #include <cstdlib>
 
-namespace eosio { namespace utilities {
+namespace agrio { namespace utilities {
 
 fc::path temp_directory_path()
 {
@@ -17,4 +17,4 @@ fc::path temp_directory_path()
    return fc::temp_directory_path() / "eos-tmp";
 }
 
-} } // eosio::utilities
+} } // agrio::utilities

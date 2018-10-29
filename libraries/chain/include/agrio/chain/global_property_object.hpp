@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <fc/uint128.hpp>
 #include <fc/array.hpp>
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/block_timestamp.hpp>
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/producer_schedule.hpp>
-#include <eosio/chain/incremental_merkle.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/block_timestamp.hpp>
+#include <agrio/chain/chain_config.hpp>
+#include <agrio/chain/producer_schedule.hpp>
+#include <agrio/chain/incremental_merkle.hpp>
 #include <chainbase/chainbase.hpp>
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    /**
     * @class global_property_object
@@ -73,14 +73,14 @@ namespace eosio { namespace chain {
 
 }}
 
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::global_property_object, eosio::chain::global_property_multi_index)
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::dynamic_global_property_object,
-                         eosio::chain::dynamic_global_property_multi_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::global_property_object, agrio::chain::global_property_multi_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::dynamic_global_property_object,
+                         agrio::chain::dynamic_global_property_multi_index)
 
-FC_REFLECT(eosio::chain::dynamic_global_property_object,
+FC_REFLECT(agrio::chain::dynamic_global_property_object,
            (global_action_sequence)
           )
 
-FC_REFLECT(eosio::chain::global_property_object,
+FC_REFLECT(agrio::chain::global_property_object,
            (proposed_schedule_block_num)(proposed_schedule)(configuration)
           )

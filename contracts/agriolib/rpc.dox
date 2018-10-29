@@ -1,6 +1,6 @@
 /**
-@defgroup eosiorpc RPC Interface
-@brief Describes how to interface with eosd over HTTP RPC
+@defgroup agriorpc RPC Interface
+@brief Describes how to interface with agrd over HTTP RPC
 
 @section tableofcontent Table Of Contents
 - [Configuration](#configuration)
@@ -29,17 +29,17 @@
 
 @section configuration Configuration
 
-`eosd` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
+`agrd` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
 will explain how to use some of the APIs to get information about the blockchain and send transactions.
 
-Before you can query `eosd` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `eosd`'s `config.ini`:
+Before you can query `agrd` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `agrd`'s `config.ini`:
 ```
-plugin = eosio::chain_api_plugin // Enable Chain API
-plugin = eosio::wallet_api_plugin // Enable Wallet API
+plugin = agrio::chain_api_plugin // Enable Chain API
+plugin = agrio::wallet_api_plugin // Enable Wallet API
 ```
-Alternatively, for Wallet API, you can also have the wallet functionality separate from `eosd`, by running `eos-walletd` separately.
+Alternatively, for Wallet API, you can also have the wallet functionality separate from `agrd`, by running `agr-walletd` separately.
 
-For the following guide, we will assume that we have `eosd` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `eos-walletd` running on `127.0.0.1:8889`.
+For the following guide, we will assume that we have `agrd` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `agr-walletd` running on `127.0.0.1:8889`.
 
 ===
 
@@ -111,9 +111,9 @@ $ curl  http://127.0.0.1:8888/v1/chain/get_account -X POST -d '{"account_name":"
 ```
 {
   "name": "inita",
-  "eos_balance": "999998.9574 EOS",
-  "staked_balance": "0.0000 EOS",
-  "unstaking_balance": "0.0000 EOS",
+  "eos_balance": "999998.9574 AGR",
+  "staked_balance": "0.0000 AGR",
+  "unstaking_balance": "0.0000 AGR",
   "last_unstaking_time": "2106-02-07T06:28:15",
   "permissions": [
     {

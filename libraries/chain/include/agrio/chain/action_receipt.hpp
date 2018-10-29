@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    /**
     *  For each action dispatched this receipt is generated
@@ -23,6 +23,6 @@ namespace eosio { namespace chain {
       digest_type digest()const { return digest_type::hash(*this); }
    };
 
-} }  /// namespace eosio::chain
+} }  /// namespace agrio::chain
 
-FC_REFLECT( eosio::chain::action_receipt, (receiver)(act_digest)(global_sequence)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence) )
+FC_REFLECT( agrio::chain::action_receipt, (receiver)(act_digest)(global_sequence)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence) )

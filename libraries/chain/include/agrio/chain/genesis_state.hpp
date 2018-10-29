@@ -1,24 +1,24 @@
 
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/chain_config.hpp>
+#include <agrio/chain/types.hpp>
 
 #include <fc/crypto/sha256.hpp>
 
 #include <string>
 #include <vector>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 struct genesis_state {
    genesis_state();
 
-   static const string eosio_root_key;
+   static const string agrio_root_key;
 
    chain_config   initial_configuration = {
       .max_block_net_usage                  = config::default_max_block_net_usage,
@@ -53,8 +53,8 @@ struct genesis_state {
    chain_id_type compute_chain_id() const;
 };
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain
 
 
-FC_REFLECT(eosio::chain::genesis_state,
+FC_REFLECT(agrio::chain::genesis_state,
            (initial_timestamp)(initial_key)(initial_configuration))

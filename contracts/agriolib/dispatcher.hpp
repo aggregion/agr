@@ -1,13 +1,13 @@
 #pragma once
-#include <eosiolib/print.hpp>
-#include <eosiolib/action.hpp>
+#include <agriolib/print.hpp>
+#include <agriolib/action.hpp>
 
 #include <boost/fusion/adapted/std_tuple.hpp>
 #include <boost/fusion/include/std_tuple.hpp>
 
 #include <boost/mp11/tuple.hpp>
-#define N(X) ::eosio::string_to_name(#X)
-namespace eosio {
+#define N(X) ::agrio::string_to_name(#X)
+namespace agrio {
 
    template<typename Contract, typename FirstAction>
    bool dispatch( uint64_t code, uint64_t act ) {
@@ -26,7 +26,7 @@ namespace eosio {
     * static Contract::on( ActionType )
     * ```
     *
-    * For this to work the Actions must be derived from eosio::contract
+    * For this to work the Actions must be derived from agrio::contract
     *
     */
    template<typename Contract, typename FirstAction, typename SecondAction, typename... Actions>
@@ -35,7 +35,7 @@ namespace eosio {
          Contract().on( unpack_action_data<FirstAction>() );
          return true;
       }
-      return eosio::dispatch<Contract,SecondAction,Actions...>( code, act );
+      return agrio::dispatch<Contract,SecondAction,Actions...>( code, act );
    }
 
    /**
@@ -55,7 +55,7 @@ namespace eosio {
     * Unpack the received action and execute the correponding action handler
     * 
     * @brief Unpack the received action and execute the correponding action handler
-    * @tparam T - The contract class that has the correponding action handler, this contract should be derived from eosio::contract
+    * @tparam T - The contract class that has the correponding action handler, this contract should be derived from agrio::contract
     * @tparam Q - The namespace of the action handler function 
     * @tparam Args - The arguments that the action handler accepts, i.e. members of the action
     * @param obj - The contract object that has the correponding action handler
@@ -89,15 +89,15 @@ namespace eosio {
    }
  /// @}  dispatcher
 
-// Helper macro for EOSIO_API
-#define EOSIO_API_CALL( r, OP, elem ) \
-   case ::eosio::string_to_name( BOOST_PP_STRINGIZE(elem) ): \
-      eosio::execute_action( &thiscontract, &OP::elem ); \
+// Helper macro for AGRIO_API
+#define AGRIO_API_CALL( r, OP, elem ) \
+   case ::agrio::string_to_name( BOOST_PP_STRINGIZE(elem) ): \
+      agrio::execute_action( &thiscontract, &OP::elem ); \
       break;
 
-// Helper macro for EOSIO_ABI
-#define EOSIO_API( TYPE,  MEMBERS ) \
-   BOOST_PP_SEQ_FOR_EACH( EOSIO_API_CALL, TYPE, MEMBERS )
+// Helper macro for AGRIO_ABI
+#define AGRIO_API( TYPE,  MEMBERS ) \
+   BOOST_PP_SEQ_FOR_EACH( AGRIO_API_CALL, TYPE, MEMBERS )
 
 /**
  * @addtogroup dispatcher
@@ -106,7 +106,7 @@ namespace eosio {
 
 /** 
  * Convenient macro to create contract apply handler
- * To be able to use this macro, the contract needs to be derived from eosio::contract
+ * To be able to use this macro, the contract needs to be derived from agrio::contract
  * 
  * @brief Convenient macro to create contract apply handler 
  * @param TYPE - The class name of the contract
@@ -114,23 +114,23 @@ namespace eosio {
  * 
  * Example:
  * @code
- * EOSIO_ABI( eosio::bios, (setpriv)(setalimits)(setglimits)(setprods)(reqauth) )
+ * AGRIO_ABI( agrio::bios, (setpriv)(setalimits)(setglimits)(setprods)(reqauth) )
  * @endcode
  */
-#define EOSIO_ABI( TYPE, MEMBERS ) \
+#define AGRIO_ABI( TYPE, MEMBERS ) \
 extern "C" { \
    void apply( uint64_t receiver, uint64_t code, uint64_t action ) { \
       auto self = receiver; \
       if( action == N(onerror)) { \
-         /* onerror is only valid if it is for the "eosio" code account and authorized by "eosio"'s "active permission */ \
-         eosio_assert(code == N(eosio), "onerror action's are only valid from the \"eosio\" system account"); \
+         /* onerror is only valid if it is for the "agrio" code account and authorized by "agrio"'s "active permission */ \
+         agrio_assert(code == N(agrio), "onerror action's are only valid from the \"agrio\" system account"); \
       } \
       if( code == self || action == N(onerror) ) { \
          TYPE thiscontract( self ); \
          switch( action ) { \
-            EOSIO_API( TYPE, MEMBERS ) \
+            AGRIO_API( TYPE, MEMBERS ) \
          } \
-         /* does not allow destructor of thiscontract to run: eosio_exit(0); */ \
+         /* does not allow destructor of thiscontract to run: agrio_exit(0); */ \
       } \
    } \
 } \

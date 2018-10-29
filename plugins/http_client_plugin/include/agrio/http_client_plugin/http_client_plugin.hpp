@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <appbase/application.hpp>
 #include <fc/network/http/http_client.hpp>
 
-namespace eosio {
+namespace agrio {
    using namespace appbase;
    using fc::http_client;
 

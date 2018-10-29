@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/authority_checker.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/asset.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/chain/chain_config.hpp>
+#include <agrio/chain/authority_checker.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/asset.hpp>
+#include <agrio/testing/tester.hpp>
 
-#include <eosio/utilities/key_conversion.hpp>
-#include <eosio/utilities/rand.hpp>
+#include <agrio/utilities/key_conversion.hpp>
+#include <agrio/utilities/rand.hpp>
 
 #include <fc/io/json.hpp>
 
@@ -22,13 +22,13 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio::chain;
+using namespace agrio::testing;
 
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
 
-namespace eosio
+namespace agrio
 {
 using namespace chain;
 using namespace std;
@@ -593,22 +593,22 @@ BOOST_AUTO_TEST_CASE(transaction_test) { try {
    variant pretty_trx = fc::mutable_variant_object()
       ("actions", fc::variants({
          fc::mutable_variant_object()
-            ("account", "eosio")
+            ("account", "agrio")
             ("name", "reqauth")
             ("authorization", fc::variants({
                fc::mutable_variant_object()
-                  ("actor", "eosio")
+                  ("actor", "agrio")
                   ("permission", "active")
             }))
             ("data", fc::mutable_variant_object()
-               ("from", "eosio")
+               ("from", "agrio")
             )
          })
       )
       // lets also push a context free action, the multi chain test will then also include a context free action
       ("context_free_actions", fc::variants({
          fc::mutable_variant_object()
-            ("account", "eosio")
+            ("account", "agrio")
             ("name", "nonce")
             ("data", fc::raw::pack(std::string("dummy")))
          })
@@ -647,4 +647,4 @@ BOOST_AUTO_TEST_CASE(transaction_test) { try {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-} // namespace eosio
+} // namespace agrio

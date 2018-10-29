@@ -1,8 +1,8 @@
 #pragma once
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/transaction.hpp>
+#include <agriolib/agrio.hpp>
+#include <agriolib/transaction.hpp>
 
-namespace eosio {
+namespace agrio {
 
    class multisig : public contract {
       public:
@@ -21,7 +21,7 @@ namespace eosio {
 
             auto primary_key()const { return proposal_name.value; }
          };
-         typedef eosio::multi_index<N(proposal),proposal> proposals;
+         typedef agrio::multi_index<N(proposal),proposal> proposals;
 
          struct approvals_info {
             name                       proposal_name;
@@ -30,7 +30,7 @@ namespace eosio {
 
             auto primary_key()const { return proposal_name.value; }
          };
-         typedef eosio::multi_index<N(approvals),approvals_info> approvals;
+         typedef agrio::multi_index<N(approvals),approvals_info> approvals;
    };
 
-} /// namespace eosio
+} /// namespace agrio

@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <appbase/application.hpp>
 
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 
 namespace fc { class variant; }
 
-namespace eosio {
+namespace agrio {
    using chain::transaction_id_type;
    using std::shared_ptr;
    using namespace appbase;
@@ -49,6 +49,6 @@ class bnet_plugin : public plugin<bnet_plugin> {
       bnet_ptr my;
 };
 
-} /// namespace eosio
+} /// namespace agrio
 
 

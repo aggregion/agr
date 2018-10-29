@@ -1,8 +1,8 @@
 #pragma once
 
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
-namespace eosio {
+namespace agrio {
 
    class sudo : public contract {
       public:
@@ -12,4 +12,4 @@ namespace eosio {
 
    };
 
-} /// namespace eosio
+} /// namespace agrio

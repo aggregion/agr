@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <fc/filesystem.hpp>
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/genesis_state.hpp>
+#include <agrio/chain/block.hpp>
+#include <agrio/chain/genesis_state.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    namespace detail { class block_log_impl; }
 

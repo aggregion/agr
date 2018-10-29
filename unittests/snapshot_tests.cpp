@@ -1,20 +1,20 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/testing/tester.hpp>
 
-#include <eosio/chain/snapshot.hpp>
+#include <agrio/chain/snapshot.hpp>
 
 #include <snapshot_test/snapshot_test.wast.hpp>
 #include <snapshot_test/snapshot_test.abi.hpp>
 
 #include <sstream>
 
-using namespace eosio;
+using namespace agrio;
 using namespace testing;
 using namespace chain;
 

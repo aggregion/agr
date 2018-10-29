@@ -27,7 +27,7 @@ steps:
       - "ninja.log"
     plugins:
       docker#v1.4.0:
-        image: "eosio/ci:ubuntu18"
+        image: "agrio/ci:ubuntu18"
         command: ["--privileged"]
         workdir: /data/job
         mounts:
@@ -59,7 +59,7 @@ steps:
       - "sanitizer.log"
     plugins:
       docker#v1.4.0:
-        image: "eosio/ci:ubuntu18"
+        image: "agrio/ci:ubuntu18"
         workdir: /data/job
         mounts:
           - /etc/buildkite-agent/config:/config

@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <appbase/application.hpp>
 
-namespace eosio {
+namespace agrio {
 
 using namespace appbase;
 

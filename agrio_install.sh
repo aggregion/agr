@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################
-# This is the EOSIO automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/EOSIO/eos
+# This is the AGRIO automated install script for Linux and Mac OS.
+# This file was downloaded from https://github.com/aggregion/agr
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -27,7 +27,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/EOSIO/eos/blob/master/LICENSE.txt
+# https://github.com/aggregion/agr/blob/master/LICENSE.txt
 ##########################################################################
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -44,7 +44,7 @@ fi
    BUILD_DIR="${PWD}/build"
    CMAKE_BUILD_TYPE=Release
    TIME_BEGIN=$( date -u +%s )
-   INSTALL_PREFIX="/usr/local/eosio"
+   INSTALL_PREFIX="/usr/local/agrio"
    VERSION=1.2
 
    txtbld=$(tput bold)
@@ -53,31 +53,31 @@ fi
 
    create_symlink() {
       pushd /usr/local/bin &> /dev/null
-      ln -sf ../eosio/bin/$1 $1
+      ln -sf ../agrio/bin/$1 $1
       popd &> /dev/null
    }
 
    create_cmake_symlink() {
-      mkdir -p /usr/local/lib/cmake/eosio
-      pushd /usr/local/lib/cmake/eosio &> /dev/null
-      ln -sf ../../../eosio/lib/cmake/eosio/$1 $1
+      mkdir -p /usr/local/lib/cmake/agrio
+      pushd /usr/local/lib/cmake/agrio &> /dev/null
+      ln -sf ../../../agrio/lib/cmake/agrio/$1 $1
       popd &> /dev/null
    }
 
    install_symlinks() {
-      printf "\\n\\tInstalling EOSIO Binary Symlinks\\n\\n"
-      create_symlink "cleos"
-      create_symlink "eosio-abigen"
-      create_symlink "eosio-launcher"
-      create_symlink "eosio-s2wasm"
-      create_symlink "eosio-wast2wasm"
-      create_symlink "eosiocpp"
-      create_symlink "keosd"
-      create_symlink "nodeos"
+      printf "\\n\\tInstalling AGRIO Binary Symlinks\\n\\n"
+      create_symlink "clagr"
+      create_symlink "agrio-abigen"
+      create_symlink "agrio-launcher"
+      create_symlink "agrio-s2wasm"
+      create_symlink "agrio-wast2wasm"
+      create_symlink "agriocpp"
+      create_symlink "kagrd"
+      create_symlink "nodagr"
    }
 
    if [ ! -d "${BUILD_DIR}" ]; then
-      printf "\\n\\tError, eosio_build.sh has not ran.  Please run ./eosio_build.sh first!\\n\\n"
+      printf "\\n\\tError, agrio_build.sh has not ran.  Please run ./agrio_build.sh first!\\n\\n"
       exit -1
    fi
 
@@ -95,13 +95,13 @@ fi
    
    if ! make install
    then
-      printf "\\n\\t>>>>>>>>>>>>>>>>>>>> MAKE installing EOSIO has exited with the above error.\\n\\n"
+      printf "\\n\\t>>>>>>>>>>>>>>>>>>>> MAKE installing AGRIO has exited with the above error.\\n\\n"
       exit -1
    fi
    popd &> /dev/null 
 
    install_symlinks   
-   create_cmake_symlink "eosio-config.cmake"
+   create_cmake_symlink "agrio-config.cmake"
 
    printf "\n\n${bldred}\t _______  _______  _______ _________ _______\n"
    printf '\t(  ____ \(  ___  )(  ____ \\\\__   __/(  ___  )\n'
@@ -113,8 +113,8 @@ fi
    printf "\t(_______/(_______)\_______)\_______/(_______)\n${txtrst}"
 
    printf "\\tFor more information:\\n"
-   printf "\\tEOSIO website: https://eos.io\\n"
-   printf "\\tEOSIO Telegram channel @ https://t.me/EOSProject\\n"
-   printf "\\tEOSIO resources: https://eos.io/resources/\\n"
-   printf "\\tEOSIO Stack Exchange: https://eosio.stackexchange.com\\n"
-   printf "\\tEOSIO wiki: https://github.com/EOSIO/eos/wiki\\n\\n\\n"
+   printf "\\tAGRIO website: https://agr.io\\n"
+   printf "\\tAGRIO Telegram channel @ https://t.me/EOSProject\\n"
+   printf "\\tAGRIO resources: https://agr.io/resources/\\n"
+   printf "\\tAGRIO Stack Exchange: https://agrio.stackexchange.com\\n"
+   printf "\\tAGRIO wiki: https://github.com/aggregion/agr/wiki\\n\\n\\n"

@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/wallet_plugin/wallet_manager.hpp>
-#include <eosio/wallet_plugin/wallet.hpp>
-#include <eosio/wallet_plugin/se_wallet.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/wallet_plugin/wallet_manager.hpp>
+#include <agrio/wallet_plugin/wallet.hpp>
+#include <agrio/wallet_plugin/se_wallet.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include <boost/algorithm/string.hpp>
-namespace eosio {
+namespace agrio {
 namespace wallet {
 
 constexpr auto file_ext = ".wallet";
@@ -43,7 +43,7 @@ void wallet_manager::set_timeout(const std::chrono::seconds& t) {
    timeout = t;
    auto now = std::chrono::system_clock::now();
    timeout_time = now + timeout;
-   EOS_ASSERT(timeout_time >= now && timeout_time.time_since_epoch().count() > 0, invalid_lock_timeout_exception, "Overflow on timeout_time, specified ${t}, now ${now}, timeout_time ${timeout_time}",
+   AGR_ASSERT(timeout_time >= now && timeout_time.time_since_epoch().count() > 0, invalid_lock_timeout_exception, "Overflow on timeout_time, specified ${t}, now ${now}, timeout_time ${timeout_time}",
              ("t", t.count())("now", now.time_since_epoch().count())("timeout_time", timeout_time.time_since_epoch().count()));
 }
 
@@ -60,7 +60,7 @@ void wallet_manager::check_timeout() {
 std::string wallet_manager::create(const std::string& name) {
    check_timeout();
 
-   EOS_ASSERT(valid_filename(name), wallet_exception, "Invalid filename, path not allowed in wallet name ${n}", ("n", name));
+   AGR_ASSERT(valid_filename(name), wallet_exception, "Invalid filename, path not allowed in wallet name ${n}", ("n", name));
 
    auto wallet_filename = dir / (name + file_ext);
 
@@ -81,7 +81,7 @@ std::string wallet_manager::create(const std::string& name) {
    wallet->save_wallet_file();
 
    // If we have name in our map then remove it since we want the emplace below to replace.
-   // This can happen if the wallet file is removed while eos-walletd is running.
+   // This can happen if the wallet file is removed while agr-walletd is running.
    auto it = wallets.find(name);
    if (it != wallets.end()) {
       wallets.erase(it);
@@ -94,7 +94,7 @@ std::string wallet_manager::create(const std::string& name) {
 void wallet_manager::open(const std::string& name) {
    check_timeout();
 
-   EOS_ASSERT(valid_filename(name), wallet_exception, "Invalid filename, path not allowed in wallet name ${n}", ("n", name));
+   AGR_ASSERT(valid_filename(name), wallet_exception, "Invalid filename, path not allowed in wallet name ${n}", ("n", name));
 
    wallet_data d;
    auto wallet = std::make_unique<soft_wallet>(d);
@@ -105,7 +105,7 @@ void wallet_manager::open(const std::string& name) {
    }
 
    // If we have name in our map then remove it since we want the emplace below to replace.
-   // This can happen if the wallet file is added while eos-walletd is running.
+   // This can happen if the wallet file is added while agr-walletd is running.
    auto it = wallets.find(name);
    if (it != wallets.end()) {
       wallets.erase(it);
@@ -140,7 +140,7 @@ map<public_key_type,private_key_type> wallet_manager::list_keys(const string& na
 
 flat_set<public_key_type> wallet_manager::get_public_keys() {
    check_timeout();
-   EOS_ASSERT(!wallets.empty(), wallet_not_available_exception, "You don't have any wallet!");
+   AGR_ASSERT(!wallets.empty(), wallet_not_available_exception, "You don't have any wallet!");
    flat_set<public_key_type> result;
    bool is_all_wallet_locked = true;
    for (const auto& i : wallets) {
@@ -149,7 +149,7 @@ flat_set<public_key_type> wallet_manager::get_public_keys() {
       }
       is_all_wallet_locked &= i.second->is_locked();
    }
-   EOS_ASSERT(!is_all_wallet_locked, wallet_locked_exception, "You don't have any unlocked wallet!");
+   AGR_ASSERT(!is_all_wallet_locked, wallet_locked_exception, "You don't have any unlocked wallet!");
    return result;
 }
 
@@ -276,19 +276,19 @@ void wallet_manager::own_and_use_wallet(const string& name, std::unique_ptr<wall
 }
 
 void wallet_manager::initialize_lock() {
-   //This is technically somewhat racy in here -- if multiple keosd are in this function at once.
+   //This is technically somewhat racy in here -- if multiple kagrd are in this function at once.
    //I've considered that an acceptable tradeoff to maintain cross-platform boost constructs here
    lock_path = dir / "wallet.lock";
    {
       std::ofstream x(lock_path.string());
-      EOS_ASSERT(!x.fail(), wallet_exception, "Failed to open wallet lock file at ${f}", ("f", lock_path.string()));
+      AGR_ASSERT(!x.fail(), wallet_exception, "Failed to open wallet lock file at ${f}", ("f", lock_path.string()));
    }
    wallet_dir_lock = std::make_unique<boost::interprocess::file_lock>(lock_path.string().c_str());
    if(!wallet_dir_lock->try_lock()) {
       wallet_dir_lock.reset();
-      EOS_THROW(wallet_exception, "Failed to lock access to wallet directory; is another keosd running?");
+      EOS_THROW(wallet_exception, "Failed to lock access to wallet directory; is another kagrd running?");
    }
 }
 
 } // namespace wallet
-} // namespace eosio
+} // namespace agrio

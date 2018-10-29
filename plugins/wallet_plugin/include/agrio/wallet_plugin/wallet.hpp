@@ -1,19 +1,19 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/wallet_plugin/wallet_api.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/wallet_plugin/wallet_api.hpp>
 
 #include <fc/real128.hpp>
 #include <fc/crypto/base58.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using namespace agrio::chain;
 
-namespace eosio { namespace wallet {
+namespace agrio { namespace wallet {
 
 typedef uint16_t transaction_handle_type;
 
@@ -194,6 +194,6 @@ struct plain_keys {
 
 } }
 
-FC_REFLECT( eosio::wallet::wallet_data, (cipher_keys) )
+FC_REFLECT( agrio::wallet::wallet_data, (cipher_keys) )
 
-FC_REFLECT( eosio::wallet::plain_keys, (checksum)(keys) )
+FC_REFLECT( agrio::wallet::plain_keys, (checksum)(keys) )

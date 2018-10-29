@@ -1,11 +1,11 @@
 /**
  *  @file db.h
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  *  @brief Defines C API for interfacing with blockchain database
  */
 #pragma once
 
-#include <eosiolib/types.h>
+#include <agriolib/types.h>
 extern "C" {
 /**
  *  @defgroup database Database API
@@ -13,11 +13,11 @@ extern "C" {
  *  @ingroup contractdev
  *
  *  @defgroup databasecpp Database C++ API
- *  @brief Defines an interface to EOSIO database
+ *  @brief Defines an interface to AGRIO database
  *  @ingroup database
  *
  *  @details
- *  EOSIO organizes data according to the following broad structure:
+ *  AGRIO organizes data according to the following broad structure:
  *  - **code** - the account name which has write permission
  *     - **scope** - an area where the data is stored
  *        - **table** - a name for the table that is being stored
@@ -29,7 +29,7 @@ extern "C" {
  *  @brief Defines %C APIs for interfacing with the database.
  *  @ingroup database
  *
- *  @details Database C API provides low level interface to EOSIO database.
+ *  @details Database C API provides low level interface to AGRIO database.
  *
  *  @section tabletypes Supported Table Types
  *  Following are the table types supported by the C API:
@@ -91,7 +91,7 @@ void db_update_i64(int32_t iterator, account_name payer, const void* data, uint3
   *
   *  @code
   *  int32_t itr = db_find_i64(receiver, receiver, table1, N(alice));
-  *  eosio_assert(itr >= 0, "Alice cannot be removed since she was already not found in the table");
+  *  agrio_assert(itr >= 0, "Alice cannot be removed since she was already not found in the table");
   *  db_remove_i64(itr);
   *  @endcode
   */
@@ -115,7 +115,7 @@ void db_remove_i64(int32_t iterator);
   *  @code
   *  char value[50];
   *  auto len = db_get_i64(itr, value, 0);
-  *  eosio_assert(len <= 50, "buffer to small to store retrieved record");
+  *  agrio_assert(len <= 50, "buffer to small to store retrieved record");
   *  db_get_i64(itr, value, len);
   *  @endcode
   */
@@ -139,7 +139,7 @@ int32_t db_get_i64(int32_t iterator, const void* data, uint32_t len);
   *  // expect nothing after charlie
   *  uint64_t prim = 0
   *  int32_t  end_itr = db_next_i64(charlie_itr, &prim);
-  *  eosio_assert(end_itr < -1, "Charlie was not the last entry in the table");
+  *  agrio_assert(end_itr < -1, "Charlie was not the last entry in the table");
   *  @endcode
   */
 int32_t db_next_i64(int32_t iterator, uint64_t* primary);

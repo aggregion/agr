@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
@@ -8,7 +8,7 @@
 #include <boost/core/typeinfo.hpp>
 
 
-#define EOS_ASSERT( expr, exc_type, FORMAT, ... )                \
+#define AGR_ASSERT( expr, exc_type, FORMAT, ... )                \
    FC_MULTILINE_MACRO_BEGIN                                           \
    if( !(expr) )                                                      \
       FC_THROW_EXCEPTION( exc_type, FORMAT, __VA_ARGS__ );            \
@@ -19,11 +19,11 @@
 
 /**
  * Macro inspired from FC_RETHROW_EXCEPTIONS
- * The main difference here is that if the exception caught isn't of type "eosio::chain::chain_exception"
+ * The main difference here is that if the exception caught isn't of type "agrio::chain::chain_exception"
  * This macro will rethrow the exception as the specified "exception_type"
  */
 #define EOS_RETHROW_EXCEPTIONS(exception_type, FORMAT, ... ) \
-   catch (eosio::chain::chain_exception& e) { \
+   catch (agrio::chain::chain_exception& e) { \
       FC_RETHROW_EXCEPTION( e, warn, FORMAT, __VA_ARGS__ ); \
    } catch (fc::exception& e) { \
       exception_type new_exception(FC_LOG_MESSAGE( warn, FORMAT, __VA_ARGS__ )); \
@@ -42,11 +42,11 @@
 
 /**
  * Macro inspired from FC_CAPTURE_AND_RETHROW
- * The main difference here is that if the exception caught isn't of type "eosio::chain::chain_exception"
+ * The main difference here is that if the exception caught isn't of type "agrio::chain::chain_exception"
  * This macro will rethrow the exception as the specified "exception_type"
  */
 #define EOS_CAPTURE_AND_RETHROW( exception_type, ... ) \
-   catch (eosio::chain::chain_exception& e) { \
+   catch (agrio::chain::chain_exception& e) { \
       FC_RETHROW_EXCEPTION( e, warn, "", FC_FORMAT_ARG_PARAMS(__VA_ARGS__) ); \
    } catch (fc::exception& e) { \
       exception_type new_exception(e.get_log()); \
@@ -68,7 +68,7 @@
    { throw( effect_type( e.what(), e.get_log() ) ); }
 
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    FC_DECLARE_EXCEPTION( chain_exception,
                          3000000, "blockchain exception" )
@@ -202,10 +202,10 @@ namespace eosio { namespace chain {
                                     3050001, "Account name already exists" )
       FC_DECLARE_DERIVED_EXCEPTION( invalid_action_args_exception, action_validate_exception,
                                     3050002, "Invalid Action Arguments" )
-      FC_DECLARE_DERIVED_EXCEPTION( eosio_assert_message_exception, action_validate_exception,
-                                    3050003, "eosio_assert_message assertion failure" )
-      FC_DECLARE_DERIVED_EXCEPTION( eosio_assert_code_exception, action_validate_exception,
-                                    3050004, "eosio_assert_code assertion failure" )
+      FC_DECLARE_DERIVED_EXCEPTION( agrio_assert_message_exception, action_validate_exception,
+                                    3050003, "agrio_assert_message assertion failure" )
+      FC_DECLARE_DERIVED_EXCEPTION( agrio_assert_code_exception, action_validate_exception,
+                                    3050004, "agrio_assert_code assertion failure" )
       FC_DECLARE_DERIVED_EXCEPTION( action_not_found_exception, action_validate_exception,
                                     3050005, "Action can not be found" )
       FC_DECLARE_DERIVED_EXCEPTION( action_data_and_struct_mismatch, action_validate_exception,
@@ -519,4 +519,4 @@ namespace eosio { namespace chain {
                                  3240000, "Snapshot exception" )
       FC_DECLARE_DERIVED_EXCEPTION( snapshot_validation_exception,   snapshot_exception,
                                     3240001, "Snapshot Validation Exception" )
-} } // eosio::chain
+} } // agrio::chain

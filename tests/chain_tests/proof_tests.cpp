@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/merkle.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/merkle.hpp>
 #include <fc/io/json.hpp>
 
 #ifdef NON_VALIDATING_TEST
@@ -9,9 +9,9 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio;
+using namespace agrio::chain;
+using namespace agrio::testing;
 
 struct action_proof_data {
    account_name              receiver;

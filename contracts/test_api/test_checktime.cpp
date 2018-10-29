@@ -1,11 +1,11 @@
 /**
  * @file
- * @copyright defined in eos/LICENSE.txt
+ * @copyright defined in agr/LICENSE.txt
  */
 
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/crypto.h>
-#include <eosiolib/print.h>
+#include <agriolib/agrio.hpp>
+#include <agriolib/crypto.h>
+#include <agriolib/print.h>
 #include "test_api.hpp"
 
 #include <vector>
@@ -15,7 +15,7 @@ void test_checktime::checktime_pass() {
    for ( int i = 0; i < 10000; i++ )
       p += i;
 
-   eosio::print(p);
+   agrio::print(p);
 }
 
 void test_checktime::checktime_failure() {
@@ -25,7 +25,7 @@ void test_checktime::checktime_failure() {
          p += i+j;
 
 
-   eosio::print(p);
+   agrio::print(p);
 }
 
 constexpr size_t size = 20000000;

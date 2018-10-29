@@ -139,7 +139,7 @@ def main():
     if sys.argv[1] == 'import':
         if len(sys.argv) != 4:
             print('Please specify a source and destination abi:')
-            print('Usage: ./ricardeos.py import /eos/contracts/contract/mycontract.abi /eos/contracts/contract/withricardian-mycontract.abi')
+            print('Usage: ./ricardeos.py import /agr/contracts/contract/mycontract.abi /agr/contracts/contract/withricardian-mycontract.abi')
 
             sys.exit(0)
         else:
@@ -149,7 +149,7 @@ def main():
     elif sys.argv[1] == 'export':
         if len(sys.argv) != 3:
             print('Please specify a source abi:')
-            print('Usage: ./ricardeos.py export /eos/contracts/contract/mycontract.abi')
+            print('Usage: ./ricardeos.py export /agr/contracts/contract/mycontract.abi')
 
             sys.exit(0)
         else:

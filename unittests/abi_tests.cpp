@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #include <algorithm>
 #include <vector>
@@ -15,11 +15,11 @@
 #include <fc/log/logger.hpp>
 #include <fc/scoped_exit.hpp>
 
-#include <eosio/chain/contract_types.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/eosio_contract.hpp>
-#include <eosio/abi_generator/abi_generator.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/chain/contract_types.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/agrio_contract.hpp>
+#include <agrio/abi_generator/abi_generator.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <boost/test/framework.hpp>
 
@@ -28,7 +28,7 @@
 #include <deep_nested.abi.hpp>
 #include <large_nested.abi.hpp>
 
-using namespace eosio;
+using namespace agrio;
 using namespace chain;
 
 BOOST_AUTO_TEST_SUITE(abi_tests)
@@ -70,7 +70,7 @@ void verify_round_trip_conversion( const abi_serializer& abis, const type_name& 
 auto get_resolver(const abi_def& abi = abi_def())
 {
    return [&abi](const account_name &name) -> optional<abi_serializer> {
-      return abi_serializer(eosio_contract_abi(abi), max_serialization_time);
+      return abi_serializer(agrio_contract_abi(abi), max_serialization_time);
    };
 }
 
@@ -100,7 +100,7 @@ fc::variant verify_type_round_trip_conversion( const abi_serializer& abis, const
 
     const char* my_abi = R"=====(
 {
-   "version": "eosio::abi/1.0",
+   "version": "agrio::abi/1.0",
    "types": [{
       "new_type_name": "type_name",
       "type": "string"
@@ -495,7 +495,7 @@ BOOST_AUTO_TEST_CASE(uint_types)
 
    const char* currency_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
            "name": "transfer",
@@ -522,7 +522,7 @@ BOOST_AUTO_TEST_CASE(uint_types)
 
    auto abi = fc::json::from_string(currency_abi).as<abi_def>();
 
-   abi_serializer abis(eosio_contract_abi(abi), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi), max_serialization_time);
 
    const char* test_data = R"=====(
    {
@@ -539,25 +539,25 @@ BOOST_AUTO_TEST_CASE(uint_types)
 
 } FC_LOG_AND_RETHROW() }
 
-using namespace eosio::unittests::config;
+using namespace agrio::unittests::config;
 
 struct abi_gen_helper {
 
   abi_gen_helper() {}
 
-  static bool is_abi_generation_exception(const eosio::abi_generation_exception& e) { return true; };
+  static bool is_abi_generation_exception(const agrio::abi_generation_exception& e) { return true; };
 
   bool generate_abi(const char* source, const char* abi, bool opt_sfs=false) {
 
-    std::string include_param = std::string("-I") + eosiolib_path;
+    std::string include_param = std::string("-I") + agriolib_path;
     std::string core_sym_include_param = std::string("-I") + core_symbol_path;
     std::string pfr_include_param = std::string("-I") + pfr_include_path;
     std::string boost_include_param = std::string("-I") + boost_include_path;
-    std::string stdcpp_include_param = std::string("-I") + eosiolib_path + "/libc++/upstream/include";
-    std::string stdc_include_param = std::string("-I") + eosiolib_path +  "/musl/upstream/include";
+    std::string stdcpp_include_param = std::string("-I") + agriolib_path + "/libc++/upstream/include";
+    std::string stdc_include_param = std::string("-I") + agriolib_path +  "/musl/upstream/include";
 
     abi_def output;
-    output.version = "eosio::abi/1.0";
+    output.version = "agrio::abi/1.0";
 
     std::string contract;
     std::vector<std::string> actions;
@@ -568,7 +568,7 @@ struct abi_gen_helper {
       stdc_include_param, pfr_include_param, core_sym_include_param };
 
     bool res = runToolOnCodeWithArgs(
-      new find_eosio_abi_macro_action(contract, actions, ""),
+      new find_agrio_abi_macro_action(contract, actions, ""),
       source,
       extra_args
     );
@@ -602,7 +602,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_unknown_type, abi_gen_helper)
 { try {
 
    const char* unknown_type = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
    //@abi action
    struct transfer {
       uint64_t param1;
@@ -610,7 +610,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_unknown_type, abi_gen_helper)
    };
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(unknown_type, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(unknown_type, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -619,12 +619,12 @@ BOOST_FIXTURE_TEST_CASE(abigen_all_types, abi_gen_helper)
 
    const char* all_types = R"=====(
    #pragma GCC diagnostic ignored "-Wpointer-bool-conversion"
-   #include <eosiolib/types.hpp>
-   #include <eosiolib/varint.hpp>
-   #include <eosiolib/asset.hpp>
-   #include <eosiolib/time.hpp>
+   #include <agriolib/types.hpp>
+   #include <agriolib/varint.hpp>
+   #include <agriolib/asset.hpp>
+   #include <agriolib/time.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
 
    typedef signed_int varint32;
    typedef unsigned_int varuint32;
@@ -664,7 +664,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_all_types, abi_gen_helper)
 
    const char* all_types_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
       "name": "test_struct",
@@ -771,7 +771,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_double_base, abi_gen_helper)
 { try {
 
    const char* double_base = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    struct A {
       uint64_t param3;
@@ -786,7 +786,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_double_base, abi_gen_helper)
    };
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(double_base, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(double_base, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -795,7 +795,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_double_action, abi_gen_helper)
 { try {
 
    const char* double_action = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    struct A {
       uint64_t param3;
@@ -812,7 +812,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_double_action, abi_gen_helper)
 
    const char* double_action_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
           "name" : "A",
@@ -860,10 +860,10 @@ BOOST_FIXTURE_TEST_CASE(abigen_all_indexes, abi_gen_helper)
 { try {
 
    const char* all_indexes = R"=====(
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
    #include <string>
 
-   using namespace eosio;
+   using namespace agrio;
 
    //@abi table
    struct table1 {
@@ -874,7 +874,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_all_indexes, abi_gen_helper)
 
    const char* all_indexes_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "table1",
@@ -913,7 +913,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_unable_to_determine_index, abi_gen_helper)
 { try {
 
    const char* unable_to_determine_index = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    //@abi table
    struct table1 {
@@ -923,7 +923,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_unable_to_determine_index, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(unable_to_determine_index, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(unable_to_determine_index, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -933,7 +933,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_long_field_name, abi_gen_helper)
    //TODO: full action / full table
   // typedef fixed_string16 FieldName;
    const char* long_field_name = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    //@abi table
    struct table1 {
@@ -950,7 +950,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_long_type_name, abi_gen_helper)
 { try {
 
    const char* long_type_name = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    struct this_is_a_very_very_very_very_long_type_name {
       uint64_t field;
@@ -972,7 +972,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_same_type_different_namespace, abi_gen_helper)
 { try {
 
    const char* same_type_different_namespace = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    namespace A {
      //@abi table
@@ -990,7 +990,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_same_type_different_namespace, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(same_type_different_namespace, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(same_type_different_namespace, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -998,7 +998,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_bad_index_type, abi_gen_helper)
 { try {
 
    const char* bad_index_type = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    //@abi table table1 i128i128
    struct table1 {
@@ -1009,7 +1009,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_bad_index_type, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(bad_index_type, "{}"), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(bad_index_type, "{}"), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -1017,13 +1017,13 @@ BOOST_FIXTURE_TEST_CASE(abigen_full_table_decl, abi_gen_helper)
 { try {
 
    const char* full_table_decl = R"=====(
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
    //@abi table table1 i64
    class table1 {
    public:
       uint64_t  id;
-      eosio::name name;
+      agrio::name name;
       uint32_t  age;
    };
 
@@ -1031,7 +1031,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_full_table_decl, abi_gen_helper)
 
    const char* full_table_decl_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
           "name" : "table1",
@@ -1072,7 +1072,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_union_table, abi_gen_helper)
 { try {
 
    const char* union_table = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    //@abi table
    union table1 {
@@ -1082,7 +1082,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_union_table, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(union_table, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(union_table, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -1090,7 +1090,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_same_action_different_type, abi_gen_helper)
 { try {
 
    const char* same_action_different_type = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    //@abi action action1
    struct table1 {
@@ -1104,14 +1104,14 @@ BOOST_FIXTURE_TEST_CASE(abigen_same_action_different_type, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(same_action_different_type, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(same_action_different_type, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 } FC_LOG_AND_RETHROW() }
 
 BOOST_FIXTURE_TEST_CASE(abigen_template_base, abi_gen_helper)
 { try {
 
    const char* template_base = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
    template<typename T>
    class base {
@@ -1130,7 +1130,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_template_base, abi_gen_helper)
 
    const char* template_base_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
           "name" : "base32",
@@ -1172,7 +1172,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_action_and_table, abi_gen_helper)
 { try {
 
    const char* action_and_table = R"=====(
-   #include <eosiolib/types.h>
+   #include <agriolib/types.h>
 
   /* @abi table
    * @abi action
@@ -1186,7 +1186,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_action_and_table, abi_gen_helper)
 
    const char* action_and_table_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
           "name" : "table_action",
@@ -1225,9 +1225,9 @@ BOOST_FIXTURE_TEST_CASE(abigen_simple_typedef, abi_gen_helper)
 { try {
 
    const char* simple_typedef = R"=====(
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
 
    struct common_params {
       uint64_t c1;
@@ -1246,7 +1246,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_simple_typedef, abi_gen_helper)
 
    const char* simple_typedef_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [{
           "new_type_name" : "my_base_alias",
           "type" : "common_params"
@@ -1289,9 +1289,9 @@ BOOST_FIXTURE_TEST_CASE(abigen_field_typedef, abi_gen_helper)
 { try {
 
    const char* field_typedef = R"=====(
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
 
    typedef name my_name_alias;
 
@@ -1313,7 +1313,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_field_typedef, abi_gen_helper)
 
    const char* field_typedef_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [{
           "new_type_name" : "my_complex_field_alias",
           "type" : "complex_field"
@@ -1371,9 +1371,9 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_of_POD, abi_gen_helper)
    const char* abigen_vector_of_POD = R"=====(
    #include <vector>
    #include <string>
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
    using namespace std;
 
    //@abi table
@@ -1389,7 +1389,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_of_POD, abi_gen_helper)
 
    const char* abigen_vector_of_POD_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "table1",
@@ -1440,9 +1440,9 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_of_structs, abi_gen_helper)
    const char* abigen_vector_of_structs = R"=====(
    #include <vector>
    #include <string>
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
    using namespace std;
 
    struct my_struct {
@@ -1463,7 +1463,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_of_structs, abi_gen_helper)
 
    const char* abigen_vector_of_structs_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "my_struct",
@@ -1525,9 +1525,9 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_multidimension, abi_gen_helper)
    const char* abigen_vector_multidimension = R"=====(
    #include <vector>
    #include <string>
-   #include <eosiolib/types.hpp>
+   #include <agriolib/types.hpp>
 
-   using namespace eosio;
+   using namespace agrio;
    using namespace std;
 
    //@abi table
@@ -1538,7 +1538,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_multidimension, abi_gen_helper)
 
    )=====";
 
-   BOOST_CHECK_EXCEPTION( generate_abi(abigen_vector_multidimension, ""), eosio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
+   BOOST_CHECK_EXCEPTION( generate_abi(abigen_vector_multidimension, ""), agrio::abi_generation_exception, abi_gen_helper::is_abi_generation_exception );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -1548,8 +1548,8 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_alias, abi_gen_helper)
    const char* abigen_vector_alias = R"=====(
    #include <string>
    #include <vector>
-   #include <eosiolib/types.hpp>
-   #include <eosiolib/print.hpp>
+   #include <agriolib/types.hpp>
+   #include <agriolib/print.hpp>
 
    using namespace std;
 
@@ -1569,7 +1569,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_alias, abi_gen_helper)
 
    const char* abigen_vector_alias_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "array_of_rows",
          "type": "row[]"
@@ -1611,21 +1611,21 @@ BOOST_FIXTURE_TEST_CASE(abigen_vector_alias, abi_gen_helper)
 
 } FC_LOG_AND_RETHROW() }
 
-BOOST_FIXTURE_TEST_CASE(abigen_eosioabi_macro, abi_gen_helper)
+BOOST_FIXTURE_TEST_CASE(abigen_agrioabi_macro, abi_gen_helper)
 { try {
 
-   const char* abigen_eosioabi_macro = R"=====(
+   const char* abigen_agrioabi_macro = R"=====(
 
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wpointer-bool-conversion"
 
-      #include <eosiolib/eosio.hpp>
-      #include <eosiolib/print.hpp>
+      #include <agriolib/agrio.hpp>
+      #include <agriolib/print.hpp>
 
 
-      using namespace eosio;
+      using namespace agrio;
 
-      struct hello : public eosio::contract {
+      struct hello : public agrio::contract {
         public:
             using contract::contract;
 
@@ -1638,15 +1638,15 @@ BOOST_FIXTURE_TEST_CASE(abigen_eosioabi_macro, abi_gen_helper)
             }
       };
 
-      EOSIO_ABI(hello,(hi))
+      AGRIO_ABI(hello,(hi))
 
       #pragma GCC diagnostic pop
 
    )=====";
 
-   const char* abigen_eosioabi_macro_abi = R"=====(
+   const char* abigen_agrioabi_macro_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "hi",
@@ -1668,7 +1668,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_eosioabi_macro, abi_gen_helper)
    }
    )=====";
 
-   BOOST_TEST( generate_abi(abigen_eosioabi_macro, abigen_eosioabi_macro_abi) == true );
+   BOOST_TEST( generate_abi(abigen_agrioabi_macro, abigen_agrioabi_macro_abi) == true );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -1679,13 +1679,13 @@ BOOST_FIXTURE_TEST_CASE(abigen_contract_inheritance, abi_gen_helper)
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wpointer-bool-conversion"
 
-      #include <eosiolib/eosio.hpp>
-      #include <eosiolib/print.hpp>
+      #include <agriolib/agrio.hpp>
+      #include <agriolib/print.hpp>
 
 
-      using namespace eosio;
+      using namespace agrio;
 
-      struct hello : public eosio::contract {
+      struct hello : public agrio::contract {
         public:
             using contract::contract;
 
@@ -1702,14 +1702,14 @@ BOOST_FIXTURE_TEST_CASE(abigen_contract_inheritance, abi_gen_helper)
             }
       };
 
-      EOSIO_ABI(new_hello,(hi)(bye))
+      AGRIO_ABI(new_hello,(hi)(bye))
 
       #pragma GCC diagnostic pop
    )=====";
 
    const char* abigen_contract_inheritance_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "hi",
@@ -1746,19 +1746,19 @@ BOOST_FIXTURE_TEST_CASE(abigen_contract_inheritance, abi_gen_helper)
 
 } FC_LOG_AND_RETHROW() }
 
-BOOST_FIXTURE_TEST_CASE(abigen_no_eosioabi_macro, abi_gen_helper)
+BOOST_FIXTURE_TEST_CASE(abigen_no_agrioabi_macro, abi_gen_helper)
 { try {
 
-   const char* abigen_no_eosioabi_macro = R"=====(
+   const char* abigen_no_agrioabi_macro = R"=====(
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wpointer-bool-conversion"
-      #include <eosiolib/eosio.hpp>
-      #include <eosiolib/print.hpp>
+      #include <agriolib/agrio.hpp>
+      #include <agriolib/print.hpp>
       #pragma GCC diagnostic pop
 
-      using namespace eosio;
+      using namespace agrio;
 
-      struct hello : public eosio::contract {
+      struct hello : public agrio::contract {
         public:
             using contract::contract;
 
@@ -1775,7 +1775,7 @@ BOOST_FIXTURE_TEST_CASE(abigen_no_eosioabi_macro, abi_gen_helper)
            void apply( account_name contract, account_name act ) {
               auto& thiscontract = *this;
               switch( act ) {
-                 EOSIO_API( hello, (hi)(bye))
+                 AGRIO_API( hello, (hi)(bye))
               };
            }
       };
@@ -1784,14 +1784,14 @@ BOOST_FIXTURE_TEST_CASE(abigen_no_eosioabi_macro, abi_gen_helper)
          [[noreturn]] void apply( uint64_t receiver, uint64_t code, uint64_t action ) {
             hello  h( receiver );
             h.apply( code, action );
-            eosio_exit(0);
+            agrio_exit(0);
          }
       }
    )=====";
 
-   const char* abigen_no_eosioabi_macro_abi = R"=====(
+   const char* abigen_no_agrioabi_macro_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "hi",
@@ -1828,14 +1828,14 @@ BOOST_FIXTURE_TEST_CASE(abigen_no_eosioabi_macro, abi_gen_helper)
    }
    )=====";
 
-   BOOST_TEST( generate_abi(abigen_no_eosioabi_macro, abigen_no_eosioabi_macro_abi) == true );
+   BOOST_TEST( generate_abi(abigen_no_agrioabi_macro, abigen_no_agrioabi_macro_abi) == true );
 
 } FC_LOG_AND_RETHROW() }
 
 BOOST_AUTO_TEST_CASE(general)
 { try {
 
-   auto abi = eosio_contract_abi(fc::json::from_string(my_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(my_abi).as<abi_def>());
 
    abi_serializer abis(abi, max_serialization_time);
 
@@ -2007,7 +2007,7 @@ BOOST_AUTO_TEST_CASE(general)
          {"name":"table2","index_type":"indextype2","key_names":["keyname2"],"key_types":["typename2"],"type":"type2"}
       ],
       "abidef":{
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types" : [{"new_type_name":"new", "type":"old"}],
         "structs" : [{"name":"struct1", "base":"base1", "fields": [{"name":"name1", "type": "type1"}, {"name":"name2", "type": "type2"}] }],
         "actions" : [{"name":"action1","type":"type1", "ricardian_contract":""}],
@@ -2016,7 +2016,7 @@ BOOST_AUTO_TEST_CASE(general)
         "abi_extensions": []
       },
       "abidef_arr": [{
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types" : [{"new_type_name":"new", "type":"old"}],
         "structs" : [{"name":"struct1", "base":"base1", "fields": [{"name":"name1", "type": "type1"}, {"name":"name2", "type": "type2"}] }],
         "actions" : [{"name":"action1","type":"type1", "ricardian_contract":""}],
@@ -2024,7 +2024,7 @@ BOOST_AUTO_TEST_CASE(general)
         "ricardian_clauses": [],
         "abi_extensions": []
       },{
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types" : [{"new_type_name":"new", "type":"old"}],
         "structs" : [{"name":"struct1", "base":"base1", "fields": [{"name":"name1", "type": "type1"}, {"name":"name2", "type": "type2"}] }],
         "actions" : [{"name":"action1","type":"type1", "ricardian_contract": ""}],
@@ -2061,7 +2061,7 @@ BOOST_AUTO_TEST_CASE(abi_cycle)
 
    const char* struct_cycle_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [],
        "structs": [{
          "name": "A",
@@ -2082,7 +2082,7 @@ BOOST_AUTO_TEST_CASE(abi_cycle)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(typedef_cycle_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(typedef_cycle_abi).as<abi_def>());
 
    auto is_assert_exception = [](const auto& e) -> bool {
       wlog(e.to_string()); return true;
@@ -2098,7 +2098,7 @@ BOOST_AUTO_TEST_CASE(abi_cycle)
 BOOST_AUTO_TEST_CASE(linkauth_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    BOOST_CHECK(true);
    const char* test_data = R"=====(
@@ -2132,7 +2132,7 @@ BOOST_AUTO_TEST_CASE(linkauth_test)
 BOOST_AUTO_TEST_CASE(unlinkauth_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    BOOST_CHECK(true);
    const char* test_data = R"=====(
@@ -2163,7 +2163,7 @@ BOOST_AUTO_TEST_CASE(unlinkauth_test)
 BOOST_AUTO_TEST_CASE(updateauth_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    BOOST_CHECK(true);
    const char* test_data = R"=====(
@@ -2233,7 +2233,7 @@ BOOST_AUTO_TEST_CASE(updateauth_test)
 BOOST_AUTO_TEST_CASE(deleteauth_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    BOOST_CHECK(true);
    const char* test_data = R"=====(
@@ -2261,7 +2261,7 @@ BOOST_AUTO_TEST_CASE(deleteauth_test)
 BOOST_AUTO_TEST_CASE(newaccount_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    BOOST_CHECK(true);
    const char* test_data = R"=====(
@@ -2371,7 +2371,7 @@ BOOST_AUTO_TEST_CASE(newaccount_test)
 BOOST_AUTO_TEST_CASE(setcode_test)
 { try {
 
-   abi_serializer abis(eosio_contract_abi(abi_def()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(abi_def()), max_serialization_time);
 
    const char* test_data = R"=====(
    {
@@ -2406,7 +2406,7 @@ BOOST_AUTO_TEST_CASE(setabi_test)
 
    const char* abi_def_abi = R"=====(
       {
-         "version": "eosio::abi/1.0",
+         "version": "agrio::abi/1.0",
          "types": [{
             "new_type_name": "type_name",
             "type": "string"
@@ -2534,11 +2534,11 @@ BOOST_AUTO_TEST_CASE(setabi_test)
 
    auto v = fc::json::from_string(abi_def_abi);
 
-   abi_serializer abis(eosio_contract_abi(v.as<abi_def>()), max_serialization_time);
+   abi_serializer abis(agrio_contract_abi(v.as<abi_def>()), max_serialization_time);
 
    const char* abi_string = R"=====(
       {
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types": [{
             "new_type_name": "account_name",
             "type": "name"
@@ -2798,7 +2798,7 @@ BOOST_AUTO_TEST_CASE(packed_transaction)
 
    const char* packed_transaction_abi = R"=====(
    {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [{
           "new_type_name": "compression_type",
           "type": "int64"
@@ -2881,7 +2881,7 @@ BOOST_AUTO_TEST_CASE(abi_type_repeat)
 
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "actor_name",
          "type": "name"
@@ -2932,7 +2932,7 @@ BOOST_AUTO_TEST_CASE(abi_type_repeat)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
    auto is_table_exception = [](fc::exception const & e) -> bool { return e.to_detail_string().find("type already exists") != std::string::npos; };
    BOOST_CHECK_EXCEPTION( abi_serializer abis(abi, max_serialization_time), duplicate_abi_type_def_exception, is_table_exception );
 } FC_LOG_AND_RETHROW() }
@@ -2942,7 +2942,7 @@ BOOST_AUTO_TEST_CASE(abi_struct_repeat)
 
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "actor_name",
          "type": "name"
@@ -2990,7 +2990,7 @@ BOOST_AUTO_TEST_CASE(abi_struct_repeat)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
    BOOST_CHECK_THROW( abi_serializer abis(abi, max_serialization_time), duplicate_abi_struct_def_exception );
 } FC_LOG_AND_RETHROW() }
 
@@ -2999,7 +2999,7 @@ BOOST_AUTO_TEST_CASE(abi_action_repeat)
 
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "actor_name",
          "type": "name"
@@ -3050,7 +3050,7 @@ BOOST_AUTO_TEST_CASE(abi_action_repeat)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
    BOOST_CHECK_THROW( abi_serializer abis(abi, max_serialization_time), duplicate_abi_action_def_exception );
 } FC_LOG_AND_RETHROW() }
 
@@ -3059,7 +3059,7 @@ BOOST_AUTO_TEST_CASE(abi_table_repeat)
 
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "actor_name",
          "type": "name"
@@ -3113,7 +3113,7 @@ BOOST_AUTO_TEST_CASE(abi_table_repeat)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
    BOOST_CHECK_THROW( abi_serializer abis(abi, max_serialization_time), duplicate_abi_table_def_exception );
 } FC_LOG_AND_RETHROW() }
 
@@ -3122,7 +3122,7 @@ BOOST_AUTO_TEST_CASE(abi_type_def)
    // inifinite loop in types
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "account_name",
          "type": "name"
@@ -3175,7 +3175,7 @@ BOOST_AUTO_TEST_CASE(abi_type_loop)
    // inifinite loop in types
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "account_name",
          "type": "name"
@@ -3219,7 +3219,7 @@ BOOST_AUTO_TEST_CASE(abi_type_redefine)
    // inifinite loop in types
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "account_name",
          "type": "account_name"
@@ -3260,7 +3260,7 @@ BOOST_AUTO_TEST_CASE(abi_type_redefine_to_name)
       // inifinite loop in types
       const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "name",
          "type": "name"
@@ -3282,7 +3282,7 @@ BOOST_AUTO_TEST_CASE(abi_type_nested_in_vector)
       // inifinite loop in types
       const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [],
      "structs": [{
          "name": "store_t",
@@ -3303,12 +3303,12 @@ BOOST_AUTO_TEST_CASE(abi_type_nested_in_vector)
 
 } FC_LOG_AND_RETHROW() }
 
-BOOST_AUTO_TEST_CASE(abi_account_name_in_eosio_abi)
+BOOST_AUTO_TEST_CASE(abi_account_name_in_agrio_abi)
 { try {
    // inifinite loop in types
    const char* repeat_abi = R"=====(
    {
-     "version": "eosio::abi/1.0",
+     "version": "agrio::abi/1.0",
      "types": [{
          "new_type_name": "account_name",
          "type": "name"
@@ -3339,7 +3339,7 @@ BOOST_AUTO_TEST_CASE(abi_account_name_in_eosio_abi)
    }
    )=====";
 
-   auto abi = eosio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
+   auto abi = agrio_contract_abi(fc::json::from_string(repeat_abi).as<abi_def>());
    auto is_type_exception = [](fc::assert_exception const & e) -> bool { return e.to_detail_string().find("abi.types.size") != std::string::npos; };
 
 } FC_LOG_AND_RETHROW() }
@@ -3351,7 +3351,7 @@ BOOST_AUTO_TEST_CASE(abi_large_array)
    try {
       const char* abi_str = R"=====(
       {
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types": [],
         "structs": [{
            "name": "hi",
@@ -3372,7 +3372,7 @@ BOOST_AUTO_TEST_CASE(abi_large_array)
 
       abi_serializer abis( fc::json::from_string( abi_str ).as<abi_def>(), max_serialization_time );
       // indicate a very large array, but don't actually provide a large array
-      // curl http://127.0.0.1:8888/v1/chain/abi_bin_to_json -X POST -d '{"code":"eosio", "action":"hi", "binargs":"ffffffff08"}'
+      // curl http://127.0.0.1:8888/v1/chain/abi_bin_to_json -X POST -d '{"code":"agrio", "action":"hi", "binargs":"ffffffff08"}'
       bytes bin = {static_cast<char>(0xff),
                    static_cast<char>(0xff),
                    static_cast<char>(0xff),
@@ -3389,7 +3389,7 @@ BOOST_AUTO_TEST_CASE(abi_is_type_recursion)
    try {
       const char* abi_str = R"=====(
       {
-       "version": "eosio::abi/1.0",
+       "version": "agrio::abi/1.0",
        "types": [
         {
             "new_type_name": "a[]",
@@ -3433,7 +3433,7 @@ BOOST_AUTO_TEST_CASE(abi_recursive_structs)
    try {
       const char* abi_str = R"=====(
       {
-        "version": "eosio::abi/1.0",
+        "version": "agrio::abi/1.0",
         "types": [],
         "structs": [
           {
@@ -3490,7 +3490,7 @@ BOOST_AUTO_TEST_CASE(abi_recursive_structs)
       )=====";
 
       abi_serializer abis(fc::json::from_string(abi_str).as<abi_def>(), max_serialization_time);
-      string hi_data = "{\"user\":\"eosio\"}";
+      string hi_data = "{\"user\":\"agrio\"}";
       auto bin = abis.variant_to_binary("hi2", fc::json::from_string(hi_data), max_serialization_time);
       BOOST_CHECK_THROW( abis.binary_to_variant("hi", bin, max_serialization_time);, fc::exception );
 
@@ -3528,10 +3528,10 @@ BOOST_AUTO_TEST_CASE(abi_deep_structs_validate)
 
 BOOST_AUTO_TEST_CASE(variants)
 {
-   using eosio::testing::fc_exception_message_starts_with;
+   using agrio::testing::fc_exception_message_starts_with;
 
    auto duplicate_variant_abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "variants": [
          {"name": "v1", "types": ["int8", "string", "bool"]},
          {"name": "v1", "types": ["int8", "string", "bool"]},
@@ -3539,14 +3539,14 @@ BOOST_AUTO_TEST_CASE(variants)
    })";
 
    auto variant_abi_invalid_type = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "variants": [
          {"name": "v1", "types": ["int91", "string", "bool"]},
       ],
    })";
 
    auto variant_abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "types": [
          {"new_type_name": "foo", "type": "s"},
          {"new_type_name": "bar", "type": "s"},
@@ -3601,10 +3601,10 @@ BOOST_AUTO_TEST_CASE(variants)
 
 BOOST_AUTO_TEST_CASE(extend)
 {
-   using eosio::testing::fc_exception_message_starts_with;
+   using agrio::testing::fc_exception_message_starts_with;
 
    auto abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "structs": [
          {"name": "s", "base": "", "fields": [
             {"name": "i0", "type": "int8"},
@@ -3658,18 +3658,18 @@ BOOST_AUTO_TEST_CASE(version)
    try {
       BOOST_CHECK_THROW( abi_serializer(fc::json::from_string(R"({})").as<abi_def>(), max_serialization_time), unsupported_abi_version_exception );
       BOOST_CHECK_THROW( abi_serializer(fc::json::from_string(R"({"version": ""})").as<abi_def>(), max_serialization_time), unsupported_abi_version_exception );
-      BOOST_CHECK_THROW( abi_serializer(fc::json::from_string(R"({"version": "eosio::abi/9.0"})").as<abi_def>(), max_serialization_time), unsupported_abi_version_exception );
-      abi_serializer(fc::json::from_string(R"({"version": "eosio::abi/1.0"})").as<abi_def>(), max_serialization_time);
-      abi_serializer(fc::json::from_string(R"({"version": "eosio::abi/1.1"})").as<abi_def>(), max_serialization_time);
+      BOOST_CHECK_THROW( abi_serializer(fc::json::from_string(R"({"version": "agrio::abi/9.0"})").as<abi_def>(), max_serialization_time), unsupported_abi_version_exception );
+      abi_serializer(fc::json::from_string(R"({"version": "agrio::abi/1.0"})").as<abi_def>(), max_serialization_time);
+      abi_serializer(fc::json::from_string(R"({"version": "agrio::abi/1.1"})").as<abi_def>(), max_serialization_time);
    } FC_LOG_AND_RETHROW()
 }
 
 BOOST_AUTO_TEST_CASE(abi_serialize_incomplete_json_array)
 {
-   using eosio::testing::fc_exception_message_starts_with;
+   using agrio::testing::fc_exception_message_starts_with;
 
    auto abi = R"({
-      "version": "eosio::abi/1.0",
+      "version": "agrio::abi/1.0",
       "structs": [
          {"name": "s", "base": "", "fields": [
             {"name": "i0", "type": "int8"},
@@ -3695,10 +3695,10 @@ BOOST_AUTO_TEST_CASE(abi_serialize_incomplete_json_array)
 
 BOOST_AUTO_TEST_CASE(abi_serialize_incomplete_json_object)
 {
-   using eosio::testing::fc_exception_message_starts_with;
+   using agrio::testing::fc_exception_message_starts_with;
 
    auto abi = R"({
-      "version": "eosio::abi/1.0",
+      "version": "agrio::abi/1.0",
       "structs": [
          {"name": "s1", "base": "", "fields": [
             {"name": "i0", "type": "int8"},
@@ -3727,10 +3727,10 @@ BOOST_AUTO_TEST_CASE(abi_serialize_incomplete_json_object)
 
 BOOST_AUTO_TEST_CASE(abi_serialize_json_mismatching_type)
 {
-   using eosio::testing::fc_exception_message_is;
+   using agrio::testing::fc_exception_message_is;
 
    auto abi = R"({
-      "version": "eosio::abi/1.0",
+      "version": "agrio::abi/1.0",
       "structs": [
          {"name": "s1", "base": "", "fields": [
             {"name": "i0", "type": "int8"},
@@ -3755,10 +3755,10 @@ BOOST_AUTO_TEST_CASE(abi_serialize_json_mismatching_type)
 
 BOOST_AUTO_TEST_CASE(abi_serialize_detailed_error_messages)
 {
-   using eosio::testing::fc_exception_message_is;
+   using agrio::testing::fc_exception_message_is;
 
    auto abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "types": [
          {"new_type_name": "foo", "type": "s2"},
          {"new_type_name": "bar", "type": "foo"},
@@ -3832,10 +3832,10 @@ BOOST_AUTO_TEST_CASE(abi_serialize_detailed_error_messages)
 
 BOOST_AUTO_TEST_CASE(abi_serialize_short_error_messages)
 {
-   using eosio::testing::fc_exception_message_is;
+   using agrio::testing::fc_exception_message_is;
 
    auto abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "types": [
          {"new_type_name": "foo", "type": "s2"},
          {"new_type_name": "bar", "type": "foo"},
@@ -3912,10 +3912,10 @@ BOOST_AUTO_TEST_CASE(abi_serialize_short_error_messages)
 
 BOOST_AUTO_TEST_CASE(abi_deserialize_detailed_error_messages)
 {
-   using eosio::testing::fc_exception_message_is;
+   using agrio::testing::fc_exception_message_is;
 
    auto abi = R"({
-      "version": "eosio::abi/1.1",
+      "version": "agrio::abi/1.1",
       "types": [
          {"new_type_name": "oint", "type": "int8?"},
          {"new_type_name": "os1", "type": "s1?"}

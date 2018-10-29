@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eosio/LICENSE.txt
+ *  @copyright defined in agrio/LICENSE.txt
  */
 #include <appbase/application.hpp>
 
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/history_plugin/history_plugin.hpp>
-#include <eosio/net_plugin/net_plugin.hpp>
-#include <eosio/producer_plugin/producer_plugin.hpp>
-#include <eosio/utilities/common.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/history_plugin/history_plugin.hpp>
+#include <agrio/net_plugin/net_plugin.hpp>
+#include <agrio/producer_plugin/producer_plugin.hpp>
+#include <agrio/utilities/common.hpp>
 
 #include <fc/log/logger_config.hpp>
 #include <fc/log/appender.hpp>
@@ -21,7 +21,7 @@
 #include "config.hpp"
 
 using namespace appbase;
-using namespace eosio;
+using namespace agrio;
 
 namespace fc {
    std::unordered_map<std::string,appender::ptr>& get_appender_map();
@@ -93,12 +93,12 @@ enum return_codes {
 int main(int argc, char** argv)
 {
    try {
-      app().set_version(eosio::nodeos::config::version);
+      app().set_version(agrio::nodagr::config::version);
       app().register_plugin<history_plugin>();
 
       auto root = fc::app_path();
-      app().set_default_data_dir(root / "eosio/nodeos/data" );
-      app().set_default_config_dir(root / "eosio/nodeos/config" );
+      app().set_default_data_dir(root / "agrio/nodagr/data" );
+      app().set_default_config_dir(root / "agrio/nodagr/config" );
       http_plugin::set_defaults({
          .address_config_prefix = "",
          .default_unix_socket_path = "",
@@ -107,8 +107,8 @@ int main(int argc, char** argv)
       if(!app().initialize<chain_plugin, http_plugin, net_plugin, producer_plugin>(argc, argv))
          return INITIALIZE_FAIL;
       initialize_logging();
-      ilog("nodeos version ${ver}", ("ver", app().version_string()));
-      ilog("eosio root is ${root}", ("root", root.string()));
+      ilog("nodagr version ${ver}", ("ver", app().version_string()));
+      ilog("agrio root is ${root}", ("root", root.string()));
       app().startup();
       app().exec();
    } catch( const extract_genesis_state_exception& e ) {

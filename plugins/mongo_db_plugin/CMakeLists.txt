@@ -1,5 +1,5 @@
 if(BUILD_MONGO_DB_PLUGIN)
-  file(GLOB HEADERS "include/eosio/mongo_db_plugin/*.hpp")
+  file(GLOB HEADERS "include/agrio/mongo_db_plugin/*.hpp")
   add_library( mongo_db_plugin
                mongo_db_plugin.cpp
                ${HEADERS} )
@@ -8,7 +8,7 @@ if(BUILD_MONGO_DB_PLUGIN)
 
   if (libmongoc-1.0_FOUND)
 
-      # EOS has no direct dependencies on libmongoc but its shared libraries
+      # AGR has no direct dependencies on libmongoc but its shared libraries
       # will need to be present at runtime for the C++ libraries we use:
       # libbsoncxx & libmongocxx (both from github.com/mongodb/mongo-cxx-driver)
 
@@ -76,7 +76,7 @@ if(BUILD_MONGO_DB_PLUGIN)
     )
 
   target_link_libraries(mongo_db_plugin
-          PUBLIC chain_plugin eosio_chain appbase
+          PUBLIC chain_plugin agrio_chain appbase
           ${EOS_LIBMONGOCXX} ${EOS_LIBBSONCXX}
           )
 else()

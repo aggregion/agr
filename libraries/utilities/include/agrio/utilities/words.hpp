@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-namespace eosio { namespace words {
+namespace agrio { namespace words {
 
 typedef const char* const_char_ptr;
 extern const const_char_ptr word_list[];

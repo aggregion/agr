@@ -1,11 +1,11 @@
-#include <eosio/chain/apply_context.hpp>
-#include <eosio/chain/transaction_context.hpp>
-#include <eosio/chain/authorization_manager.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/resource_limits.hpp>
-#include <eosio/chain/generated_transaction_object.hpp>
-#include <eosio/chain/transaction_object.hpp>
-#include <eosio/chain/global_property_object.hpp>
+#include <agrio/chain/apply_context.hpp>
+#include <agrio/chain/transaction_context.hpp>
+#include <agrio/chain/authorization_manager.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/resource_limits.hpp>
+#include <agrio/chain/generated_transaction_object.hpp>
+#include <agrio/chain/transaction_object.hpp>
+#include <agrio/chain/global_property_object.hpp>
 
 #pragma push_macro("N")
 #undef N
@@ -19,7 +19,7 @@
 
 #include <chrono>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 namespace bacc = boost::accumulators;
 
@@ -166,12 +166,12 @@ namespace bacc = boost::accumulators;
       trace->block_time = c.pending_block_time();
       trace->producer_block_id = c.pending_producer_block_id();
       executed.reserve( trx.total_actions() );
-      EOS_ASSERT( trx.transaction_extensions.size() == 0, unsupported_feature, "we don't support any extensions yet" );
+      AGR_ASSERT( trx.transaction_extensions.size() == 0, unsupported_feature, "we don't support any extensions yet" );
    }
 
    void transaction_context::init(uint64_t initial_net_usage)
    {
-      EOS_ASSERT( !is_initialized, transaction_exception, "cannot initialize twice" );
+      AGR_ASSERT( !is_initialized, transaction_exception, "cannot initialize twice" );
       const static int64_t large_number_no_overflow = std::numeric_limits<int64_t>::max()/2;
 
       const auto& cfg = control.get_global_properties().configuration;
@@ -330,7 +330,7 @@ namespace bacc = boost::accumulators;
    }
 
    void transaction_context::exec() {
-      EOS_ASSERT( is_initialized, transaction_exception, "must first initialize" );
+      AGR_ASSERT( is_initialized, transaction_exception, "must first initialize" );
 
       if( apply_context_free ) {
          for( const auto& act : trx.context_free_actions ) {
@@ -350,7 +350,7 @@ namespace bacc = boost::accumulators;
    }
 
    void transaction_context::finalize() {
-      EOS_ASSERT( is_initialized, transaction_exception, "must first initialize" );
+      AGR_ASSERT( is_initialized, transaction_exception, "must first initialize" );
 
       if( is_input ) {
          auto& am = control.get_mutable_authorization_manager();
@@ -460,7 +460,7 @@ namespace bacc = boost::accumulators;
                         "but it is possible it could have succeeded if it were allowed to run to completion",
                         ("now", now)("deadline", _deadline)("start", start)("billing_timer", now - pseudo_start) );
          }
-         EOS_ASSERT( false,  transaction_exception, "unexpected deadline exception code" );
+         AGR_ASSERT( false,  transaction_exception, "unexpected deadline exception code" );
       }
    }
 
@@ -493,27 +493,27 @@ namespace bacc = boost::accumulators;
       if (!control.skip_trx_checks()) {
          if( check_minimum ) {
             const auto& cfg = control.get_global_properties().configuration;
-            EOS_ASSERT( billed_us >= cfg.min_transaction_cpu_usage, transaction_exception,
+            AGR_ASSERT( billed_us >= cfg.min_transaction_cpu_usage, transaction_exception,
                         "cannot bill CPU time less than the minimum of ${min_billable} us",
                         ("min_billable", cfg.min_transaction_cpu_usage)("billed_cpu_time_us", billed_us)
                       );
          }
 
          if( billing_timer_exception_code == block_cpu_usage_exceeded::code_value ) {
-            EOS_ASSERT( billed_us <= objective_duration_limit.count(),
+            AGR_ASSERT( billed_us <= objective_duration_limit.count(),
                         block_cpu_usage_exceeded,
                         "billed CPU time (${billed} us) is greater than the billable CPU time left in the block (${billable} us)",
                         ("billed", billed_us)("billable", objective_duration_limit.count())
                       );
          } else {
             if (cpu_limit_due_to_greylist) {
-               EOS_ASSERT( billed_us <= objective_duration_limit.count(),
+               AGR_ASSERT( billed_us <= objective_duration_limit.count(),
                            greylist_cpu_usage_exceeded,
                            "billed CPU time (${billed} us) is greater than the maximum greylisted billable CPU time for the transaction (${billable} us)",
                            ("billed", billed_us)("billable", objective_duration_limit.count())
                );
             } else {
-               EOS_ASSERT( billed_us <= objective_duration_limit.count(),
+               AGR_ASSERT( billed_us <= objective_duration_limit.count(),
                            tx_cpu_usage_exceeded,
                            "billed CPU time (${billed} us) is greater than the maximum billable CPU time for the transaction (${billable} us)",
                            ("billed", billed_us)("billable", objective_duration_limit.count())
@@ -610,10 +610,10 @@ namespace bacc = boost::accumulators;
       } catch( const boost::interprocess::bad_alloc& ) {
          throw;
       } catch ( ... ) {
-          EOS_ASSERT( false, tx_duplicate,
+          AGR_ASSERT( false, tx_duplicate,
                      "duplicate transaction ${id}", ("id", id ) );
       }
    } /// record_transaction
 
 
-} } /// eosio::chain
+} } /// agrio::chain

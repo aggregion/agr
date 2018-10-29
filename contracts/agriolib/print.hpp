@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
-#include <eosiolib/print.h>
-#include <eosiolib/types.hpp>
-#include <eosiolib/fixed_key.hpp>
+#include <agriolib/print.h>
+#include <agriolib/types.hpp>
+#include <agriolib/fixed_key.hpp>
 #include <utility>
 #include <string>
 
-namespace eosio {
+namespace agrio {
 
    static_assert( sizeof(long) == sizeof(int), "unexpected size difference" );
 

@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/global_property_object.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/global_property_object.hpp>
 #include <fc/crypto/digest.hpp>
 
 #include <boost/test/unit_test.hpp>
@@ -16,8 +16,8 @@
 #endif
 
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio::chain;
+using namespace agrio::testing;
 namespace bfs = boost::filesystem;
 
 BOOST_AUTO_TEST_SUITE(database_tests)
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_SUITE(database_tests)
          TESTER test;
 
          // Bypass read-only restriction on state DB access for this unit test which really needs to mutate the DB to properly conduct its test.
-         eosio::chain::database& db = const_cast<eosio::chain::database&>( test.control->db() );
+         agrio::chain::database& db = const_cast<agrio::chain::database&>( test.control->db() );
 
          auto ses = db.start_undo_session(true);
 

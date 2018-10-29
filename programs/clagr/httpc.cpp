@@ -19,15 +19,15 @@
 #include <fc/variant.hpp>
 #include <fc/io/json.hpp>
 #include <fc/network/platform_root_ca.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 #include <boost/asio/ssl/rfc2818_verification.hpp>
 #include "httpc.hpp"
 
 using boost::asio::ip::tcp;
-using namespace eosio::chain;
-namespace eosio { namespace client { namespace http {
+using namespace agrio::chain;
+namespace agrio { namespace client { namespace http {
 
    namespace detail {
       class http_context_impl {
@@ -71,11 +71,11 @@ namespace eosio { namespace client { namespace http {
       response_stream >> http_version;
       response_stream >> status_code;
 
-      EOS_ASSERT( status_code != 400, invalid_http_request, "The server has rejected the request as invalid!");
+      AGR_ASSERT( status_code != 400, invalid_http_request, "The server has rejected the request as invalid!");
 
       std::string status_message;
       std::getline(response_stream, status_message);
-      EOS_ASSERT( !(!response_stream || http_version.substr(0, 5) != "HTTP/"), invalid_http_response, "Invalid Response" );
+      AGR_ASSERT( !(!response_stream || http_version.substr(0, 5) != "HTTP/"), invalid_http_response, "Invalid Response" );
 
       // Read the response headers, which are terminated by a blank line.
       boost::asio::read_until(socket, response, "\r\n\r\n");
@@ -89,7 +89,7 @@ namespace eosio { namespace client { namespace http {
          if(std::regex_search(header, match, clregex))
             response_content_length = std::stoi(match[1]);
       }
-      EOS_ASSERT(response_content_length >= 0, invalid_http_response, "Invalid content-length response");
+      AGR_ASSERT(response_content_length >= 0, invalid_http_response, "Invalid content-length response");
 
       std::stringstream re;
       // Write whatever content we already have to output.
@@ -158,7 +158,7 @@ namespace eosio { namespace client { namespace http {
          is_loopback = is_loopback && addr.is_loopback();
 
          if (resolved_port) {
-            EOS_ASSERT(*resolved_port == port, resolved_to_multiple_ports, "Service name \"${port}\" resolved to multiple ports and this is not supported!", ("port",url.port));
+            AGR_ASSERT(*resolved_port == port, resolved_to_multiple_ports, "Service name \"${port}\" resolved to multiple ports and this is not supported!", ("port",url.port));
          } else {
             resolved_port = port;
          }
@@ -272,7 +272,7 @@ namespace eosio { namespace client { namespace http {
          throw chain::missing_net_api_plugin_exception(FC_LOG_MESSAGE(error, "Net API plugin is not enabled"));
       }
    } else {
-      auto &&error_info = response_result.as<eosio::error_results>().error;
+      auto &&error_info = response_result.as<agrio::error_results>().error;
       // Construct fc exception from error
       const auto &error_details = error_info.details;
 
@@ -285,7 +285,7 @@ namespace eosio { namespace client { namespace http {
       throw fc::exception(logs, error_info.code, error_info.name, error_info.what);
    }
 
-   EOS_ASSERT( status_code == 200, http_request_fail, "Error code ${c}\n: ${msg}\n", ("c", status_code)("msg", re) );
+   AGR_ASSERT( status_code == 200, http_request_fail, "Error code ${c}\n: ${msg}\n", ("c", status_code)("msg", re) );
    return response_result;
    }
 }}}

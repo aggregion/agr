@@ -10,8 +10,8 @@ use File::Path;
 use Cwd;
 
 my $eos_home = defined $ENV{EOS_HOME} ? $ENV{EOS_HOME} : getcwd;
-my $eosd = $eos_home . "/programs/eosd/eosd";
-my $eosc = $eos_home . "/programs/eosc/eosc";
+my $agrd = $eos_home . "/programs/agrd/agrd";
+my $eosc = $eos_home . "/programs/agrc/agrc";
 
 my $nodes = defined $ENV{EOS_TEST_RING} ? $ENV{EOS_TEST_RING} : "1";
 my $pnodes = defined $ENV{EOS_TEST_PRODUCERS} ? $ENV{EOS_TEST_PRODUCERS} : "1";
@@ -40,7 +40,7 @@ if (!GetOptions("nodes=i" => \$nodes,
                 "pnodes=i" => \$pnodes)) {
     print "usage: $ARGV[0] [--nodes=<n>] [--pnodes=<n>] [--topo=<ring|star>] [--first-pause=<n>] [--launch-pause=<n>] [--duration=<n>] [--time-stamp=<time> \n";
     print "where:\n";
-    print "--nodes=n (default = 1) sets the number of eosd instances to launch\n";
+    print "--nodes=n (default = 1) sets the number of agrd instances to launch\n";
     print "--pnodes=n (default = 1) sets the number nodes that will also be producers\n";
     print "--topo=s (default = ring) sets the network topology to either a ring shape or a star shape\n";
     print "--first-pause=n (default = 0) sets the seconds delay after starting the first instance\n";
@@ -114,8 +114,8 @@ sub write_config {
         print $cfg "required-participation = true\n";
         print $cfg "private-key = [\"EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\",\"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3\"]\n";
 
-        print $cfg "plugin = eosio::producer_plugin\n";
-        print $cfg "plugin = eosio::chain_api_plugin\n";
+        print $cfg "plugin = agrio::producer_plugin\n";
+        print $cfg "plugin = agrio::chain_api_plugin\n";
 
         my $prod_ndx = ord('a') + $producer;
         my $num_prod = $pcount[$producer];
@@ -199,7 +199,7 @@ sub launch_nodes {
     }
 
     for (my $i = 0; $i < $nodes;  $i++) {
-        my @cmdline = ($eosd,
+        my @cmdline = ($agrd,
                        $gtsarg,
                        "--data-dir=$data_dir[$i]",
                        "--verbose-http-errors",

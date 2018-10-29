@@ -1,19 +1,19 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosiolib/asset.hpp>
-#include <eosiolib/eosio.hpp>
+#include <agriolib/asset.hpp>
+#include <agriolib/agrio.hpp>
 
 #include <string>
 
-namespace eosiosystem {
+namespace agriosystem {
    class system_contract;
 }
 
-namespace eosio {
+namespace agrio {
 
    using std::string;
 
@@ -51,8 +51,8 @@ namespace eosio {
             uint64_t primary_key()const { return supply.symbol.name(); }
          };
 
-         typedef eosio::multi_index<N(accounts), account> accounts;
-         typedef eosio::multi_index<N(stat), currency_stats> stats;
+         typedef agrio::multi_index<N(accounts), account> accounts;
+         typedef agrio::multi_index<N(stat), currency_stats> stats;
 
          void sub_balance( account_name owner, asset value );
          void add_balance( account_name owner, asset value, account_name ram_payer );
@@ -80,4 +80,4 @@ namespace eosio {
       return ac.balance;
    }
 
-} /// namespace eosio
+} /// namespace agrio

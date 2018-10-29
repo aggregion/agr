@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/chain/resource_limits.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/testing/chainbase_fixture.hpp>
+#include <agrio/chain/resource_limits.hpp>
+#include <agrio/chain/config.hpp>
+#include <agrio/testing/chainbase_fixture.hpp>
 
 #include <algorithm>
 
-using namespace eosio::chain::resource_limits;
-using namespace eosio::testing;
-using namespace eosio::chain;
+using namespace agrio::chain::resource_limits;
+using namespace agrio::testing;
+using namespace agrio::chain;
 
 
 

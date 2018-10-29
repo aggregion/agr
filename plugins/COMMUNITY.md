@@ -1,18 +1,18 @@
 # Community Plugin List
 
-This file contains a list of community authored plugins for `nodeos`, acting as a directory of the plugins that are available.
+This file contains a list of community authored plugins for `nodagr`, acting as a directory of the plugins that are available.
 
 Third parties are encouraged to make pull requests to this file (`develop` branch please) in order to list new plugins.
 
 | Description | URL |
 | ----------- | --- |
-| BP Heartbeat  | https://github.com/bancorprotocol/eos-producer-heartbeat-plugin |
+| BP Heartbeat  | https://github.com/bancorprotocol/agr-producer-heartbeat-plugin |
 | ElasticSearch | https://github.com/EOSLaoMao/elasticsearch_plugin |
 | Kafka | https://github.com/TP-Lab/kafka_plugin |
-| MySQL | https://github.com/eosBLACK/eosio_mysqldb_plugin |
-| SQL | https://github.com/asiniscalchi/eosio_sql_plugin |
-| Watch for specific actions and send them to an HTTP URL | https://github.com/eosauthority/eosio-watcher-plugin |
-| ZMQ / history | https://github.com/cc32d9/eos_zmq_plugin |
+| MySQL | https://github.com/agrBLACK/agrio_mysqldb_plugin |
+| SQL | https://github.com/asiniscalchi/agrio_sql_plugin |
+| Watch for specific actions and send them to an HTTP URL | https://github.com/agrauthority/agrio-watcher-plugin |
+| ZMQ / history | https://github.com/cc32d9/agr_zmq_plugin |
 
 ## DISCLAIMER:
 

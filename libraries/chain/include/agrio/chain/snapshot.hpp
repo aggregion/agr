@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/database_utils.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/database_utils.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include <fc/variant_object.hpp>
 #include <boost/core/demangle.hpp>
 #include <ostream>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
    /**
     * History:
     * Version 1: initial version with string identified sections and rows
@@ -183,7 +183,7 @@ namespace eosio { namespace chain {
          static auto apply(const T& data, F f) -> std::enable_if_t<is_chainbase_object_v<T>> {
             auto orig = data.id;
             f();
-            EOS_ASSERT(orig == data.id, snapshot_exception,
+            AGR_ASSERT(orig == data.id, snapshot_exception,
                        "Snapshot for ${type} mutates row member \"id\" which is illegal",
                        ("type",boost::core::demangle( typeid( T ).name() )));
          }

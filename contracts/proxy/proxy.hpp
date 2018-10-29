@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
 namespace proxy {
 
@@ -13,7 +13,7 @@ namespace proxy {
       account_name owner;
       uint32_t     delay;
 
-      EOSLIB_SERIALIZE( set_owner, (owner)(delay) )
+      AGRLIB_SERIALIZE( set_owner, (owner)(delay) )
    };
 
    //@abi table

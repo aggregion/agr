@@ -1,6 +1,6 @@
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
-class simpletoken : public eosio::contract {
+class simpletoken : public agrio::contract {
    public:
       simpletoken( account_name self )
       :contract(self),_accounts( _self, _self){}
@@ -9,7 +9,7 @@ class simpletoken : public eosio::contract {
          require_auth( from );
 
          const auto& fromacnt = _accounts.get( from );
-         eosio_assert( fromacnt.balance >= quantity, "overdrawn balance" );
+         agrio_assert( fromacnt.balance >= quantity, "overdrawn balance" );
          _accounts.modify( fromacnt, from, [&]( auto& a ){ a.balance -= quantity; } );
 
          add_balance( from, to, quantity );
@@ -28,7 +28,7 @@ class simpletoken : public eosio::contract {
          uint64_t primary_key()const { return owner; }
       };
 
-      eosio::multi_index<N(accounts), account> _accounts;
+      agrio::multi_index<N(accounts), account> _accounts;
 
       void add_balance( account_name payer, account_name to, uint64_t q ) {
          auto toitr = _accounts.find( to );
@@ -40,10 +40,10 @@ class simpletoken : public eosio::contract {
          } else {
            _accounts.modify( toitr, 0, [&]( auto& a ) {
               a.balance += q;
-              eosio_assert( a.balance >= q, "overflow detected" );
+              agrio_assert( a.balance >= q, "overflow detected" );
            });
          }
       }
 };
 
-EOSIO_ABI( simpletoken, (transfer)(issue) )
+AGRIO_ABI( simpletoken, (transfer)(issue) )

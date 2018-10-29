@@ -1,49 +1,49 @@
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/wast_to_wasm.hpp>
+#include <agrio/testing/tester.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/wast_to_wasm.hpp>
 
-#include <eosio.msig/eosio.msig.wast.hpp>
-#include <eosio.msig/eosio.msig.abi.hpp>
+#include <agrio.msig/agrio.msig.wast.hpp>
+#include <agrio.msig/agrio.msig.abi.hpp>
 
 #include <test_api/test_api.wast.hpp>
 
-#include <eosio.system/eosio.system.wast.hpp>
-#include <eosio.system/eosio.system.abi.hpp>
+#include <agrio.system/agrio.system.wast.hpp>
+#include <agrio.system/agrio.system.abi.hpp>
 
-#include <eosio.token/eosio.token.wast.hpp>
-#include <eosio.token/eosio.token.abi.hpp>
+#include <agrio.token/agrio.token.wast.hpp>
+#include <agrio.token/agrio.token.abi.hpp>
 
 #include <Runtime/Runtime.h>
 
 #include <fc/variant_object.hpp>
 
-using namespace eosio::testing;
-using namespace eosio;
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio::testing;
+using namespace agrio;
+using namespace agrio::chain;
+using namespace agrio::testing;
 using namespace fc;
 
 using mvo = fc::mutable_variant_object;
 
-class eosio_msig_tester : public tester {
+class agrio_msig_tester : public tester {
 public:
 
-   eosio_msig_tester() {
-      create_accounts( { N(eosio.msig), N(eosio.stake), N(eosio.ram), N(eosio.ramfee), N(alice), N(bob), N(carol) } );
+   agrio_msig_tester() {
+      create_accounts( { N(agrio.msig), N(agrio.stake), N(agrio.ram), N(agrio.ramfee), N(alice), N(bob), N(carol) } );
       produce_block();
 
       auto trace = base_tester::push_action(config::system_account_name, N(setpriv),
                                             config::system_account_name,  mutable_variant_object()
-                                            ("account", "eosio.msig")
+                                            ("account", "agrio.msig")
                                             ("is_priv", 1)
       );
 
-      set_code( N(eosio.msig), eosio_msig_wast );
-      set_abi( N(eosio.msig), eosio_msig_abi );
+      set_code( N(agrio.msig), agrio_msig_wast );
+      set_abi( N(agrio.msig), agrio_msig_abi );
 
       produce_blocks();
-      const auto& accnt = control->db().get<account_object,by_name>( N(eosio.msig) );
+      const auto& accnt = control->db().get<account_object,by_name>( N(agrio.msig) );
       abi_def abi;
       BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
       abi_ser.set_abi(abi, abi_serializer_max_time);
@@ -99,14 +99,14 @@ public:
       base_tester::push_action(contract, N(create), contract, act );
    }
    void issue( name to, const asset& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( N(eosio.token), N(issue), manager, mutable_variant_object()
+      base_tester::push_action( N(agrio.token), N(issue), manager, mutable_variant_object()
                                 ("to",      to )
                                 ("quantity", amount )
                                 ("memo", "")
                                 );
    }
    void transfer( name from, name to, const string& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( N(eosio.token), N(transfer), manager, mutable_variant_object()
+      base_tester::push_action( N(agrio.token), N(transfer), manager, mutable_variant_object()
                                 ("from",    from)
                                 ("to",      to )
                                 ("quantity", asset::from_string(amount) )
@@ -118,7 +118,7 @@ public:
       //temporary code. current get_currency_balancy uses table name N(accounts) from currency.h
       //generic_currency table name is N(account).
       const auto& db  = control->db();
-      const auto* tbl = db.find<table_id_object, by_code_scope_table>(boost::make_tuple(N(eosio.token), act, N(accounts)));
+      const auto* tbl = db.find<table_id_object, by_code_scope_table>(boost::make_tuple(N(agrio.token), act, N(accounts)));
       share_type result = 0;
 
       // the balance is implied to be 0 if either the table or row does not exist
@@ -137,7 +137,7 @@ public:
       vector<account_name> accounts;
       if( auth )
          accounts.push_back( signer );
-      auto trace = base_tester::push_action( N(eosio.msig), name, accounts, data );
+      auto trace = base_tester::push_action( N(agrio.msig), name, accounts, data );
       produce_block();
       BOOST_REQUIRE_EQUAL( true, chain_has_transaction(trace->id) );
       return trace;
@@ -148,7 +148,7 @@ public:
    abi_serializer abi_ser;
 };
 
-transaction eosio_msig_tester::reqauth( account_name from, const vector<permission_level>& auths, const fc::microseconds& max_serialization_time ) {
+transaction agrio_msig_tester::reqauth( account_name from, const vector<permission_level>& auths, const fc::microseconds& max_serialization_time ) {
    fc::variants v;
    for ( auto& level : auths ) {
       v.push_back(fc::mutable_variant_object()
@@ -176,9 +176,9 @@ transaction eosio_msig_tester::reqauth( account_name from, const vector<permissi
    return trx;
 }
 
-BOOST_AUTO_TEST_SUITE(eosio_msig_tests)
+BOOST_AUTO_TEST_SUITE(agrio_msig_tests)
 
-BOOST_FIXTURE_TEST_CASE( propose_approve_execute, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( propose_approve_execute, agrio_msig_tester ) try {
    auto trx = reqauth("alice", {permission_level{N(alice), config::active_name}}, abi_serializer_max_time );
 
    push_action( N(alice), N(propose), mvo()
@@ -194,8 +194,8 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_execute, eosio_msig_tester ) try {
                                           ("proposal_name", "first")
                                           ("executer",      "alice")
                             ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
+                            agrio_assert_message_exception,
+                            agrio_assert_message_is("transaction authorization failed")
    );
 
    //approve and execute
@@ -219,7 +219,7 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_execute, eosio_msig_tester ) try {
 } FC_LOG_AND_RETHROW()
 
 
-BOOST_FIXTURE_TEST_CASE( propose_approve_unapprove, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( propose_approve_unapprove, agrio_msig_tester ) try {
    auto trx = reqauth("alice", {permission_level{N(alice), config::active_name}}, abi_serializer_max_time );
 
    push_action( N(alice), N(propose), mvo()
@@ -246,14 +246,14 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_unapprove, eosio_msig_tester ) try {
                                           ("proposal_name", "first")
                                           ("executer",      "alice")
                             ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
+                            agrio_assert_message_exception,
+                            agrio_assert_message_is("transaction authorization failed")
    );
 
 } FC_LOG_AND_RETHROW()
 
 
-BOOST_FIXTURE_TEST_CASE( propose_approve_by_two, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( propose_approve_by_two, agrio_msig_tester ) try {
    auto trx = reqauth("alice", vector<permission_level>{ { N(alice), config::active_name }, { N(bob), config::active_name } }, abi_serializer_max_time );
    push_action( N(alice), N(propose), mvo()
                   ("proposer",      "alice")
@@ -275,8 +275,8 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_by_two, eosio_msig_tester ) try {
                                           ("proposal_name", "first")
                                           ("executer",      "alice")
                             ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
+                            agrio_assert_message_exception,
+                            agrio_assert_message_is("transaction authorization failed")
    );
 
    //approve by bob and execute
@@ -301,7 +301,7 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_by_two, eosio_msig_tester ) try {
 } FC_LOG_AND_RETHROW()
 
 
-BOOST_FIXTURE_TEST_CASE( propose_with_wrong_requested_auth, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( propose_with_wrong_requested_auth, agrio_msig_tester ) try {
    auto trx = reqauth("alice", vector<permission_level>{ { N(alice), config::active_name },  { N(bob), config::active_name } }, abi_serializer_max_time );
    //try with not enough requested auth
    BOOST_REQUIRE_EXCEPTION( push_action( N(alice), N(propose), mvo()
@@ -310,16 +310,16 @@ BOOST_FIXTURE_TEST_CASE( propose_with_wrong_requested_auth, eosio_msig_tester ) 
                                              ("trx",           trx)
                                              ("requested", vector<permission_level>{ { N(alice), config::active_name } } )
                             ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
+                            agrio_assert_message_exception,
+                            agrio_assert_message_is("transaction authorization failed")
    );
 
 } FC_LOG_AND_RETHROW()
 
 
-BOOST_FIXTURE_TEST_CASE( big_transaction, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( big_transaction, agrio_msig_tester ) try {
    vector<permission_level> perm = { { N(alice), config::active_name }, { N(bob), config::active_name } };
-   auto wasm = wast_to_wasm( eosio_token_wast );
+   auto wasm = wast_to_wasm( agrio_token_wast );
 
    variant pretty_trx = fc::mutable_variant_object()
       ("expiration", "2020-01-01T00:30")
@@ -381,35 +381,35 @@ BOOST_FIXTURE_TEST_CASE( big_transaction, eosio_msig_tester ) try {
 
 
 
-BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, agrio_msig_tester ) try {
 
-   // required to set up the link between (eosio active) and (eosio.prods active)
+   // required to set up the link between (agrio active) and (agrio.prods active)
    //
-   //                  eosio active
+   //                  agrio active
    //                       |
-   //             eosio.prods active (2/3 threshold)
+   //             agrio.prods active (2/3 threshold)
    //             /         |        \             <--- implicitly updated in onblock action
    // alice active     bob active   carol active
 
    set_authority(config::system_account_name, "active", authority(1,
-      vector<key_weight>{{get_private_key("eosio", "active").get_public_key(), 1}},
+      vector<key_weight>{{get_private_key("agrio", "active").get_public_key(), 1}},
       vector<permission_level_weight>{{{config::producers_account_name, config::active_name}, 1}}), "owner",
       { { config::system_account_name, "active" } }, { get_private_key( config::system_account_name, "active" ) });
 
    set_producers( {N(alice),N(bob),N(carol)} );
    produce_blocks(50);
 
-   create_accounts( { N(eosio.token) } );
-   set_code( N(eosio.token), eosio_token_wast );
-   set_abi( N(eosio.token), eosio_token_abi );
+   create_accounts( { N(agrio.token) } );
+   set_code( N(agrio.token), agrio_token_wast );
+   set_abi( N(agrio.token), agrio_token_abi );
 
-   create_currency( N(eosio.token), config::system_account_name, core_from_string("10000000000.0000") );
+   create_currency( N(agrio.token), config::system_account_name, core_from_string("10000000000.0000") );
    issue(config::system_account_name, core_from_string("1000000000.0000"));
    BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
-                        get_balance("eosio") + get_balance("eosio.ramfee") + get_balance("eosio.stake") + get_balance("eosio.ram") );
+                        get_balance("agrio") + get_balance("agrio.ramfee") + get_balance("agrio.stake") + get_balance("agrio.ram") );
 
-   set_code( config::system_account_name, eosio_system_wast );
-   set_abi( config::system_account_name, eosio_system_abi );
+   set_code( config::system_account_name, agrio_system_wast );
+   set_abi( config::system_account_name, agrio_system_abi );
 
    produce_blocks();
 
@@ -418,7 +418,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
 
    BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
-                        get_balance("eosio") + get_balance("eosio.ramfee") + get_balance("eosio.stake") + get_balance("eosio.ram") );
+                        get_balance("agrio") + get_balance("agrio.ramfee") + get_balance("agrio.stake") + get_balance("agrio.ram") );
 
    vector<permission_level> perm = { { N(alice), config::active_name }, { N(bob), config::active_name },
       {N(carol), config::active_name} };
@@ -477,7 +477,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
                   ("proposal_name", "first")
                   ("level",         permission_level{ N(carol), config::active_name })
    );
-   // execute by alice to replace the eosio system contract
+   // execute by alice to replace the agrio system contract
    transaction_trace_ptr trace;
    control->applied_transaction.connect([&]( const transaction_trace_ptr& t) { if (t->scheduled) { trace = t; } } );
 
@@ -494,16 +494,16 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    // can't create account because system contract was replace by the test_api contract
 
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), config::system_account_name, core_from_string("1.0000"), false ),
-                            eosio_assert_message_exception, eosio_assert_message_is("Unknown Test")
+                            agrio_assert_message_exception, agrio_assert_message_is("Unknown Test")
 
    );
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester ) try {
+BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, agrio_msig_tester ) try {
 
-   // set up the link between (eosio active) and (eosio.prods active)
+   // set up the link between (agrio active) and (agrio.prods active)
    set_authority(config::system_account_name, "active", authority(1,
-      vector<key_weight>{{get_private_key("eosio", "active").get_public_key(), 1}},
+      vector<key_weight>{{get_private_key("agrio", "active").get_public_key(), 1}},
       vector<permission_level_weight>{{{config::producers_account_name, config::active_name}, 1}}), "owner",
       { { config::system_account_name, "active" } }, { get_private_key( config::system_account_name, "active" ) });
 
@@ -511,16 +511,16 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    set_producers( {N(alice),N(bob),N(carol), N(apple)} );
    produce_blocks(50);
 
-   create_accounts( { N(eosio.token) } );
-   set_code( N(eosio.token), eosio_token_wast );
-   set_abi( N(eosio.token), eosio_token_abi );
+   create_accounts( { N(agrio.token) } );
+   set_code( N(agrio.token), agrio_token_wast );
+   set_abi( N(agrio.token), agrio_token_abi );
 
-   create_currency( N(eosio.token), config::system_account_name, core_from_string("10000000000.0000") );
+   create_currency( N(agrio.token), config::system_account_name, core_from_string("10000000000.0000") );
    issue(config::system_account_name, core_from_string("1000000000.0000"));
-   BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "eosio" ) );
+   BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "agrio" ) );
 
-   set_code( config::system_account_name, eosio_system_wast );
-   set_abi( config::system_account_name, eosio_system_abi );
+   set_code( config::system_account_name, agrio_system_wast );
+   set_abi( config::system_account_name, agrio_system_abi );
 
    produce_blocks();
 
@@ -529,7 +529,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    create_account_with_resources( N(carol1111111), config::system_account_name, core_from_string("1.0000"), false );
 
    BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"),
-                        get_balance("eosio") + get_balance("eosio.ramfee") + get_balance("eosio.stake") + get_balance("eosio.ram") );
+                        get_balance("agrio") + get_balance("agrio.ramfee") + get_balance("agrio.stake") + get_balance("agrio.ram") );
 
    vector<permission_level> perm = { { N(alice), config::active_name }, { N(bob), config::active_name },
       {N(carol), config::active_name}, {N(apple), config::active_name}};
@@ -590,7 +590,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
                      ("proposal_name", "first")
                      ("executer",      "alice")
       ),
-      eosio_assert_message_exception, eosio_assert_message_is("transaction authorization failed")
+      agrio_assert_message_exception, agrio_assert_message_is("transaction authorization failed")
    );
 
    //approve by apple
@@ -599,7 +599,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
                   ("proposal_name", "first")
                   ("level",         permission_level{ N(apple), config::active_name })
    );
-   // execute by alice to replace the eosio system contract
+   // execute by alice to replace the agrio system contract
    transaction_trace_ptr trace;
    control->applied_transaction.connect([&]( const transaction_trace_ptr& t) { if (t->scheduled) { trace = t; } } );
 
@@ -617,7 +617,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    // can't create account because system contract was replace by the test_api contract
 
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( N(alice1111112), config::system_account_name, core_from_string("1.0000"), false ),
-                            eosio_assert_message_exception, eosio_assert_message_is("Unknown Test")
+                            agrio_assert_message_exception, agrio_assert_message_is("Unknown Test")
 
    );
 } FC_LOG_AND_RETHROW()

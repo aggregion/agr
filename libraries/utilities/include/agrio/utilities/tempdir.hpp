@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
@@ -8,8 +8,8 @@
 
 #include <fc/filesystem.hpp>
 
-namespace eosio { namespace utilities {
+namespace agrio { namespace utilities {
 
 fc::path temp_directory_path();
 
-} } // eosio::utilities
+} } // agrio::utilities

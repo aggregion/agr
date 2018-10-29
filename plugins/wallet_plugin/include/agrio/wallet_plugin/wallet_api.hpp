@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/transaction.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/transaction.hpp>
 
 using namespace std;
-using namespace eosio::chain;
+using namespace agrio::chain;
 
-namespace eosio { namespace wallet {
+namespace agrio { namespace wallet {
 
 class wallet_api
 {

@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 #include <appbase/application.hpp>
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 
-namespace eosio {
+namespace agrio {
 
 using namespace appbase;
 

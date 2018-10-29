@@ -7,9 +7,9 @@ from TestHelper import TestHelper
 import subprocess
 
 ###############################################################
-# nodeos_run_remote_test
-#  Tests remote capability of the nodeos_run_test. Test will setup cluster and pass nodes info to nodeos_run_test. E.g.
-#  nodeos_run_remote_test.py -v --clean-run --dump-error-detail
+# nodagr_run_remote_test
+#  Tests remote capability of the nodagr_run_test. Test will setup cluster and pass nodes info to nodagr_run_test. E.g.
+#  nodagr_run_remote_test.py -v --clean-run --dump-error-detail
 ###############################################################
 
 Print=Utils.Print
@@ -30,7 +30,7 @@ delay=1
 prodCount=1 # producers per producer node
 pnodes=1
 total_nodes=pnodes
-actualTest="tests/nodeos_run_test.py"
+actualTest="tests/nodagr_run_test.py"
 testSuccessful=False
 
 cluster=Cluster(walletd=True)
@@ -56,7 +56,7 @@ try:
     defproducerbPrvtKey=producerKeys["defproducerb"]["private"]
 
     cmd="%s --dont-launch --defproducera_prvt_key %s --defproducerb_prvt_key %s %s %s %s" % (actualTest, defproduceraPrvtKey, defproducerbPrvtKey, "-v" if debug else "", "--leave-running" if dontKill else "", "--only-bios" if onlyBios else "")
-    Print("Starting up %s test: %s" % ("nodeos", actualTest))
+    Print("Starting up %s test: %s" % ("nodagr", actualTest))
     Print("cmd: %s\n" % (cmd))
     if 0 != subprocess.call(cmd, shell=True):
         errorExit("failed to run cmd.")

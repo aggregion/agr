@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 
 #include <boost/test/unit_test.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/testing/tester.hpp>
 
-using namespace eosio;
+using namespace agrio;
 using namespace testing;
 using namespace chain;
 
