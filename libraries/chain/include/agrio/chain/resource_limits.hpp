@@ -1,6 +1,7 @@
 #pragma once
 #include <agrio/chain/exceptions.hpp>
 #include <agrio/chain/types.hpp>
+#include <agrio/chain/snapshot.hpp>
 #include <chainbase/chainbase.hpp>
 #include <set>
 
@@ -43,6 +44,9 @@ namespace agrio { namespace chain { namespace resource_limits {
 
          void add_indices();
          void initialize_database();
+         void add_to_snapshot( const snapshot_writer_ptr& snapshot ) const;
+         void read_from_snapshot( const snapshot_reader_ptr& snapshot );
+
          void initialize_account( const account_name& account );
          void set_block_parameters( const elastic_limit_parameters& cpu_limit_parameters, const elastic_limit_parameters& net_limit_parameters );
 
@@ -80,3 +84,5 @@ namespace agrio { namespace chain { namespace resource_limits {
 } } } /// agrio::chain
 
 FC_REFLECT( agrio::chain::resource_limits::account_resource_limit, (used)(available)(max) )
+FC_REFLECT( agrio::chain::resource_limits::ratio, (numerator)(denominator))
+FC_REFLECT( agrio::chain::resource_limits::elastic_limit_parameters, (target)(max)(periods)(max_multiplier)(contract_rate)(expand_rate))

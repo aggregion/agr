@@ -79,4 +79,4 @@ namespace agrio { namespace chain {
 
 CHAINBASE_SET_INDEX_TYPE(agrio::chain::permission_link_object, agrio::chain::permission_link_index)
 
-FC_REFLECT(agrio::chain::permission_link_object, (id)(account)(code)(message_type)(required_permission))
+FC_REFLECT(agrio::chain::permission_link_object, (account)(code)(message_type)(required_permission))

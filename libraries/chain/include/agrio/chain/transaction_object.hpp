@@ -51,3 +51,4 @@ namespace agrio { namespace chain {
 
 CHAINBASE_SET_INDEX_TYPE(agrio::chain::transaction_object, agrio::chain::transaction_multi_index)
 
+FC_REFLECT(agrio::chain::transaction_object, (expiration)(trx_id))

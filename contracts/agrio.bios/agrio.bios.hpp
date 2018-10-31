@@ -34,6 +34,11 @@ namespace agrio {
             set_proposed_producers(buffer, size);
          }
 
+         void setparams( const agrio::blockchain_parameters& params ) {
+            require_auth( _self );
+            set_blockchain_parameters( params );
+         }
+
          void reqauth( action_name from ) {
             require_auth( from );
          }

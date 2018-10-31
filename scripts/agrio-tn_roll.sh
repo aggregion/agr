@@ -82,10 +82,10 @@ cp $SDIR/$RD/$prog $RD/$prog
 
 if [ $DD = "all" ]; then
     for AGRIO_RESTART_DATA_DIR in `ls -d var/lib/node_??`; do
-        bash $AGRIO_HOME/scripts/agrio-tn_up.sh $*
+        bash $AGRIO_HOME/scripts/agrio-tn_up.sh "$*"
     done
 else
-    bash $AGRIO_HOME/scripts/agrio-tn_up.sh $*
+    bash $AGRIO_HOME/scripts/agrio-tn_up.sh "$*"
 fi
 unset AGRIO_RESTART_DATA_DIR
 

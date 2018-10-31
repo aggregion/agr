@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################
 # This is the AGRIO automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/AGRIO/agr
+# This file was downloaded from https://github.com/aggregion/agr
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -27,7 +27,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/AGRIO/agr/blob/master/LICENSE.txt
+# https://github.com/aggregion/agr/blob/master/LICENSE.txt
 ##########################################################################
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -54,6 +54,13 @@ fi
    create_symlink() {
       pushd /usr/local/bin &> /dev/null
       ln -sf ../agrio/bin/$1 $1
+      popd &> /dev/null
+   }
+
+   create_cmake_symlink() {
+      mkdir -p /usr/local/lib/cmake/agrio
+      pushd /usr/local/lib/cmake/agrio &> /dev/null
+      ln -sf ../../../agrio/lib/cmake/agrio/$1 $1
       popd &> /dev/null
    }
 
@@ -94,6 +101,7 @@ fi
    popd &> /dev/null 
 
    install_symlinks   
+   create_cmake_symlink "agrio-config.cmake"
 
 
    printf "\n\n${bldred}\t _______  _______  _______ _________ _______ \n"

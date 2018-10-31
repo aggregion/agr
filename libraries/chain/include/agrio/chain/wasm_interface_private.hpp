@@ -2,7 +2,7 @@
 
 #include <agrio/chain/wasm_interface.hpp>
 #include <agrio/chain/webassembly/wavm.hpp>
-#include <agrio/chain/webassembly/binaryen.hpp>
+#include <agrio/chain/webassembly/wabt.hpp>
 #include <agrio/chain/webassembly/runtime_interface.hpp>
 #include <agrio/chain/wasm_agrio_injection.hpp>
 #include <agrio/chain/transaction_context.hpp>
@@ -26,8 +26,8 @@ namespace agrio { namespace chain {
       wasm_interface_impl(wasm_interface::vm_type vm) {
          if(vm == wasm_interface::vm_type::wavm)
             runtime_interface = std::make_unique<webassembly::wavm::wavm_runtime>();
-         else if(vm == wasm_interface::vm_type::binaryen)
-            runtime_interface = std::make_unique<webassembly::binaryen::binaryen_runtime>();
+         else if(vm == wasm_interface::vm_type::wabt)
+            runtime_interface = std::make_unique<webassembly::wabt_runtime::wabt_runtime>();
          else
             AGR_THROW(wasm_exception, "wasm_interface_impl fall through");
       }
@@ -95,7 +95,7 @@ namespace agrio { namespace chain {
 
 #define _REGISTER_INTRINSIC_EXPLICIT(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
    _REGISTER_WAVM_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
-   _REGISTER_BINARYEN_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
+   _REGISTER_WABT_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
 
 #define _REGISTER_INTRINSIC4(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
    _REGISTER_INTRINSIC_EXPLICIT(CLS, MOD, METHOD, WASM_SIG, NAME, SIG )

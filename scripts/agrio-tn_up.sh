@@ -9,6 +9,8 @@ connected="0"
 rundir=programs/nodagr
 prog=nodagr
 
+# Quote any args that are "*", so they are not expanded
+qargs=`echo "$*" | sed -e 's/ \* / "*" /' -e 's/ \*$/ "*"/'`
 
 if [ "$PWD" != "$AGRIO_HOME" ]; then
     echo $0 must only be run from $AGRIO_HOME
@@ -33,8 +35,8 @@ rm $datadir/stderr.txt
 ln -s $log $datadir/stderr.txt
 
 relaunch() {
-    echo "$rundir/$prog $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log "
-    nohup $rundir/$prog $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log &
+    echo "$rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log "
+    nohup $rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log &
     pid=$!
     echo pid = $pid
     echo $pid > $datadir/$prog.pid
@@ -56,7 +58,7 @@ relaunch() {
 
 if [ -z "$AGRIO_LEVEL" ]; then
     echo starting with no modifiers
-    relaunch $*
+    relaunch
     if [ "$connected" -eq 0 ]; then
         AGRIO_LEVEL=replay
     else
@@ -66,7 +68,7 @@ fi
 
 if [ "$AGRIO_LEVEL" == replay ]; then
     echo starting with replay
-    relaunch $* --hard-replay-blockchain
+    relaunch --hard-replay-blockchain
     if [  "$connected" -eq 0 ]; then
         AGRIO_LEVEL=resync
     else
@@ -75,5 +77,5 @@ if [ "$AGRIO_LEVEL" == replay ]; then
 fi
 if [ "$AGRIO_LEVEL" == resync ]; then
     echo starting with delete-all-blocks
-    relaunch $* --delete-all-blocks
+    relaunch --delete-all-blocks
 fi
