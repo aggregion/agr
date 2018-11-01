@@ -120,3 +120,4 @@ ecmd set contract agrio contracts/agrio.system agrio.system.wasm agrio.system.ab
 ###INSERT cacmd
 
 pkill -15 kagrd
+
