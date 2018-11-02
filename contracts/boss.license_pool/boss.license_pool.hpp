@@ -59,25 +59,23 @@ public:
   void offerpropset(uint128_t     offerUUID,
                     uint128_t     name,
                     const string& value);
-  void offerproprem(uint128_t     offerUUID,
-                    uint128_t     name,
-                    const string& value);
+  void offerproprem(uint128_t offerUUID,
+                    uint128_t name);
 
   // Distribution Delegations
   void distrcreate(uint128_t    distributionUUID,
                    uint128_t    parentUUID,
                    uint128_t    offerUUID,
-                   account_name deleg_to);
+                   account_name delegate_to);
   void distrruleset(uint128_t     distributionUUID,
                     uint8_t       type,
                     uint8_t       condition,
                     uint128_t     name,
                     const string& value);
-  void distrrulerem(uint128_t     distributionUUID,
-                    uint8_t       type,
-                    uint8_t       condition,
-                    uint128_t     name,
-                    const string& value);
+  void distrrulerem(uint128_t distributionUUID,
+                    uint8_t   type,
+                    uint8_t   condition,
+                    uint128_t name);
   void distrlimset(uint128_t distributionUUID,
                    uint128_t name,
                    uint16_t  change,
@@ -92,9 +90,8 @@ public:
   void licpropset(uint128_t     licenseUUID,
                   uint128_t     name,
                   const string& value);
-  void licproprem(uint128_t     licenseUUID,
-                  uint128_t     name,
-                  const string& value);
+  void licproprem(uint128_t licenseUUID,
+                  uint128_t name);
   void licactivate(uint128_t licenseUUID);
   void licrevoke(uint128_t licenseUUID);
 
@@ -138,7 +135,7 @@ public:
     AGRLIB_SERIALIZE(licenseoffer, (id)(offerUUID)(name)(description))
   };
   typedef multi_index<N(licenseoffer), licenseoffer,
-                      indexed_by<N(byofferuuid), const_mem_fun<licenseoffer, uint128_t, &license::byofferuuid> > >license_offer_index;
+                      indexed_by<N(byofferuuid), const_mem_fun<licenseoffer, uint128_t, &licenseoffer::byofferuuid> > >license_offer_index;
 
   // @abi table offerprops i64
   struct offerprops {
@@ -157,7 +154,7 @@ public:
 
     AGRLIB_SERIALIZE(offerprops, (id)(offerUUID)(key)(value))
   };
-  typedef multi_index<N(licsetting), offerprops, indexed_by<N(byuuidkey), const_mem_fun<offerprops, key256, &offerprops::byuuidkey> > >
+  typedef multi_index<N(offerprops), offerprops, indexed_by<N(byuuidkey), const_mem_fun<offerprops, key256, &offerprops::byuuidkey> > >
     offerprops_index;
 
   // @abi table license i64
@@ -196,7 +193,7 @@ public:
       return make_uuids_key(licenseUUID, key);
     }
 
-    AGRLIB_SERIALIZE(licprops, (id)(recordUUID)(key)(value))
+    AGRLIB_SERIALIZE(licprops, (id)(licenseUUID)(key)(value))
   };
   typedef multi_index<N(licprops), licprops, indexed_by<N(byuuidkey), const_mem_fun<licprops, key256, &licprops::byuuidkey> > > licprops_index;
 
@@ -239,9 +236,10 @@ public:
       return distributionUUID;
     }
 
-    AGRLIB_SERIALIZE(rule, (id)(distributionUUID)(type)(condition)(name)(value))
+    AGRLIB_SERIALIZE(distrrule, (id)(distributionUUID)(type)(condition)(name)(value))
   };
-  typedef multi_index<N(distr_lic_rule), distr_delg, indexed_by<N(bydistruuid)> > distrrule_index;
+  typedef multi_index<N(distrrule), distrrule, indexed_by<N(bydistruuid), const_mem_fun<distrrule, uint128_t, &distrrule::bydistruuid> > >
+    distrrule_index;
 
   // @abi table distrlimit i64
   struct distrlimit {
@@ -263,9 +261,9 @@ public:
       return make_uuids_key(distributionUUID, name);
     }
 
-    AGRLIB_SERIALIZE(rule, (id)(distributionUUID)(name)(change)(value))
+    AGRLIB_SERIALIZE(distrlimit, (id)(distributionUUID)(name)(change)(value))
   };
-  typedef multi_index<N(distrlimit), distr_delg,
+  typedef multi_index<N(distrlimit), distrlimit,
                       indexed_by<N(byuuidkey), const_mem_fun<distrlimit, key256, &distrlimit::byuuidkey> >,
                       indexed_by<N(bydistruuid), const_mem_fun<distrlimit, uint128_t, &distrlimit::bydistruuid> > >distrlimit_index;
 
@@ -282,6 +280,6 @@ protected:
 
   void check_counters(uint128_t distributionUUID,
                       bool      shift);
-  bool check_rules(uint128_t licenseUUID);
+  void check_rules(uint128_t licenseUUID);
 };
 }
