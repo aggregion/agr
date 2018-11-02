@@ -1,9 +1,7 @@
 #pragma once
 namespace uuids {
 namespace properties {
-const char Role_STR[]   = "8c12e6482c3a4d3f9f9211ad7e98a38d";
-const uint128_t Role_HI = 0x8c12e6482c3a4d3f;
-const uint128_t Role_LO = 0x9f9211ad7e98a38d;
+const uint128_t NotValidUUID = 0;
 
 const char ContentType_STR[]   =  "2b93f503da5b46cbaaf0ccb3b2493b79";
 const uint128_t ContentType_HI = 0x2b93f503da5b46cb;
