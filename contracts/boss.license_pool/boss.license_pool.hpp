@@ -23,76 +23,90 @@ class license_pool : public agrio::contract {
 public:
 
   enum class RuleCondition: uint8_t {
-    Less = 0,
-    LessEqual,
-    Equal,
-    MoreEqual,
-    More,
-    OneFromList,
-    AllFromList,
-    NotValidCondition
+    NotValidCondition = 0,
+    Less = 1,
+    LessEqual = 2,
+    Equal = 3,
+    GreaterEqual = 4,
+    Greater = 5,
+    OneFromList = 6,
+    AllFromList = 7,
   };
 
   enum class RuleType: uint8_t {
-    Allow = 0,
-    Deny,
-    NotValidRule
+    NotValidRule = 0,
+    Allow = 1,
+    Deny = 2,
   };
 
   enum class LicenseState: uint8_t {
-    Reserved = 0,
-    Active,
-    Revoked,
-    NotValidState
+    NotValidState = 0,
+    Reserved = 1,
+    Active = 2,
+    Revoked = 3,
   };
 
   license_pool(account_name issuer);
 
+  /// @abi action
   void initialize(const string& name,
                   const string& description);
 
   // License Offers
+  /// @abi action
   void offerset(uint128_t     offerUUID,
                 account_name  owner,
                 const string& name,
                 const string& description);
+  /// @abi action
   void offerpropset(uint128_t     offerUUID,
                     uint128_t     name,
                     const string& value);
+  /// @abi action
   void offerproprem(uint128_t offerUUID,
                     uint128_t name);
 
   // Distribution Delegations
+  /// @abi action
   void distrcreate(uint128_t    distributionUUID,
                    uint128_t    parentUUID,
                    uint128_t    offerUUID,
                    account_name delegate_to);
+  /// @abi action
   void distrruleset(uint128_t     distributionUUID,
                     uint8_t       type,
                     uint8_t       condition,
                     uint128_t     name,
                     const string& value);
+  /// @abi action
   void distrrulerem(uint128_t distributionUUID,
                     uint8_t   type,
                     uint8_t   condition,
                     uint128_t name);
+  /// @abi action
   void distrlimset(uint128_t distributionUUID,
                    uint128_t name,
                    uint16_t  change,
                    uint16_t  remain);
+  /// @abi action
   void distrlimrem(uint128_t distributionUUID,
                    uint128_t name);
 
   // Licenses
+  /// @abi action
   void liccreate(uint128_t    distributionUUID,
                  uint128_t    licenseUUID,
                  account_name issued_to);
+  /// @abi action
   void licpropset(uint128_t     licenseUUID,
                   uint128_t     name,
                   const string& value);
+  /// @abi action
   void licproprem(uint128_t licenseUUID,
                   uint128_t name);
+  /// @abi action
   void licactivate(uint128_t licenseUUID);
+  /// @abi action
   void licrevoke(uint128_t licenseUUID);
 
   // @abi table info i64

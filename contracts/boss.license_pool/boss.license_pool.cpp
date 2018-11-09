@@ -4,6 +4,7 @@
 using namespace std;
 using namespace agrio;
 namespace boss {
+
 license_pool::license_pool(account_name issuer)
   : contract(issuer),
   _offers(_self, _self),
@@ -433,11 +434,11 @@ void license_pool::check_rules(uint128_t licenseUUID) {
           match = (itProp->value == itRule->value);
           break;
 
-        case RuleCondition::MoreEqual:
+        case RuleCondition::GreaterEqual:
           match = (itProp->value >= itRule->value);
           break;
 
-        case RuleCondition::More:
+        case RuleCondition::Greater:
           match = (itProp->value > itRule->value);
           break;
 
@@ -462,4 +463,17 @@ void license_pool::check_rules(uint128_t licenseUUID) {
 }
 
 AGRIO_ABI(boss::license_pool,
-          (initialize)(offerset)(offerpropset)(offerproprem)(distrcreate)(distrruleset)(distrrulerem)(distrlimset)(distrlimrem)(liccreate)(licrevoke))
+          (initialize)
+          (offerset)
+          (offerpropset)
+          (offerproprem)
+          (distrcreate)
+          (distrruleset)
+          (distrrulerem)
+          (distrlimset)
+          (distrlimrem)
+          (liccreate)
+          (licpropset)
+          (licproprem)
+          (licactivate)
+          (licrevoke))
