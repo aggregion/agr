@@ -102,7 +102,7 @@ def verifyProductionRounds(trans, node, prodsActive, rounds):
         prodsSeen={}
         lastBlockProducer=None
         for j in range(0, 21):
-            # each new set of 12 blocks should have a different blockProducer 
+            # each new set of 12 blocks should have a different blockProducer
             if lastBlockProducer is not None and lastBlockProducer==node.getBlockProducerByNum(blockNum):
                 Utils.cmdError("expected blockNum %s to be produced by any of the valid producers except %s" % (blockNum, lastBlockProducer))
                 Utils.errorExit("Failed because of incorrect block producer order")
@@ -213,7 +213,7 @@ try:
         transferAmount="100000000.0000 {0}".format(CORE_SYMBOL)
         Print("Transfer funds %s from account %s to %s" % (transferAmount, cluster.agrioAccount.name, account.name))
         node.transferFunds(cluster.agrioAccount, account, transferAmount, "test transfer")
-        trans=node.delegatebw(account, 20000000.0000, 20000000.0000, waitForTransBlock=True, exitOnError=True)
+        trans=node.delegatebw(account, 50000000.0000, 50000000.0000, waitForTransBlock=True, exitOnError=True)
 
     # containers for tracking producers
     prodsActive={}
