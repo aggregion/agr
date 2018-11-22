@@ -30,6 +30,9 @@ def analyzeBPs(bps0, bps1, expectDivergence):
     length=len(bps0)
     firstDivergence=None
     errorInDivergence=False
+    bpsStr=None
+    bpsStr0=None
+    bpsStr1=None
     while start < length:
         bpsStr=None
         for i in range(start,length):
@@ -206,6 +209,7 @@ try:
             producers.extend(node.producers)
 
 
+
     # ***   delegate bandwidth to accounts   ***
 
     node=prodNodes[0]
@@ -216,7 +220,7 @@ try:
         transferAmount="100000000.0000 {0}".format(CORE_SYMBOL)
         Print("Transfer funds %s from account %s to %s" % (transferAmount, cluster.agrioAccount.name, account.name))
         node.transferFunds(cluster.agrioAccount, account, transferAmount, "test transfer", waitForTransBlock=True)
-        trans=node.delegatebw(account, 20000000.0000, 20000000.0000, waitForTransBlock=True, exitOnError=True)
+        trans=node.delegatebw(account, 50000000.0000, 50000000.0000, waitForTransBlock=True, exitOnError=True)
 
 
     # ***   vote using accounts   ***
@@ -269,7 +273,7 @@ try:
             blockProducer=node.getBlockProducerByNum(blockNum)
 
         if producerToSlot[lastBlockProducer]["count"]!=inRowCountPerProducer:
-            Utils.errorExit("Producer %s, in slot %d, expected to produce %d blocks but produced %d blocks" % (blockProducer, inRowCountPerProducer, producerToSlot[lastBlockProducer]["count"]))
+            Utils.errorExit("Producer %s, in slot %d, expected to produce %d blocks but produced %d blocks" % (blockProducer, inRowCountPerProducer, 0, producerToSlot[lastBlockProducer]["count"]))
 
         if blockProducer==productionCycle[0]:
             break
@@ -347,6 +351,7 @@ try:
     # ***   Analyze the producers leading up to the block after killing the non-producing node   ***
 
     firstDivergence=analyzeBPs(blockProducers0, blockProducers1, expectDivergence=True)
+
     # Nodes should not have diverged till the last block
     if firstDivergence!=blockNum:
         Utils.errorExit("Expected to diverge at %s, but diverged at %s." % (firstDivergence, blockNum))
@@ -384,7 +389,7 @@ try:
     # ***   Relaunch the non-producing bridge node to connect the producing nodes again   ***
 
     if not nonProdNode.relaunch(nonProdNode.nodeNum, None):
-        errorExit("Failure - (non-production) node %d should have restarted" % (nonProdNode.nodeNum))
+        Utils.errorExit("Failure - (non-production) node %d should have restarted" % (nonProdNode.nodeNum))
 
 
     # ***   Identify the producers from the saved LIB to the current highest head   ***
