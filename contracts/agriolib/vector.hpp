@@ -1,12 +1,12 @@
 #pragma once
-#include <eosiolib/memory.hpp>
-#include <eosiolib/stdlib.hpp>
+#include <agriolib/memory.hpp>
+#include <agriolib/stdlib.hpp>
 #include <vector>
 
-namespace eosio {
+namespace agrio {
 
    using std::vector;
 
    typedef std::vector<char> bytes;
 
-}  /// namespace eosio
+}  /// namespace agrio

@@ -1,8 +1,8 @@
 #pragma once
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/privileged.hpp>
+#include <agriolib/agrio.hpp>
+#include <agriolib/privileged.hpp>
 
-namespace eosio {
+namespace agrio {
 
    class bios : public contract {
       public:
@@ -23,7 +23,7 @@ namespace eosio {
             require_auth( _self );
          }
 
-         void setprods( std::vector<eosio::producer_key> schedule ) {
+         void setprods( std::vector<agrio::producer_key> schedule ) {
             (void)schedule; // schedule argument just forces the deserialization of the action data into vector<producer_key> (necessary check)
             require_auth( _self );
 
@@ -34,7 +34,7 @@ namespace eosio {
             set_proposed_producers(buffer, size);
          }
 
-         void setparams( const eosio::blockchain_parameters& params ) {
+         void setparams( const agrio::blockchain_parameters& params ) {
             require_auth( _self );
             set_blockchain_parameters( params );
          }
@@ -46,4 +46,4 @@ namespace eosio {
       private:
    };
 
-} /// namespace eosio
+} /// namespace agrio

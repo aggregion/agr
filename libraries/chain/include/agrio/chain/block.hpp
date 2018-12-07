@@ -1,8 +1,8 @@
 #pragma once
-#include <eosio/chain/block_header.hpp>
-#include <eosio/chain/transaction.hpp>
+#include <agrio/chain/block_header.hpp>
+#include <agrio/chain/transaction.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    /**
     * When a transaction is referenced by a block it could imply one of several outcomes which
@@ -71,11 +71,11 @@ namespace eosio { namespace chain {
       signature_type  sig;
    };
 
-} } /// eosio::chain
+} } /// agrio::chain
 
-FC_REFLECT_ENUM( eosio::chain::transaction_receipt::status_enum,
+FC_REFLECT_ENUM( agrio::chain::transaction_receipt::status_enum,
                  (executed)(soft_fail)(hard_fail)(delayed)(expired) )
 
-FC_REFLECT(eosio::chain::transaction_receipt_header, (status)(cpu_usage_us)(net_usage_words) )
-FC_REFLECT_DERIVED(eosio::chain::transaction_receipt, (eosio::chain::transaction_receipt_header), (trx) )
-FC_REFLECT_DERIVED(eosio::chain::signed_block, (eosio::chain::signed_block_header), (transactions)(block_extensions) )
+FC_REFLECT(agrio::chain::transaction_receipt_header, (status)(cpu_usage_us)(net_usage_words) )
+FC_REFLECT_DERIVED(agrio::chain::transaction_receipt, (agrio::chain::transaction_receipt_header), (trx) )
+FC_REFLECT_DERIVED(agrio::chain::signed_block, (agrio::chain::signed_block_header), (transactions)(block_extensions) )

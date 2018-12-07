@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
 #include "test_api.hpp"
 
-//using namespace eosio;
+//using namespace agrio;
 
 void test_print::test_prints_l() {
   char ab[] = { 'a', 'b' };
@@ -116,7 +116,7 @@ void test_print::test_printqf() {
 
 void test_print::test_print_simple() {
     std::string const cvalue = "cvalue";
-    eosio::print(cvalue);
+    agrio::print(cvalue);
     std::string value = "value";
-    eosio::print(value);
+    agrio::print(value);
 }

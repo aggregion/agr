@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/chain/types.hpp>
 #include <future>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 /**
  *  This data structure should store context-free cached data about a transaction such as
@@ -40,7 +40,7 @@ class transaction_metadata {
       }
 
       const flat_set<public_key_type>& recover_keys( const chain_id_type& chain_id ) {
-         // Unlikely for more than one chain_id to be used in one nodeos instance
+         // Unlikely for more than one chain_id to be used in one nodagr instance
          if( !signing_keys || signing_keys->first != chain_id ) {
             if( signing_keys_future.valid() ) {
                signing_keys = signing_keys_future.get();
@@ -58,4 +58,4 @@ class transaction_metadata {
 
 using transaction_metadata_ptr = std::shared_ptr<transaction_metadata>;
 
-} } // eosio::chain
+} } // agrio::chain

@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
 
 #include <appbase/application.hpp>
 
-namespace eosio {
+namespace agrio {
 
 using namespace appbase;
 
@@ -48,5 +48,5 @@ private:
 
 }
 
-FC_REFLECT( eosio::db_size_index_count, (index)(row_count) )
-FC_REFLECT( eosio::db_size_stats, (free_bytes)(used_bytes)(size)(indices) )
+FC_REFLECT( agrio::db_size_index_count, (index)(row_count) )
+FC_REFLECT( agrio::db_size_stats, (free_bytes)(used_bytes)(size)(indices) )

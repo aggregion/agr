@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
-#include <eosio/chain/block_header_state.hpp>
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/transaction_metadata.hpp>
-#include <eosio/chain/action_receipt.hpp>
+#include <agrio/chain/block_header_state.hpp>
+#include <agrio/chain/block.hpp>
+#include <agrio/chain/transaction_metadata.hpp>
+#include <agrio/chain/action_receipt.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct block_state : public block_header_state {
       explicit block_state( const block_header_state& cur ):block_header_state(cur){}
@@ -29,6 +29,6 @@ namespace eosio { namespace chain {
 
    using block_state_ptr = std::shared_ptr<block_state>;
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT_DERIVED( eosio::chain::block_state, (eosio::chain::block_header_state), (block)(validated)(in_current_chain) )
+FC_REFLECT_DERIVED( agrio::chain::block_state, (agrio::chain::block_header_state), (block)(validated)(in_current_chain) )

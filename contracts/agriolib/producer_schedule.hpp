@@ -1,9 +1,9 @@
 #pragma once
-#include <eosiolib/privileged.hpp>
+#include <agriolib/privileged.hpp>
 
 #include <vector>
 
-namespace eosio {
+namespace agrio {
 
    /**
     *  Defines both the order, account name, and signing keys of the active set of producers.
@@ -27,4 +27,4 @@ namespace eosio {
    };
 
    /// @} producertype
-} /// namespace eosio
+} /// namespace agrio

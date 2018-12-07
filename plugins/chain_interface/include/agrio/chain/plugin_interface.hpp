@@ -1,19 +1,19 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
 #include <appbase/channel.hpp>
 #include <appbase/method.hpp>
 
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/block_state.hpp>
-#include <eosio/chain/transaction_metadata.hpp>
-#include <eosio/chain/trace.hpp>
+#include <agrio/chain/block.hpp>
+#include <agrio/chain/block_state.hpp>
+#include <agrio/chain/transaction_metadata.hpp>
+#include <agrio/chain/trace.hpp>
 
-namespace eosio { namespace chain { namespace plugin_interface {
-   using namespace eosio::chain;
+namespace agrio { namespace chain { namespace plugin_interface {
+   using namespace agrio::chain;
    using namespace appbase;
 
    template<typename T>

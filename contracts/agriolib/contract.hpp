@@ -1,19 +1,19 @@
 #pragma once
 
-namespace eosio {
+namespace agrio {
 
 /**
  * @defgroup contracttype Contract Type
  * @ingroup types
- * @brief Defines contract type which is %base class for every EOSIO contract
+ * @brief Defines contract type which is %base class for every AGRIO contract
  * 
  * @{
  * 
  */
 
 /**
- * @brief %Base class for EOSIO contract.
- * @details %Base class for EOSIO contract. %A new contract should derive from this class, so it can make use of EOSIO_ABI macro.
+ * @brief %Base class for AGRIO contract.
+ * @details %Base class for AGRIO contract. %A new contract should derive from this class, so it can make use of AGRIO_ABI macro.
  */
 class contract {
    public:
@@ -44,4 +44,4 @@ class contract {
 };
 
 /// @} contracttype
-} /// namespace eosio
+} /// namespace agrio

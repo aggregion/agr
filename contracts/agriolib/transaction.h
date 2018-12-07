@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
-#include <eosiolib/types.h>
+#include <agriolib/types.h>
 
 extern "C" {
    /**
@@ -126,7 +126,7 @@ extern "C" {
     * Example:
     * @code
     * time tm = expiration();
-    * eosio_print(tm);
+    * agrio_print(tm);
     * @endcode
     */
    time expiration();

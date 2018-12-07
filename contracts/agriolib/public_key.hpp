@@ -1,8 +1,8 @@
 #pragma once 
-#include <eosiolib/varint.hpp>
-#include <eosiolib/serialize.hpp>
+#include <agriolib/varint.hpp>
+#include <agriolib/serialize.hpp>
 
-namespace eosio {
+namespace agrio {
 
    /**
    *  @defgroup publickeytype Public Key Type
@@ -13,8 +13,8 @@ namespace eosio {
    */
    
    /**
-    * EOSIO Public Key
-    * @brief EOSIO Public Key
+    * AGRIO Public Key
+    * @brief AGRIO Public Key
     */
    struct public_key {
       /**
@@ -36,7 +36,7 @@ namespace eosio {
       friend bool operator != ( const public_key& a, const public_key& b ) {
         return std::tie(a.type,a.data) != std::tie(b.type,b.data);
       }
-      EOSLIB_SERIALIZE( public_key, (type)(data) )
+      AGRLIB_SERIALIZE( public_key, (type)(data) )
    };
    
 }

@@ -1,5 +1,5 @@
-#include "eosio.system.hpp"
-#include <eosiolib/dispatcher.hpp>
+#include "agrio.system.hpp"
+#include <agriolib/dispatcher.hpp>
 
 #include "producer_pay.cpp"
 #include "delegate_bandwidth.cpp"
@@ -7,7 +7,7 @@
 #include "exchange_state.cpp"
 
 
-namespace eosiosystem {
+namespace agriosystem {
 
    system_contract::system_contract( account_name s )
    :native(s),
@@ -22,7 +22,7 @@ namespace eosiosystem {
       auto itr = _rammarket.find(S(4,RAMCORE));
 
       if( itr == _rammarket.end() ) {
-         auto system_token_supply   = eosio::token(N(eosio.token)).get_supply(eosio::symbol_type(system_token_symbol).name()).amount;
+         auto system_token_supply   = agrio::token(N(agrio.token)).get_supply(agrio::symbol_type(system_token_symbol).name()).amount;
          if( system_token_supply > 0 ) {
             itr = _rammarket.emplace( _self, [&]( auto& m ) {
                m.supply.amount = 100000000000000ll;
@@ -38,8 +38,8 @@ namespace eosiosystem {
       }
    }
 
-   eosio_global_state system_contract::get_default_parameters() {
-      eosio_global_state dp;
+   agrio_global_state system_contract::get_default_parameters() {
+      agrio_global_state dp;
       get_blockchain_parameters(dp);
       return dp;
    }
@@ -48,15 +48,15 @@ namespace eosiosystem {
    system_contract::~system_contract() {
       //print( "destruct system\n" );
       _global.set( _gstate, _self );
-      //eosio_exit(0);
+      //agrio_exit(0);
    }
 
    void system_contract::setram( uint64_t max_ram_size ) {
       require_auth( _self );
 
-      eosio_assert( _gstate.max_ram_size < max_ram_size, "ram may only be increased" ); /// decreasing ram might result market maker issues
-      eosio_assert( max_ram_size < 1024ll*1024*1024*1024*1024, "ram size is unrealistic" );
-      eosio_assert( max_ram_size > _gstate.total_ram_bytes_reserved, "attempt to set max below reserved" );
+      agrio_assert( _gstate.max_ram_size < max_ram_size, "ram may only be increased" ); /// decreasing ram might result market maker issues
+      agrio_assert( max_ram_size < 1024ll*1024*1024*1024*1024, "ram size is unrealistic" );
+      agrio_assert( max_ram_size > _gstate.total_ram_bytes_reserved, "attempt to set max below reserved" );
 
       auto delta = int64_t(max_ram_size) - int64_t(_gstate.max_ram_size);
       auto itr = _rammarket.find(S(4,RAMCORE));
@@ -73,10 +73,10 @@ namespace eosiosystem {
       _global.set( _gstate, _self );
    }
 
-   void system_contract::setparams( const eosio::blockchain_parameters& params ) {
-      require_auth( N(eosio) );
-      (eosio::blockchain_parameters&)(_gstate) = params;
-      eosio_assert( 3 <= _gstate.max_authority_depth, "max_authority_depth should be at least 3" );
+   void system_contract::setparams( const agrio::blockchain_parameters& params ) {
+      require_auth( N(agrio) );
+      (agrio::blockchain_parameters&)(_gstate) = params;
+      agrio_assert( 3 <= _gstate.max_authority_depth, "max_authority_depth should be at least 3" );
       set_blockchain_parameters( params );
    }
 
@@ -88,7 +88,7 @@ namespace eosiosystem {
    void system_contract::rmvproducer( account_name producer ) {
       require_auth( _self );
       auto prod = _producers.find( producer );
-      eosio_assert( prod != _producers.end(), "producer not found" );
+      agrio_assert( prod != _producers.end(), "producer not found" );
       _producers.modify( prod, 0, [&](auto& p) {
             p.deactivate();
          });
@@ -96,16 +96,16 @@ namespace eosiosystem {
 
    void system_contract::bidname( account_name bidder, account_name newname, asset bid ) {
       require_auth( bidder );
-      eosio_assert( eosio::name_suffix(newname) == newname, "you can only bid on top-level suffix" );
-      eosio_assert( newname != 0, "the empty name is not a valid account name to bid on" );
-      eosio_assert( (newname & 0xFull) == 0, "13 character names are not valid account names to bid on" );
-      eosio_assert( (newname & 0x1F0ull) == 0, "accounts with 12 character names and no dots can be created without bidding required" );
-      eosio_assert( !is_account( newname ), "account already exists" );
-      eosio_assert( bid.symbol == asset().symbol, "asset must be system token" );
-      eosio_assert( bid.amount > 0, "insufficient bid" );
+      agrio_assert( agrio::name_suffix(newname) == newname, "you can only bid on top-level suffix" );
+      agrio_assert( newname != 0, "the empty name is not a valid account name to bid on" );
+      agrio_assert( (newname & 0xFull) == 0, "13 character names are not valid account names to bid on" );
+      agrio_assert( (newname & 0x1F0ull) == 0, "accounts with 12 character names and no dots can be created without bidding required" );
+      agrio_assert( !is_account( newname ), "account already exists" );
+      agrio_assert( bid.symbol == asset().symbol, "asset must be system token" );
+      agrio_assert( bid.amount > 0, "insufficient bid" );
 
-      INLINE_ACTION_SENDER(eosio::token, transfer)( N(eosio.token), {bidder,N(active)},
-                                                    { bidder, N(eosio.names), bid, std::string("bid name ")+(name{newname}).to_string()  } );
+      INLINE_ACTION_SENDER(agrio::token, transfer)( N(agrio.token), {bidder,N(active)},
+                                                    { bidder, N(agrio.names), bid, std::string("bid name ")+(name{newname}).to_string()  } );
 
       name_bid_table bids(_self,_self);
       print( name{bidder}, " bid ", bid, " on ", name{newname}, "\n" );
@@ -118,12 +118,12 @@ namespace eosiosystem {
             b.last_bid_time = current_time();
          });
       } else {
-         eosio_assert( current->high_bid > 0, "this auction has already closed" );
-         eosio_assert( bid.amount - current->high_bid > (current->high_bid / 10), "must increase bid by 10%" );
-         eosio_assert( current->high_bidder != bidder, "account is already highest bidder" );
+         agrio_assert( current->high_bid > 0, "this auction has already closed" );
+         agrio_assert( bid.amount - current->high_bid > (current->high_bid / 10), "must increase bid by 10%" );
+         agrio_assert( current->high_bidder != bidder, "account is already highest bidder" );
 
-         INLINE_ACTION_SENDER(eosio::token, transfer)( N(eosio.token), {N(eosio.names),N(active)},
-                                                       { N(eosio.names), current->high_bidder, asset(current->high_bid),
+         INLINE_ACTION_SENDER(agrio::token, transfer)( N(agrio.token), {N(agrio.names),N(active)},
+                                                       { N(agrio.names), current->high_bidder, asset(current->high_bid),
                                                        std::string("refund bid on name ")+(name{newname}).to_string()  } );
 
          bids.modify( current, bidder, [&]( auto& b ) {
@@ -158,16 +158,16 @@ namespace eosiosystem {
            tmp >>= 5;
          }
          if( has_dot ) { // or is less than 12 characters
-            auto suffix = eosio::name_suffix(newact);
+            auto suffix = agrio::name_suffix(newact);
             if( suffix == newact ) {
                name_bid_table bids(_self,_self);
                auto current = bids.find( newact );
-               eosio_assert( current != bids.end(), "no active bid for name" );
-               eosio_assert( current->high_bidder == creator, "only highest bidder can claim" );
-               eosio_assert( current->high_bid < 0, "auction for name is not closed yet" );
+               agrio_assert( current != bids.end(), "no active bid for name" );
+               agrio_assert( current->high_bidder == creator, "only highest bidder can claim" );
+               agrio_assert( current->high_bid < 0, "auction for name is not closed yet" );
                bids.erase( current );
             } else {
-               eosio_assert( creator == suffix, "only suffix may create this account" );
+               agrio_assert( creator == suffix, "only suffix may create this account" );
             }
          }
       }
@@ -181,13 +181,13 @@ namespace eosiosystem {
       set_resource_limits( newact, 0, 0, 0 );
    }
 
-} /// eosio.system
+} /// agrio.system
 
 
-EOSIO_ABI( eosiosystem::system_contract,
-     // native.hpp (newaccount definition is actually in eosio.system.cpp)
+AGRIO_ABI( agriosystem::system_contract,
+     // native.hpp (newaccount definition is actually in agrio.system.cpp)
      (newaccount)(updateauth)(deleteauth)(linkauth)(unlinkauth)(canceldelay)(onerror)
-     // eosio.system.cpp
+     // agrio.system.cpp
      (setram)(setparams)(setpriv)(rmvproducer)(bidname)
      // delegate_bandwidth.cpp
      (buyrambytes)(buyram)(sellram)(delegatebw)(undelegatebw)(refund)

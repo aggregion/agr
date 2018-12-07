@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace eosio {
+namespace agrio {
   /**
    * @defgroup optionaltype Optional Type
    * @brief Defines otional type which is similar to boost::optional 
@@ -330,7 +330,7 @@ namespace eosio {
           * @brief Pointer Dereference operator
           * @return T& - Contained value
           */
-         T&       operator*()      { eosio_assert(_valid, "dereference of empty optional"); return ref(); }
+         T&       operator*()      { agrio_assert(_valid, "dereference of empty optional"); return ref(); }
 
          /**
           * Get contained value of this optional
@@ -338,7 +338,7 @@ namespace eosio {
           * @brief Pointer Dereference operator
           * @return T& - Contained value
           */
-         const T& operator*()const { eosio_assert(_valid, "dereference of empty optional"); return ref(); }
+         const T& operator*()const { agrio_assert(_valid, "dereference of empty optional"); return ref(); }
 
          /**
           * Get pointer to the contained value
@@ -348,7 +348,7 @@ namespace eosio {
           */
          T*       operator->()
          {
-            eosio_assert(_valid, "dereference of empty optional");
+            agrio_assert(_valid, "dereference of empty optional");
             return ptr();
          }
 
@@ -360,7 +360,7 @@ namespace eosio {
           */         
          const T* operator->()const
          {
-            eosio_assert(_valid, "dereference of empty optional");
+            agrio_assert(_valid, "dereference of empty optional");
             return ptr();
          }
 
@@ -426,10 +426,10 @@ namespace eosio {
          *  @param ds - The stream to write
          *  @param op - The value to serialize
          *  @tparam Stream - Type of datastream 
-         *  @return eosio::datastream<Stream>& - Reference to the datastream
+         *  @return agrio::datastream<Stream>& - Reference to the datastream
          */
          template<typename Stream>
-         friend inline eosio::datastream<Stream>& operator>> (eosio::datastream<Stream>& ds, optional& op)
+         friend inline agrio::datastream<Stream>& operator>> (agrio::datastream<Stream>& ds, optional& op)
          {
             char valid = 0;
             ds >> valid;
@@ -447,10 +447,10 @@ namespace eosio {
          *  @param ds - The stream to read
          *  @param op - The destination for deserialized value
          *  @tparam Stream - Type of datastream
-         *  @return eosio::datastream<Stream>& - Reference to the datastream
+         *  @return agrio::datastream<Stream>& - Reference to the datastream
          */
          template<typename Stream>
-         friend inline eosio::datastream<Stream>& operator<< (eosio::datastream<Stream>& ds, const optional& op)
+         friend inline agrio::datastream<Stream>& operator<< (agrio::datastream<Stream>& ds, const optional& op)
          {
             char valid = op._valid;
             ds << valid;
@@ -532,4 +532,4 @@ namespace eosio {
       return !left || *left != u;
    }
 ///@} optional
-} // namespace eosio
+} // namespace agrio

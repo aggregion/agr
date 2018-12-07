@@ -1,6 +1,6 @@
 /**
-@defgroup eosiorpc RPC Interface
-@brief Describes how to interface with eosd over HTTP RPC
+@defgroup agriorpc RPC Interface
+@brief Describes how to interface with agrd over HTTP RPC
 
 @section tableofcontent Table Of Contents
 - [Configuration](#configuration)
@@ -29,17 +29,17 @@
 
 @section configuration Configuration
 
-`eosd` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
+`agrd` uses a REST RPC interface where plugins can register their own endpoints with the API server. This page
 will explain how to use some of the APIs to get information about the blockchain and send transactions.
 
-Before you can query `eosd` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `eosd`'s `config.ini`:
+Before you can query `agrd` you must first enable the necessary API plugin(s). Depending on which API you want to enable, add the following line to your `agrd`'s `config.ini`:
 ```
-plugin = eosio::chain_api_plugin // Enable Chain API
-plugin = eosio::wallet_api_plugin // Enable Wallet API
+plugin = agrio::chain_api_plugin // Enable Chain API
+plugin = agrio::wallet_api_plugin // Enable Wallet API
 ```
-Alternatively, for Wallet API, you can also have the wallet functionality separate from `eosd`, by running `eos-walletd` separately.
+Alternatively, for Wallet API, you can also have the wallet functionality separate from `agrd`, by running `agr-walletd` separately.
 
-For the following guide, we will assume that we have `eosd` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `eos-walletd` running on `127.0.0.1:8889`.
+For the following guide, we will assume that we have `agrd` running on `127.0.0.1:8888` (Chain API Plugin enabled, Wallet API Plugin disabled) and `agr-walletd` running on `127.0.0.1:8889`.
 
 ===
 
@@ -111,9 +111,9 @@ $ curl  http://127.0.0.1:8888/v1/chain/get_account -X POST -d '{"account_name":"
 ```
 {
   "name": "inita",
-  "eos_balance": "999998.9574 EOS",
-  "staked_balance": "0.0000 EOS",
-  "unstaking_balance": "0.0000 EOS",
+  "agr_balance": "999998.9574 AGR",
+  "staked_balance": "0.0000 AGR",
+  "unstaking_balance": "0.0000 AGR",
   "last_unstaking_time": "2106-02-07T06:28:15",
   "permissions": [
     {
@@ -123,7 +123,7 @@ $ curl  http://127.0.0.1:8888/v1/chain/get_account -X POST -d '{"account_name":"
         "threshold": 1,
         "keys": [
           {
-            "key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+            "key": "AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq",
             "weight": 1
           }
         ],
@@ -137,7 +137,7 @@ $ curl  http://127.0.0.1:8888/v1/chain/get_account -X POST -d '{"account_name":"
         "threshold": 1,
         "keys": [
           {
-            "key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+            "key": "AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq",
             "weight": 1
           }
         ],
@@ -329,14 +329,14 @@ Get required keys to sign a transaction from list of your keys.
 
 @subsubsection examplegetrequiredkeys  Example get_required_keys Usage
 ```
-curl  http://localhost:8888/v1/chain/get_required_keys -X POST -d '{"transaction": {"ref_block_num":"100","ref_block_prefix":"137469861","expiration":"2017-09-25T06:28:49","scope":["initb","initc"],"actions":[{"code":"currency","type":"transfer","recipients":["initb","initc"],"authorization":[{"account":"initb","permission":"active"}],"data":"000000000041934b000000008041934be803000000000000"}],"signatures":[],"authorizations":[]}, "available_keys":["EOS4toFS3YXEQCkuuw1aqDLrtHim86Gz9u3hBdcBw5KNPZcursVHq","EOS7d9A3uLe6As66jzN8j44TXJUqJSK3bFjjEEqR4oTvNAB3iM9SA","EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"]}'
+curl  http://localhost:8888/v1/chain/get_required_keys -X POST -d '{"transaction": {"ref_block_num":"100","ref_block_prefix":"137469861","expiration":"2017-09-25T06:28:49","scope":["initb","initc"],"actions":[{"code":"currency","type":"transfer","recipients":["initb","initc"],"authorization":[{"account":"initb","permission":"active"}],"data":"000000000041934b000000008041934be803000000000000"}],"signatures":[],"authorizations":[]}, "available_keys":["EOS4toFS3YXEQCkuuw1aqDLrtHim86Gz9u3hBdcBw5KNPZcursVHq","EOS7d9A3uLe6As66jzN8j44TXJUqJSK3bFjjEEqR4oTvNAB3iM9SA","AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq"]}'
 ```
 
 @subsubsection examplegetrequiredkeysresult  Example get_required_keys Result
 ```
 {
   "required_keys": [
-    "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"
+    "AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq"
   ]
 }
 ```
@@ -438,7 +438,7 @@ Import a private key to the wallet of the given name
 
 @subsubsection examplewalletimport Example wallet_import_key Usage
 ```
-$ curl http://localhost:8888/v1/wallet/import_key -X POST -d '["default","5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"]'
+$ curl http://localhost:8888/v1/wallet/import_key -X POST -d '["default","5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS"]'
 ```
 
 @subsubsection examplewalletimportresult  Example wallet_import_key Result
@@ -471,7 +471,7 @@ $ curl http://localhost:8888/v1/wallet/list_keys
 
 @subsubsection examplewalletlistkeysresult  Example wallet_list_keys Result
 ```
-[["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV","5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"]]
+[["AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq","5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS"]]
 ```
 
 @subsection v1walletgetpublickeys wallet_get_public_keys
@@ -485,7 +485,7 @@ $ curl http://localhost:8888/v1/wallet/get_public_keys
 
 @subsubsection examplewallegetpublickeysresult  Example wallet_get_public_keys Result
 ```
-["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"]
+["AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq"]
 ```
 
 @subsection v1walletsettimeout wallet_set_timeout
@@ -508,7 +508,7 @@ Sign transaction given an array of transaction, require public keys, and chain i
 
 @subsubsection examplewalletsigntrx Example wallet_sign_trx Usage
 ```
-$ curl http://localhost:8888/v1/wallet/sign_transaction -X POST -d '[{"ref_block_num":21453,"ref_block_prefix":3165644999,"expiration":"2017-12-08T10:28:49","scope":["initb","initc"],"read_scope":[],"messages":[{"code":"currency","type":"transfer","authorization":[{"account":"initb","permission":"active"}],"data":"000000008093dd74000000000094dd74e803000000000000"}],"signatures":[]}, ["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"], ""]'
+$ curl http://localhost:8888/v1/wallet/sign_transaction -X POST -d '[{"ref_block_num":21453,"ref_block_prefix":3165644999,"expiration":"2017-12-08T10:28:49","scope":["initb","initc"],"read_scope":[],"messages":[{"code":"currency","type":"transfer","authorization":[{"account":"initb","permission":"active"}],"data":"000000008093dd74000000000094dd74e803000000000000"}],"signatures":[]}, ["AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq"], ""]'
 ```
 
 @subsubsection examplewalletsigntrxresult  Example wallet_sign_trx Result

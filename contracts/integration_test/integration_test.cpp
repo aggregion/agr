@@ -1,7 +1,7 @@
-#include <eosiolib/eosio.hpp>
-using namespace eosio;
+#include <agriolib/agrio.hpp>
+using namespace agrio;
 
-struct integration_test : public eosio::contract {
+struct integration_test : public agrio::contract {
       using contract::contract;
 
       struct payload {
@@ -10,15 +10,15 @@ struct integration_test : public eosio::contract {
 
          uint64_t primary_key()const { return key; }
       };
-      typedef eosio::multi_index<N(payloads), payload> payloads;
+      typedef agrio::multi_index<N(payloads), payload> payloads;
 
       /// @abi action 
       void store( account_name from,
                   account_name to,
                   uint64_t     num ) {
          require_auth( from );
-         eosio_assert( is_account( to ), "to account does not exist");
-         eosio_assert( num < std::numeric_limits<size_t>::max(), "num to large");
+         agrio_assert( is_account( to ), "to account does not exist");
+         agrio_assert( num < std::numeric_limits<size_t>::max(), "num to large");
          payloads data ( _self, from );
          uint64_t key = 0;
          const uint64_t num_keys = 5;
@@ -34,4 +34,4 @@ struct integration_test : public eosio::contract {
       }
 };
 
-EOSIO_ABI( integration_test, (store) )
+AGRIO_ABI( integration_test, (store) )

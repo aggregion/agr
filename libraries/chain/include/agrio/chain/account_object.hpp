@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
-#include <eosio/chain/database_utils.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/block_timestamp.hpp>
-#include <eosio/chain/abi_def.hpp>
+#include <agrio/chain/database_utils.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/block_timestamp.hpp>
+#include <agrio/chain/abi_def.hpp>
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class account_object : public chainbase::object<account_object_type, account_object> {
       OBJECT_CTOR(account_object,(code)(abi))
@@ -28,15 +28,15 @@ namespace eosio { namespace chain {
       shared_blob    code;
       shared_blob    abi;
 
-      void set_abi( const eosio::chain::abi_def& a ) {
+      void set_abi( const agrio::chain::abi_def& a ) {
          abi.resize( fc::raw::pack_size( a ) );
          fc::datastream<char*> ds( abi.data(), abi.size() );
          fc::raw::pack( ds, a );
       }
 
-      eosio::chain::abi_def get_abi()const {
-         eosio::chain::abi_def a;
-         EOS_ASSERT( abi.size() != 0, abi_not_found_exception, "No ABI set on account ${n}", ("n",name) );
+      agrio::chain::abi_def get_abi()const {
+         agrio::chain::abi_def a;
+         AGR_ASSERT( abi.size() != 0, abi_not_found_exception, "No ABI set on account ${n}", ("n",name) );
 
          fc::datastream<const char*> ds( abi.data(), abi.size() );
          fc::raw::unpack( ds, a );
@@ -75,11 +75,11 @@ namespace eosio { namespace chain {
       >
    >;
 
-} } // eosio::chain
+} } // agrio::chain
 
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::account_object, eosio::chain::account_index)
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::account_sequence_object, eosio::chain::account_sequence_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::account_object, agrio::chain::account_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::account_sequence_object, agrio::chain::account_sequence_index)
 
 
-FC_REFLECT(eosio::chain::account_object, (name)(vm_type)(vm_version)(privileged)(last_code_update)(code_version)(creation_date)(code)(abi))
-FC_REFLECT(eosio::chain::account_sequence_object, (name)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence))
+FC_REFLECT(agrio::chain::account_object, (name)(vm_type)(vm_version)(privileged)(last_code_update)(code_version)(creation_date)(code)(abi))
+FC_REFLECT(agrio::chain::account_sequence_object, (name)(recv_sequence)(auth_sequence)(code_sequence)(abi_sequence))

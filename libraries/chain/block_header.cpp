@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
-#include <eosio/chain/block.hpp>
-#include <eosio/chain/merkle.hpp>
+#include <agrio/chain/block.hpp>
+#include <agrio/chain/merkle.hpp>
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
 #include <algorithm>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
    digest_type block_header::digest()const
    {
       return digest_type::hash(*this);
