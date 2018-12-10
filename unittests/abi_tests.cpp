@@ -880,8 +880,8 @@ BOOST_AUTO_TEST_CASE(updateauth_test)
      "parent" : "updauth.prnt",
      "auth" : {
         "threshold" : "2147483145",
-        "keys" : [ {"key" : "EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im", "weight" : 57005},
-                   {"key" : "EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf", "weight" : 57605} ],
+        "keys" : [ {"key" : "AGR65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im", "weight" : 57005},
+                   {"key" : "AGR5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf", "weight" : 57605} ],
         "accounts" : [ {"permission" : {"actor" : "prm.acct1", "permission" : "prm.prm1"}, "weight" : 53005 },
                        {"permission" : {"actor" : "prm.acct2", "permission" : "prm.prm2"}, "weight" : 53405 } ],
         "waits" : []
@@ -898,9 +898,9 @@ BOOST_AUTO_TEST_CASE(updateauth_test)
    BOOST_TEST(2147483145u == updauth.auth.threshold);
 
    BOOST_TEST_REQUIRE(2 == updauth.auth.keys.size());
-   BOOST_TEST("EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im" == (std::string)updauth.auth.keys[0].key);
+   BOOST_TEST("AGR65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im" == (std::string)updauth.auth.keys[0].key);
    BOOST_TEST(57005u == updauth.auth.keys[0].weight);
-   BOOST_TEST("EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf" == (std::string)updauth.auth.keys[1].key);
+   BOOST_TEST("AGR5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf" == (std::string)updauth.auth.keys[1].key);
    BOOST_TEST(57605u == updauth.auth.keys[1].weight);
 
    BOOST_TEST_REQUIRE(2 == updauth.auth.accounts.size());
@@ -977,16 +977,16 @@ BOOST_AUTO_TEST_CASE(newaccount_test)
      "name" : "newacct.name",
      "owner" : {
         "threshold" : 2147483145,
-        "keys" : [ {"key" : "EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im", "weight" : 57005},
-                   {"key" : "EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf", "weight" : 57605} ],
+        "keys" : [ {"key" : "AGR8QGk4gKwUFJB94wujutAaCWHqDpf2QG6Aj85mVLJBJinoDqLd7", "weight" : 57005},
+                   {"key" : "AGR8NEX4D2p8YVg5vdCMaQRGSMXn6Q8S37mBpnv7KPmBhUaZ6LeDE", "weight" : 57605} ],
         "accounts" : [ {"permission" : {"actor" : "prm.acct1", "permission" : "prm.prm1"}, "weight" : 53005 },
                        {"permission" : {"actor" : "prm.acct2", "permission" : "prm.prm2"}, "weight" : 53405 }],
         "waits" : []
      },
      "active" : {
         "threshold" : 2146483145,
-        "keys" : [ {"key" : "EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im", "weight" : 57005},
-                   {"key" : "EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf", "weight" : 57605} ],
+        "keys" : [ {"key" : "AGR8QGk4gKwUFJB94wujutAaCWHqDpf2QG6Aj85mVLJBJinoDqLd7", "weight" : 57005},
+                   {"key" : "AGR8NEX4D2p8YVg5vdCMaQRGSMXn6Q8S37mBpnv7KPmBhUaZ6LeDE", "weight" : 57605} ],
         "accounts" : [ {"permission" : {"actor" : "prm.acct1", "permission" : "prm.prm1"}, "weight" : 53005 },
                        {"permission" : {"actor" : "prm.acct2", "permission" : "prm.prm2"}, "weight" : 53405 }],
         "waits" : []
@@ -1002,9 +1002,9 @@ BOOST_AUTO_TEST_CASE(newaccount_test)
    BOOST_TEST(2147483145u == newacct.owner.threshold);
 
    BOOST_TEST_REQUIRE(2 == newacct.owner.keys.size());
-   BOOST_TEST("EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im" == (std::string)newacct.owner.keys[0].key);
+   BOOST_TEST("AGR8QGk4gKwUFJB94wujutAaCWHqDpf2QG6Aj85mVLJBJinoDqLd7" == (std::string)newacct.owner.keys[0].key);
    BOOST_TEST(57005u == newacct.owner.keys[0].weight);
-   BOOST_TEST("EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf" == (std::string)newacct.owner.keys[1].key);
+   BOOST_TEST("AGR8NEX4D2p8YVg5vdCMaQRGSMXn6Q8S37mBpnv7KPmBhUaZ6LeDE" == (std::string)newacct.owner.keys[1].key);
    BOOST_TEST(57605u == newacct.owner.keys[1].weight);
 
    BOOST_TEST_REQUIRE(2 == newacct.owner.accounts.size());
@@ -1018,9 +1018,9 @@ BOOST_AUTO_TEST_CASE(newaccount_test)
    BOOST_TEST(2146483145u == newacct.active.threshold);
 
    BOOST_TEST_REQUIRE(2 == newacct.active.keys.size());
-   BOOST_TEST("EOS65rXebLhtk2aTTzP4e9x1AQZs7c5NNXJp89W8R3HyaA6Zyd4im" == (std::string)newacct.active.keys[0].key);
+   BOOST_TEST("AGR8QGk4gKwUFJB94wujutAaCWHqDpf2QG6Aj85mVLJBJinoDqLd7" == (std::string)newacct.active.keys[0].key);
    BOOST_TEST(57005u == newacct.active.keys[0].weight);
-   BOOST_TEST("EOS5eVr9TVnqwnUBNwf9kwMTbrHvX5aPyyEG97dz2b2TNeqWRzbJf" == (std::string)newacct.active.keys[1].key);
+   BOOST_TEST("AGR8NEX4D2p8YVg5vdCMaQRGSMXn6Q8S37mBpnv7KPmBhUaZ6LeDE" == (std::string)newacct.active.keys[1].key);
    BOOST_TEST(57605u == newacct.active.keys[1].weight);
 
    BOOST_TEST_REQUIRE(2 == newacct.active.accounts.size());
