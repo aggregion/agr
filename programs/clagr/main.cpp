@@ -1898,14 +1898,16 @@ int main( int argc, char** argv ) {
 
    bool r1 = false;
    string key_file;
+   int key_number = 1;
    bool print_console = false;
    // create key
-   auto create_key = create->add_subcommand("key", localized("Create a new keypair and print the public and private keys"))->set_callback( [&r1, &key_file, &print_console](){
+   auto create_key = create->add_subcommand("key", localized("Create a new keypair and print the public and private keys"))->set_callback( [&r1, &key_file, &key_number, &print_console](){
       if (key_file.empty() && !print_console) {
          std::cerr << "ERROR: Either indicate a file using \"--file\" or pass \"--to-console\"" << std::endl;
          return;
       }
 
+      auto generator = [&](){
       auto pk    = r1 ? private_key_type::generate_r1() : private_key_type::generate();
       auto privs = string(pk);
       auto pubs  = string(pk.get_public_key());
@@ -1918,9 +1920,16 @@ int main( int argc, char** argv ) {
          out << localized("Private key: ${key}", ("key",  privs) ) << std::endl;
          out << localized("Public key: ${key}", ("key", pubs ) ) << std::endl;
       }
+      };
+
+      for (int i = 0; i < key_number; ++i)
+      {
+         generator();
+      }
    });
    create_key->add_flag( "--r1", r1, "Generate a key using the R1 curve (iPhone), instead of the K1 curve (Bitcoin)"  );
    create_key->add_option("-f,--file", key_file, localized("Name of file to write private/public key output to. (Must be set, unless \"--to-console\" is passed"));
+   create_key->add_option("-n,--number", key_number, localized("Number of keys."));
    create_key->add_flag( "--to-console", print_console, localized("Print private/public keys to console."));
 
    // create account
