@@ -329,7 +329,7 @@ Get required keys to sign a transaction from list of your keys.
 
 @subsubsection examplegetrequiredkeys  Example get_required_keys Usage
 ```
-curl  http://localhost:8888/v1/chain/get_required_keys -X POST -d '{"transaction": {"ref_block_num":"100","ref_block_prefix":"137469861","expiration":"2017-09-25T06:28:49","scope":["initb","initc"],"actions":[{"code":"currency","type":"transfer","recipients":["initb","initc"],"authorization":[{"account":"initb","permission":"active"}],"data":"000000000041934b000000008041934be803000000000000"}],"signatures":[],"authorizations":[]}, "available_keys":["EOS4toFS3YXEQCkuuw1aqDLrtHim86Gz9u3hBdcBw5KNPZcursVHq","EOS7d9A3uLe6As66jzN8j44TXJUqJSK3bFjjEEqR4oTvNAB3iM9SA","AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq"]}'
+curl  http://localhost:8888/v1/chain/get_required_keys -X POST -d '{"transaction": {"ref_block_num":"100","ref_block_prefix":"137469861","expiration":"2017-09-25T06:28:49","scope":["initb","initc"],"actions":[{"code":"currency","type":"transfer","recipients":["initb","initc"],"authorization":[{"account":"initb","permission":"active"}],"data":"000000000041934b000000008041934be803000000000000"}],"signatures":[],"authorizations":[]}, "available_keys":["AGR8cCyLKmhvwV9L9YTpfgjgmTgiWvj5dY1qQpja7YohGZ9obS6jy","AGR5xcNWgUnNncn9jWxhAPyEwcg8Ax3AHhg5h6SgAVak8p755XfFM","AGR66cEsX6dnvG11CFWQmbUf1M4MeLwnokZ2zsP3xxHVvaqBTAEEX"]}'
 ```
 
 @subsubsection examplegetrequiredkeysresult  Example get_required_keys Result
@@ -371,7 +371,7 @@ $ curl http://localhost:8888/v1/wallet/create_key -X POST -d '["default","K1"]'
 @subsubsection examplewalletcreatekeyresult  Example wallet_create_key Result
 This command will return the public key of the created key
 ```
-EOS6GZE1xeo6jX2AtP2Z6WTcxawQMH7cyYMNpG6Q3q7s514zyRhgo
+AGR6kkoUcW1T1zEG17EXBGXwLXb2Sf6Vy7WBx1F2fMzrtSd2vqq2Q
 ```
 
 @subsection v1walletopen wallet_open
