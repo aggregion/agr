@@ -7,7 +7,7 @@ using namespace agrio;
 
 namespace boss {
 gateway::gateway(account_name issuer)
-  : tools::claimable(issuer) {
+  : agrio::contract(issuer) {
   configs::get(_state, _self, N(state));
 }
 
@@ -97,7 +97,7 @@ int64_t gateway::coins_amount(uint64_t tokens) const {
   auto  res = tokens / _state.exchange_rate;
 
   res *= pow(10, as.symbol.precision());
-  return res;
+  return static_cast<int64_t>(res);
 }
 
 void gateway::sub_balance(account_name owner, uint64_t value) {
@@ -135,4 +135,4 @@ void gateway::add_balance(account_name owner, uint64_t value, account_name  ram_
 using namespace boss;
 using namespace agrio;
 
-AGRIO_ABI(boss::gateway, (create)(purchase)(transfer)(withdraw)(setrate)(setowner)(claim))
+AGRIO_ABI(boss::gateway, (create)(purchase)(transfer)(withdraw)(setrate))

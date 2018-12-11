@@ -132,10 +132,10 @@ void license_pool::distrruleset(uint128_t     distributionUUID,
                                 uint8_t       condition,
                                 uint128_t     name,
                                 const string& value) {
-  agrio_assert(distributionUUID != uuids::properties::NotValidUUID,                "UUID is not valid!");
-  agrio_assert(name != uuids::properties::NotValidUUID,                            "UUID is not valid!");
-  agrio_assert(type < static_cast<int>(RuleType::NotValidRule),                    "Invalid type!");
-  agrio_assert(condition < static_cast<uint8_t>(RuleCondition::NotValidCondition), "Invalid condition!");
+  agrio_assert(distributionUUID != uuids::properties::NotValidUUID,              "UUID is not valid!");
+  agrio_assert(name != uuids::properties::NotValidUUID,                          "UUID is not valid!");
+  agrio_assert(type < static_cast<int>(RuleType::TotalTypes),                    "Invalid type!");
+  agrio_assert(condition < static_cast<uint8_t>(RuleCondition::TotalConditions), "Invalid condition!");
 
   auto idxDistr = _distrubution_delegations.template get_index<N(bydistruuid)>();
   auto itDistr  = idxDistr.find(distributionUUID);
@@ -158,7 +158,7 @@ void license_pool::distrruleset(uint128_t     distributionUUID,
 
   if (!modified) {
     _distr_deleg_rules.emplace(itDistr->delegate_from, [&](auto& rec) {
-        rec.id               = _distrubution_delegations.available_primary_key();
+        rec.id               = _distr_deleg_rules.available_primary_key();
         rec.distributionUUID = distributionUUID;
         rec.type             = type;
         rec.condition        = condition;
@@ -185,8 +185,8 @@ void license_pool::distrrulerem(uint128_t distributionUUID,
   for (auto it  = idx.find(distributionUUID), itEnd = idx.end(); it != itEnd && it->distributionUUID == distributionUUID;) {
     bool erased = false;
 
-    if ((type == static_cast<int>(RuleType::NotValidRule)) || (it->type == type)) {
-      if ((condition == static_cast<uint8_t>(RuleCondition::NotValidCondition)) || (it->condition == condition)) {
+    if ((type == static_cast<int>(RuleType::TotalTypes)) || (it->type == type)) {
+      if ((condition == static_cast<uint8_t>(RuleCondition::TotalConditions)) || (it->condition == condition)) {
         if ((name == uuids::properties::NotValidUUID) || (it->name == name)) {
           it     = idx.erase(it);
           erased = true;
@@ -336,7 +336,8 @@ void license_pool::licactivate(uint128_t licenseUUID) {
   auto idx = _licenses.template get_index<N(bylicuuid)>();
   auto it  = idx.find(licenseUUID);
 
-  agrio_assert(it != idx.end(), "License doesn't exist!");
+  agrio_assert(it != idx.end(),                                       "License doesn't exist!");
+  agrio_assert(it->state == static_cast<int>(LicenseState::Reserved), "License MUST be in Reserved state!");
 
   require_auth(it->issued_from);
 
@@ -444,7 +445,7 @@ void license_pool::check_rules(uint128_t licenseUUID) {
 
         case RuleCondition::OneFromList:
         case RuleCondition::AllFromList:
-        case RuleCondition::NotValidCondition:
+        case RuleCondition::TotalConditions:
           break;
 
         default:
@@ -462,18 +463,4 @@ void license_pool::check_rules(uint128_t licenseUUID) {
 }
 }
 
-AGRIO_ABI(boss::license_pool,
-          (initialize)
-          (offerset)
-          (offerpropset)
-          (offerproprem)
-          (distrcreate)
-          (distrruleset)
-          (distrrulerem)
-          (distrlimset)
-          (distrlimrem)
-          (liccreate)
-          (licpropset)
-          (licproprem)
-          (licactivate)
-          (licrevoke))
+AGRIO_ABI(boss::license_pool,(initialize)(offerset)(offerpropset)(offerproprem)(distrcreate)(distrruleset)(distrrulerem)(distrlimset)(distrlimrem)(liccreate)(licpropset)(licproprem)(licactivate)(licrevoke))
