@@ -23,27 +23,27 @@ class license_pool : public agrio::contract {
 public:
 
   enum class RuleCondition: uint8_t {
-    NotValidCondition = 0,
-    Less = 1,
-    LessEqual = 2,
-    Equal = 3,
-    GreaterEqual = 4,
-    Greater = 5,
-    OneFromList = 6,
-    AllFromList = 7,
+    Less = 0,
+    LessEqual = 1,
+    Equal = 2,
+    GreaterEqual = 3,
+    Greater = 4,
+    OneFromList = 5,
+    AllFromList = 6,
+    TotalConditions = 7
   };
 
   enum class RuleType: uint8_t {
-    NotValidRule = 0,
-    Allow = 1,
-    Deny = 2,
+    Allow = 0,
+    Deny = 1,
+    TotalTypes = 2
   };
 
   enum class LicenseState: uint8_t {
-    NotValidState = 0,
-    Reserved = 1,
-    Active = 2,
-    Revoked = 3,
+    Reserved = 0,
+    Active = 1,
+    Revoked = 2,
+    TotalStates = 3
   };
 
   license_pool(account_name issuer);
@@ -128,7 +128,7 @@ public:
       static_cast<uint64_t>(k >> 64));
   }
 
-  // @abi table license i64
+  // @abi table licenseoffer i64
   struct licenseoffer {
     uint64_t     id;
     uint128_t    offerUUID;
@@ -146,7 +146,7 @@ public:
       return offerUUID;
     }
 
-    AGRLIB_SERIALIZE(licenseoffer, (id)(offerUUID)(name)(description))
+    AGRLIB_SERIALIZE(licenseoffer, (id)(offerUUID)(owner)(name)(description))
   };
   typedef multi_index<N(licenseoffer), licenseoffer,
                       indexed_by<N(byofferuuid), const_mem_fun<licenseoffer, uint128_t, &licenseoffer::byofferuuid> > >license_offer_index;

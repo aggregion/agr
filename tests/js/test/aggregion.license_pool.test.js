@@ -45,8 +45,10 @@ beforeEach(async function () {
 describe('Boss License Pool tests', async function () {
     this.timeout(3000000);
     it('should return the correct storage table after construction', async function () {
-        const table = await tools.getTable(agr, scname, scname, 'info');
-        assert.equal(table.hasOwnProperty('rows') && table.rows.length == 1, true, 'Invalid storage table');
+        assert.equal(await tools.checkTableRecords(agr, scname, scname, 'info', {
+            name: 'TestPool',
+            description: 'Test Description'
+        }), true, 'Invalid info table!');
     });
 
     it('should create license offer and properties', async function () {

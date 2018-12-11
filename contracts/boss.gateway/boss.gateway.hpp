@@ -6,10 +6,10 @@
 #include <agriolib/asset.hpp>
 #include <agriolib/agrio.hpp>
 
-#include "../tools/claimable.hpp"
+#include <agriolib/contract.hpp>
 
 namespace boss {
-class gateway : public tools::claimable {
+class gateway : public agrio::contract {
 public:
 
   gateway(account_name issuer);
