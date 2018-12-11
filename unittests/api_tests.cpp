@@ -776,7 +776,8 @@ BOOST_AUTO_TEST_CASE(checktime_fail_tests) { try {
                                      0 ),
                           tx_cpu_usage_exceeded, is_tx_cpu_usage_exceeded );
 
-   uint32_t time_left_in_block_us = config::default_max_block_cpu_usage - config::default_min_transaction_cpu_usage;
+   uint32_t time_left_in_block_us =
+       t.vcfg.genesis.initial_configuration.max_block_cpu_usage - config::default_min_transaction_cpu_usage;
    std::string dummy_string = "nonce";
    uint32_t increment = config::default_max_transaction_cpu_usage / 3;
    for( auto i = 0; time_left_in_block_us > 2*increment; ++i ) {
