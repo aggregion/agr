@@ -249,6 +249,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "In \"light\" mode all incoming blocks headers will be fully validated; transactions in those validated blocks will be trusted \n")
          ("disable-ram-billing-notify-checks", bpo::bool_switch()->default_value(false),
           "Disable the check which subjectively fails a transaction if a contract bills more RAM to another account within the context of a notification handler (i.e. when the receiver is not the code of the action).")
+         ("cpu-time-accuracy",bpo::value<uint32_t>(),"Provide the \"cpu-time-accuracy\" value")
          ;
 
 // TODO: rate limiting
@@ -398,6 +399,9 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
       if( options.count( "wasm-runtime" ))
          my->wasm_runtime = options.at( "wasm-runtime" ).as<vm_type>();
+
+      if( options.count("cpu-time-accuracy"))
+         my->chain_config->cpu_time_accuracy = options.at("cpu-time-accuracy").as<uint32_t>();
 
       if(options.count("abi-serializer-max-time-ms"))
          my->abi_serializer_max_time_ms = fc::microseconds(options.at("abi-serializer-max-time-ms").as<uint32_t>() * 1000);
@@ -1692,7 +1696,7 @@ read_only::get_account_results read_only::get_account( const get_account_params&
 
       auto core_symbol = extract_core_symbol();
 
-      if (params.expected_core_symbol.valid()) 
+      if (params.expected_core_symbol.valid())
          core_symbol = *(params.expected_core_symbol);
 
       const auto* t_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple( token_code, params.account_name, N(accounts) ));

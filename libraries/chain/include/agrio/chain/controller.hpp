@@ -76,6 +76,8 @@ namespace agrio { namespace chain {
 
             flat_set<account_name>   resource_greylist;
             flat_set<account_name>   trusted_producers;
+
+            uint32_t                 cpu_time_accuracy = 0;
          };
 
          enum class block_status {
