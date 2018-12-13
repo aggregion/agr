@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################
 # This is the AGRIO automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/AGRIO/agr
+# This file was downloaded from https://github.com/aggregion/agr
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -27,7 +27,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/AGRIO/agr/blob/master/LICENSE
+#
+# Copyright (c) 2017, Respective Authors all rights reserved.
+#
+# After June 1, 2018 this software is available under the following terms:
+#
+# The MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+# https://github.com/aggregion/agr/blob/master/LICENSE
 ##########################################################################
    SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -48,8 +73,15 @@
    DOXYGEN=false
    ENABLE_COVERAGE_TESTING=false
    CORE_SYMBOL_NAME="SYS"
+   # Use current directory's tmp directory if noexec is enabled for /tmp
+   if (mount | grep "/tmp " | grep --quiet noexec); then
+        mkdir -p $SOURCE_DIR/tmp
+        TEMP_DIR="${SOURCE_DIR}/tmp"
+        rm -rf $SOURCE_DIR/tmp/*
+   else # noexec wasn't found
+        TEMP_DIR="/tmp"
+   fi
    START_MAKE=true
-   TEMP_DIR="/tmp"
    TIME_BEGIN=$( date -u +%s )
    VERSION=1.2
 
@@ -77,7 +109,7 @@
                DOXYGEN=true
             ;;
             s)
-               if [ "${#OPTARG}" -gt 6 ] || [ -z "${#OPTARG}" ]; then
+               if [ "${#OPTARG}" -gt 7 ] || [ -z "${#OPTARG}" ]; then
                   printf "\\n\\tInvalid argument: %s\\n" "${OPTARG}" 1>&2
                   usage
                   exit 1
@@ -112,14 +144,14 @@
 
    if [ ! -d "${SOURCE_DIR}/.git" ]; then
       printf "\\n\\tThis build script only works with sources cloned from git\\n"
-      printf "\\tPlease clone a new agr directory with 'git clone https://github.com/AGRIO/agr --recursive'\\n"
-      printf "\\tSee the wiki for instructions: https://github.com/AGRIO/agr/wiki\\n"
+      printf "\\tPlease clone a new agr directory with 'git clone https://github.com/aggregion/agr --recursive'\\n"
+      printf "\\tSee the wiki for instructions: https://github.com/aggregion/agr/wiki\\n"
       exit 1
    fi
 
    pushd "${SOURCE_DIR}" &> /dev/null
 
-   STALE_SUBMODS=$(( $(git submodule status | grep -c "^[+\-]") ))
+   STALE_SUBMODS=$(( $(git submodule status --recursive | grep -c "^[+\-]") ))
    if [ $STALE_SUBMODS -gt 0 ]; then
       printf "\\n\\tgit submodules are not up to date.\\n"
       printf "\\tPlease run the command 'git submodule update --init --recursive'.\\n"
@@ -152,7 +184,7 @@
       OS_NAME=$( cat /etc/os-release | grep ^NAME | cut -d'=' -f2 | sed 's/\"//gI' )
 
       case "$OS_NAME" in
-         "Amazon Linux AMI")
+         "Amazon Linux AMI"|"Amazon Linux")
             FILE="${SOURCE_DIR}/scripts/agrio_build_amazon.sh"
             CXX_COMPILER=g++
             C_COMPILER=gcc
@@ -257,7 +289,7 @@
       -DCMAKE_C_COMPILER="${C_COMPILER}" -DWASM_ROOT="${WASM_ROOT}" -DCORE_SYMBOL_NAME="${CORE_SYMBOL_NAME}" \
       -DOPENSSL_ROOT_DIR="${OPENSSL_ROOT_DIR}" -DBUILD_MONGO_DB_PLUGIN=true \
       -DENABLE_COVERAGE_TESTING="${ENABLE_COVERAGE_TESTING}" -DBUILD_DOXYGEN="${DOXYGEN}" \
-      -DCMAKE_INSTALL_PREFIX="/usr/local/agrio" "${SOURCE_DIR}"
+      -DCMAKE_INSTALL_PREFIX="/usr/local/agrio" ${LOCAL_CMAKE_FLAGS} "${SOURCE_DIR}"
    then
       printf "\\n\\t>>>>>>>>>>>>>>>>>>>> CMAKE building AGRIO has exited with the above error.\\n\\n"
       exit -1
@@ -268,7 +300,8 @@
       exit 0
    fi
 
-   if ! make -j"${CPU_CORE}"
+   if [ -z ${JOBS} ]; then JOBS=$CPU_CORE; fi # Future proofing: Ensure $JOBS is set (usually set in scripts/agrio_build_*.sh scripts)
+   if ! make -j"${JOBS}"
    then
       printf "\\n\\t>>>>>>>>>>>>>>>>>>>> MAKE building AGRIO has exited with the above error.\\n\\n"
       exit -1

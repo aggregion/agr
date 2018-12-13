@@ -84,3 +84,4 @@ namespace agrio { namespace chain {
 
 FC_REFLECT( agrio::chain::producer_key, (producer_name)(block_signing_key) )
 FC_REFLECT( agrio::chain::producer_schedule_type, (version)(producers) )
+FC_REFLECT( agrio::chain::shared_producer_schedule_type, (version)(producers) )

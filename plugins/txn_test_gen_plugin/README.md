@@ -2,7 +2,7 @@
 
 This plugin provides a way to generate a given amount of transactions per second against the currency contract. It runs internally to agrd to reduce overhead.
 
-This general procedure was used when doing Dawn 3.0 performance testing as mentioned in https://github.com/AGRIO/agr/issues/2078.
+This general procedure was used when doing Dawn 3.0 performance testing as mentioned in https://github.com/aggregion/agr/issues/2078.
 
 ## Performance testing
 
@@ -56,12 +56,13 @@ $ ./nodagr -d ~/agr.data/producer_node --config-dir ~/agr.data/producer_node -l 
 
 ### Launch non-producer that will generate transactions
 ```bash
-$ ./nodagr -d ~/agr.data/generator_node --config-dir ~/agr.data/generator_node -l ~/agr.data/logging.json --plugin agrio::txn_test_gen_plugin --plugin agrio::wallet_api_plugin --plugin agrio::chain_api_plugin --p2p-peer-address localhost:9876 --p2p-listen-endpoint localhost:5555
+$ ./nodagr -d ~/agr.data/generator_node --config-dir ~/agr.data/generator_node -l ~/agr.data/logging.json --plugin agrio::txn_test_gen_plugin --plugin agrio::chain_api_plugin --p2p-peer-address localhost:9876 --p2p-listen-endpoint localhost:5555
 ```
 
 ### Create a wallet on the non-producer and set bios contract
 ```bash
-$ ./clagr wallet create
+$ ./clagr wallet create --to-console
+$ ./clagr wallet import --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
 $ ./clagr set contract agrio ~/agr/build.release/contracts/agrio.bios/ 
 ```
 
@@ -72,7 +73,7 @@ $ curl --data-binary '["agrio", "5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59Voj
 
 ### Start transaction generation, this will submit 20 transactions evey 20ms (total of 1000TPS)
 ```bash
-$ curl --data-binary '["", 20, 20]' http://localhost:8888/v1/txn_test_gen/start_generation
+$ curl --data-binary '["", 20, 20]' http://127.0.0.1:8888/v1/txn_test_gen/start_generation
 ```
 
 ### Note the producer console prints
@@ -83,3 +84,6 @@ agrio generated block b243aeaa... #3221 @ 2018-04-25T16:07:48.000 with 500 trxs,
 ```
 
 Note in the console output there are 500 transactions in each of the blocks which are produced every 500 ms yielding 1,000 transactions / second.
+
+### Demonstration
+The following video provides a demo: https://vimeo.com/266585781

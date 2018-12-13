@@ -91,12 +91,6 @@ namespace agrio { namespace chain {
       operator unsigned __int128()const       { return value; }
    };
 
-
-   inline std::vector<name> sort_names( std::vector<name>&& names ) {
-      fc::deduplicate(names);
-      return names;
-   }
-
 } } // agrio::chain
 
 namespace std {

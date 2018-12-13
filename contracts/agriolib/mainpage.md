@@ -4,7 +4,7 @@ Welcome to the AGR.IO Documentation
 @note This documentation is in progress and subject to change due to rapid development. Please report inaccuracies identified to the [AGR.IO Developer Telegram Group](https://t.me/joinchat/EaEnSUPktgfoI-XPfMYtcQ)
 
 ## AGR.IO
- - [Additional resources - Github Readme](https://github.com/AGRIO/agr#readme)
+ - [Additional resources - Github Readme](https://github.com/aggregion/agr#readme)
 
 ## Smart Contract Developers
 - @ref agriorpc

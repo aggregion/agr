@@ -330,6 +330,6 @@ BOOST_AUTO_TEST_SUITE(resource_limits_test)
 
 
 
-   } FC_LOG_AND_RETHROW() 
+   } FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()

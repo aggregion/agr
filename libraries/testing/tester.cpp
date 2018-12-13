@@ -17,7 +17,7 @@ namespace agrio { namespace testing {
       std::ifstream wast_file(fn);
       FC_ASSERT( wast_file.is_open(), "wast file cannot be found" );
       wast_file.seekg(0, std::ios::end);
-      std::vector<char> wast; 
+      std::vector<char> wast;
       int len = wast_file.tellg();
       FC_ASSERT( len >= 0, "wast file length is -1" );
       wast.resize(len+1);
@@ -32,7 +32,7 @@ namespace agrio { namespace testing {
       std::ifstream wasm_file(fn, std::ios::binary);
       FC_ASSERT( wasm_file.is_open(), "wasm file cannot be found" );
       wasm_file.seekg(0, std::ios::end);
-      std::vector<uint8_t> wasm; 
+      std::vector<uint8_t> wasm;
       int len = wasm_file.tellg();
       FC_ASSERT( len >= 0, "wasm file length is -1" );
       wasm.resize(len);
@@ -46,7 +46,7 @@ namespace agrio { namespace testing {
       std::ifstream abi_file(fn);
       FC_ASSERT( abi_file.is_open(), "abi file cannot be found" );
       abi_file.seekg(0, std::ios::end);
-      std::vector<char> abi; 
+      std::vector<char> abi;
       int len = abi_file.tellg();
       FC_ASSERT( len >= 0, "abi file length is -1" );
       abi.resize(len+1);
@@ -94,26 +94,25 @@ namespace agrio { namespace testing {
 
       cfg.genesis.initial_timestamp = fc::time_point::from_iso_string("2020-01-01T00:00:00.000");
       cfg.genesis.initial_key = get_public_key( config::system_account_name, "active" );
+      cfg.cpu_time_accuracy = 200'000;
 
       for(int i = 0; i < boost::unit_test::framework::master_test_suite().argc; ++i) {
-         if(boost::unit_test::framework::master_test_suite().argv[i] == std::string("--binaryen"))
-            cfg.wasm_runtime = chain::wasm_interface::vm_type::binaryen;
-         else if(boost::unit_test::framework::master_test_suite().argv[i] == std::string("--wavm"))
+         if(boost::unit_test::framework::master_test_suite().argv[i] == std::string("--wavm"))
             cfg.wasm_runtime = chain::wasm_interface::vm_type::wavm;
-         else
-            cfg.wasm_runtime = chain::wasm_interface::vm_type::binaryen;
+         else if(boost::unit_test::framework::master_test_suite().argv[i] == std::string("--wabt"))
+            cfg.wasm_runtime = chain::wasm_interface::vm_type::wabt;
       }
 
-      open();
+      open(nullptr);
 
       if (push_genesis)
          push_genesis_block();
    }
 
 
-   void base_tester::init(controller::config config) {
+   void base_tester::init(controller::config config, const snapshot_reader_ptr& snapshot) {
       cfg = config;
-      open();
+      open(snapshot);
    }
 
 
@@ -123,9 +122,10 @@ namespace agrio { namespace testing {
    }
 
 
-   void base_tester::open() {
+   void base_tester::open( const snapshot_reader_ptr& snapshot) {
       control.reset( new controller(cfg) );
-      control->startup();
+      control->add_indices();
+      control->startup(snapshot);
       chain_transactions.clear();
       control->accepted_block.connect([this]( const block_state_ptr& block_state ){
         FC_ASSERT( block_state->block );
