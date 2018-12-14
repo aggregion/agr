@@ -29,4 +29,4 @@
 	url = https://github.com/aggregion/fc
 [submodule "libraries/wabt"]
 	path = libraries/wabt
-	url = git@github.com:aggregion/wabt
+	url = https://github.com/aggregion/wabt.git
