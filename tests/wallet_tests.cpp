@@ -2,8 +2,6 @@
  *  @file
  *  @copyright defined in agr/LICENSE.txt
  */
-#include <agrio/utilities/key_conversion.hpp>
-#include <agrio/utilities/rand.hpp>
 #include <agrio/chain/genesis_state.hpp>
 #include <agrio/wallet_plugin/wallet.hpp>
 #include <agrio/wallet_plugin/wallet_manager.hpp>
@@ -20,7 +18,6 @@ BOOST_AUTO_TEST_SUITE(wallet_tests)
 BOOST_AUTO_TEST_CASE(wallet_test)
 { try {
    using namespace agrio::wallet;
-   using namespace agrio::utilities;
 
    wallet_data d;
    soft_wallet wallet(d);

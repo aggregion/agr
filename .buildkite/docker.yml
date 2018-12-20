@@ -1,0 +1,74 @@
+steps:
+  - command: |
+        echo "AUTHENTICATING GOOGLE SERVICE ACCOUNT" && \
+        gcloud --quiet auth activate-service-account b1-automation-svc@b1-automation-dev.iam.gserviceaccount.com --key-file=/etc/gcp-service-account.json && \
+        docker-credential-gcr configure-docker && \
+        echo "BUILDING BUILD IMAGE" && \
+        cd Docker/builder && \
+        docker build -t agrio/builder:latest -t agrio/builder:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_COMMIT && \
+        docker tag agrio/builder:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker tag agrio/builder:latest gcr.io/b1-automation-dev/agrio/builder:latest && \
+        echo "PUSHING DOCKER IMAGES" && \
+        docker push gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/builder:latest && \
+        echo "TRASHING OLD IMAGES" && \
+        docker rmi agrio/builder:$BUILDKITE_COMMIT && \
+        docker rmi agrio/builder:latest && \
+        docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/builder:latest
+    label: "Docker build builder"
+    agents:
+      queue: "automation-docker-builder-fleet"
+    timeout: 300
+
+  - wait
+
+  - command: |
+        echo "AUTHENTICATING GOOGLE SERVICE ACCOUNT" && \
+        gcloud --quiet auth activate-service-account b1-automation-svc@b1-automation-dev.iam.gserviceaccount.com --key-file=/etc/gcp-service-account.json && \
+        docker-credential-gcr configure-docker && \
+        echo "BUILDING AGR IMAGE" && \
+        docker pull gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        cd Docker && \
+        docker build -t agrio/agr:latest -t agrio/agr:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_BRANCH && \
+        docker tag agrio/agr:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker tag agrio/agr:latest gcr.io/b1-automation-dev/agrio/agr:latest && \
+        echo "PUSHING DOCKER IMAGES" && \
+        docker push gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/agr:latest && \
+        echo "TRASHING OLD IMAGES" && \
+        docker rmi agrio/agr:$BUILDKITE_COMMIT && \
+        docker rmi agrio/agr:latest && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr:latest && \
+        docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT
+    label: "Docker build agr"
+    agents:
+      queue: "automation-docker-builder-fleet"
+    timeout: 300
+
+  - command: |
+        echo "AUTHENTICATING GOOGLE SERVICE ACCOUNT" && \
+        gcloud --quiet auth activate-service-account b1-automation-svc@b1-automation-dev.iam.gserviceaccount.com --key-file=/etc/gcp-service-account.json && \
+        docker-credential-gcr configure-docker && \
+        echo "BUILDING AGR DEV IMAGE" && \
+        docker pull gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        cd Docker/dev && \
+        docker build -t agrio/agr-dev:latest -t agrio/agr-dev:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_BRANCH && \
+        docker tag agrio/agr-dev:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker tag agrio/agr-dev:latest gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
+        echo "PUSHING DOCKER IMAGES" && \
+        docker push gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
+        echo "TRASHING OLD IMAGES" && \
+        docker rmi agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker rmi agrio/agr-dev:latest && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
+        docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT
+    label: "Docker build agr-dev"
+    agents:
+      queue: "automation-docker-builder-fleet"
+    timeout: 300
+
+  - wait

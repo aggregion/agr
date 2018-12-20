@@ -343,16 +343,16 @@ msgstr ""
 msgid "set or update blockchain action state"
 msgstr ""
 
-msgid "Transfer AGR from account to account"
+msgid "Transfer tokens from account to account"
 msgstr ""
 
-msgid "The account sending AGR"
+msgid "The account sending tokens"
 msgstr ""
 
-msgid "The account receiving AGR"
+msgid "The account receiving tokens"
 msgstr ""
 
-msgid "The amount of AGR to send"
+msgid "The amount of tokens to send"
 msgstr ""
 
 msgid "The memo for the transfer"

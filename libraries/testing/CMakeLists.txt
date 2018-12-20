@@ -7,7 +7,7 @@ add_library( agrio_testing
              ${HEADERS}
         )
 
-target_link_libraries( agrio_testing agrio_chain agr_utilities fc chainbase Logging IR WAST WASM Runtime )
+target_link_libraries( agrio_testing agrio_chain fc chainbase Logging IR WAST WASM Runtime )
 target_include_directories( agrio_testing
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include"
                                    "${CMAKE_CURRENT_SOURCE_DIR}/../wasm-jit/Include"
