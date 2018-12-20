@@ -8,11 +8,6 @@
 
 #include <tic_tac_toe/tic_tac_toe.wast.hpp>
 #include <tic_tac_toe/tic_tac_toe.abi.hpp>
-#include <agrio.system/agrio.system.wast.hpp>
-#include <agrio.system/agrio.system.abi.hpp>
-
-#include <proxy/proxy.wast.hpp>
-#include <proxy/proxy.abi.hpp>
 
 #include <Runtime/Runtime.h>
 

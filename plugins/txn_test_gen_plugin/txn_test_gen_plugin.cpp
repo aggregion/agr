@@ -5,7 +5,6 @@
 #include <agrio/txn_test_gen_plugin/txn_test_gen_plugin.hpp>
 #include <agrio/chain_plugin/chain_plugin.hpp>
 #include <agrio/chain/wast_to_wasm.hpp>
-#include <agrio/utilities/key_conversion.hpp>
 
 #include <fc/variant.hpp>
 #include <fc/io/json.hpp>

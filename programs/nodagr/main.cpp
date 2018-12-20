@@ -6,10 +6,8 @@
 
 #include <agrio/chain_plugin/chain_plugin.hpp>
 #include <agrio/http_plugin/http_plugin.hpp>
-#include <agrio/history_plugin/history_plugin.hpp>
 #include <agrio/net_plugin/net_plugin.hpp>
 #include <agrio/producer_plugin/producer_plugin.hpp>
-#include <agrio/utilities/common.hpp>
 
 #include <fc/log/logger_config.hpp>
 #include <fc/log/appender.hpp>
@@ -94,7 +92,6 @@ int main(int argc, char** argv)
 {
    try {
       app().set_version(agrio::nodagr::config::version);
-      app().register_plugin<history_plugin>();
 
       auto root = fc::app_path();
       app().set_default_data_dir(root / "agrio/nodagr/data" );
@@ -109,6 +106,8 @@ int main(int argc, char** argv)
       initialize_logging();
       ilog("nodagr version ${ver}", ("ver", app().version_string()));
       ilog("agrio root is ${root}", ("root", root.string()));
+      ilog("nodagr using configuration file ${c}", ("c", app().full_config_file_path().string()));
+      ilog("nodagr data directory is ${d}", ("d", app().data_dir().string()));
       app().startup();
       app().exec();
    } catch( const extract_genesis_state_exception& e ) {

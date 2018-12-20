@@ -5,8 +5,6 @@
 #include <agrio.system/agrio.system.wast.hpp>
 #include <agrio.system/agrio.system.abi.hpp>
 // These contracts are still under dev
-#include <agrio.bios/agrio.bios.wast.hpp>
-#include <agrio.bios/agrio.bios.abi.hpp>
 #include <agrio.token/agrio.token.wast.hpp>
 #include <agrio.token/agrio.token.abi.hpp>
 #include <agrio.msig/agrio.msig.wast.hpp>
