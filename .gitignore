@@ -23,6 +23,7 @@ compile_commands.json
 moc_*
 *.moc
 .gdb_history
+Docker/config.ini
 
 genesis.json
 hardfork.hpp
