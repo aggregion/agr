@@ -14,6 +14,7 @@ async function getTable(agr, account, scope, table) {
         scope: scope,
         table: table,
         json: true,
+        limit: -1
     });
 }
 
@@ -71,6 +72,20 @@ async function createAccount(agr, name, key) {
             owner: key,
             active: key
         });
+
+        tr.buyrambytes({
+            payer: 'agrio',
+            receiver: name,
+            bytes: 1024 * 1024
+        })
+
+        tr.delegatebw({
+            from: 'agrio',
+            receiver: name,
+            stake_net_quantity: '10.0000 AGR',
+            stake_cpu_quantity: '10.0000 AGR',
+            transfer: 0
+        })
     });
 
     if (name != 'agrio.token' && agrio_token) {
@@ -141,11 +156,26 @@ function generateUUID() {
     res[1] = '0x' + res[1];
     return res;
 }
+
+function getUUIDAsString(simple) {
+    function pad_with_zeroes(number, length) {
+        var my_string = '' + number;
+        while (my_string.length < length) {
+            my_string = '0' + my_string;
+        }
+        return my_string;
+    }
+
+    const tmp = pad_with_zeroes(new BN(simple, 10).toString(16), 32);
+    return "0x" + pad_with_zeroes(tmp.match(/[a-fA-F0-9]{2}/g).reverse().join(''), 32);
+}
+
 module.exports = {
     getTable,
     checkTableRecords,
     createAccount,
     setContract,
     setNetwork,
-    generateUUID
+    generateUUID,
+    getUUIDAsString
 }

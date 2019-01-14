@@ -23,26 +23,26 @@ class license_pool : public agrio::contract {
 public:
 
   enum class RuleCondition: uint8_t {
-    Less = 0,
-    LessEqual = 1,
-    Equal = 2,
-    GreaterEqual = 3,
-    Greater = 4,
-    OneFromList = 5,
-    AllFromList = 6,
+    Less            = 0,
+    LessEqual       = 1,
+    Equal           = 2,
+    GreaterEqual    = 3,
+    Greater         = 4,
+    OneFromList     = 5,
+    AllFromList     = 6,
     TotalConditions = 7
   };
 
   enum class RuleType: uint8_t {
-    Allow = 0,
-    Deny = 1,
+    Allow      = 0,
+    Deny       = 1,
     TotalTypes = 2
   };
 
   enum class LicenseState: uint8_t {
-    Reserved = 0,
-    Active = 1,
-    Revoked = 2,
+    Reserved    = 0,
+    Active      = 1,
+    Revoked     = 2,
     TotalStates = 3
   };
 
@@ -58,10 +58,12 @@ public:
                 account_name  owner,
                 const string& name,
                 const string& description);
+
   /// @abi action
   void offerpropset(uint128_t     offerUUID,
                     uint128_t     name,
                     const string& value);
+
   /// @abi action
   void offerproprem(uint128_t offerUUID,
                     uint128_t name);
@@ -72,22 +74,26 @@ public:
                    uint128_t    parentUUID,
                    uint128_t    offerUUID,
                    account_name delegate_to);
+
   /// @abi action
   void distrruleset(uint128_t     distributionUUID,
                     uint8_t       type,
                     uint8_t       condition,
                     uint128_t     name,
                     const string& value);
+
   /// @abi action
   void distrrulerem(uint128_t distributionUUID,
                     uint8_t   type,
                     uint8_t   condition,
                     uint128_t name);
+
   /// @abi action
   void distrlimset(uint128_t distributionUUID,
                    uint128_t name,
                    uint16_t  change,
                    uint16_t  remain);
+
   /// @abi action
   void distrlimrem(uint128_t distributionUUID,
                    uint128_t name);
@@ -97,15 +103,19 @@ public:
   void liccreate(uint128_t    distributionUUID,
                  uint128_t    licenseUUID,
                  account_name issued_to);
+
   /// @abi action
   void licpropset(uint128_t     licenseUUID,
                   uint128_t     name,
                   const string& value);
+
   /// @abi action
   void licproprem(uint128_t licenseUUID,
                   uint128_t name);
+
   /// @abi action
   void licactivate(uint128_t licenseUUID);
+
   /// @abi action
   void licrevoke(uint128_t licenseUUID);
 
@@ -149,7 +159,9 @@ public:
     AGRLIB_SERIALIZE(licenseoffer, (id)(offerUUID)(owner)(name)(description))
   };
   typedef multi_index<N(licenseoffer), licenseoffer,
-                      indexed_by<N(byofferuuid), const_mem_fun<licenseoffer, uint128_t, &licenseoffer::byofferuuid> > >license_offer_index;
+                      indexed_by<N(byofferuuid), const_mem_fun<licenseoffer, uint128_t,
+                                                               &licenseoffer::byofferuuid> > >
+    license_offer_index;
 
   // @abi table offerprops i64
   struct offerprops {
@@ -168,7 +180,9 @@ public:
 
     AGRLIB_SERIALIZE(offerprops, (id)(offerUUID)(key)(value))
   };
-  typedef multi_index<N(offerprops), offerprops, indexed_by<N(byuuidkey), const_mem_fun<offerprops, key256, &offerprops::byuuidkey> > >
+  typedef multi_index<N(offerprops), offerprops, indexed_by<N(byuuidkey), const_mem_fun<offerprops,
+                                                                                        key256,
+                                                                                        &offerprops::byuuidkey> > >
     offerprops_index;
 
   // @abi table license i64
@@ -190,7 +204,9 @@ public:
 
     AGRLIB_SERIALIZE(license, (id)(state)(licenseUUID)(distributionUUID)(issued_from)(issued_to))
   };
-  typedef multi_index<N(license), license, indexed_by<N(bylicuuid), const_mem_fun<license, uint128_t, &license::bylicuuid> > > license_index;
+  typedef multi_index<N(license), license, indexed_by<N(bylicuuid), const_mem_fun<license, uint128_t,
+                                                                                  &license::bylicuuid> > >
+    license_index;
 
   // @abi table licprops i64
   struct licprops {
@@ -209,7 +225,9 @@ public:
 
     AGRLIB_SERIALIZE(licprops, (id)(licenseUUID)(key)(value))
   };
-  typedef multi_index<N(licprops), licprops, indexed_by<N(byuuidkey), const_mem_fun<licprops, key256, &licprops::byuuidkey> > > licprops_index;
+  typedef multi_index<N(licprops), licprops, indexed_by<N(byuuidkey), const_mem_fun<licprops, key256,
+                                                                                    &licprops::byuuidkey> > >
+    licprops_index;
 
   // @abi table distrdelg i64
   struct distrdelg {
@@ -228,9 +246,12 @@ public:
       return distributionUUID;
     }
 
-    AGRLIB_SERIALIZE(distrdelg, (id)(distributionUUID)(parentUUID)(offerUUID)(delegate_from)(delegate_to))
+    AGRLIB_SERIALIZE(distrdelg,
+                     (id)(distributionUUID)(parentUUID)(offerUUID)(delegate_from)(delegate_to))
   };
-  typedef multi_index<N(distrdelg), distrdelg, indexed_by<N(bydistruuid), const_mem_fun<distrdelg, uint128_t, &distrdelg::bydistruuid> > >
+  typedef multi_index<N(distrdelg), distrdelg, indexed_by<N(bydistruuid), const_mem_fun<distrdelg,
+                                                                                        uint128_t,
+                                                                                        &distrdelg::bydistruuid> > >
     distrdelg_index;
 
   // @abi table distrrule i64
@@ -252,7 +273,9 @@ public:
 
     AGRLIB_SERIALIZE(distrrule, (id)(distributionUUID)(type)(condition)(name)(value))
   };
-  typedef multi_index<N(distrrule), distrrule, indexed_by<N(bydistruuid), const_mem_fun<distrrule, uint128_t, &distrrule::bydistruuid> > >
+  typedef multi_index<N(distrrule), distrrule, indexed_by<N(bydistruuid), const_mem_fun<distrrule,
+                                                                                        uint128_t,
+                                                                                        &distrrule::bydistruuid> > >
     distrrule_index;
 
   // @abi table distrlimit i64
@@ -278,8 +301,11 @@ public:
     AGRLIB_SERIALIZE(distrlimit, (id)(distributionUUID)(name)(change)(value))
   };
   typedef multi_index<N(distrlimit), distrlimit,
-                      indexed_by<N(byuuidkey), const_mem_fun<distrlimit, key256, &distrlimit::byuuidkey> >,
-                      indexed_by<N(bydistruuid), const_mem_fun<distrlimit, uint128_t, &distrlimit::bydistruuid> > >distrlimit_index;
+                      indexed_by<N(byuuidkey), const_mem_fun<distrlimit, key256,
+                                                             &distrlimit::byuuidkey> >,
+                      indexed_by<N(bydistruuid), const_mem_fun<distrlimit, uint128_t,
+                                                               &distrlimit::bydistruuid> > >
+    distrlimit_index;
 
 protected:
 
