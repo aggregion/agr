@@ -50,8 +50,9 @@ add_library( agrio_chain
              ${HEADERS}
              )
 
-target_link_libraries( agrio_chain agr_utilities fc chainbase Logging IR WAST WASM Runtime
+target_link_libraries( agrio_chain fc chainbase Logging IR WAST WASM Runtime
                        softfloat builtins wabt
+                       ${Boost_LIBRARIES}
                      )
 target_include_directories( agrio_chain
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include"

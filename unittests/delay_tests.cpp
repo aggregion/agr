@@ -3,8 +3,6 @@
 #include <agrio/chain/producer_object.hpp>
 #include <agrio/chain/global_property_object.hpp>
 #include <agrio/chain/generated_transaction_object.hpp>
-#include <agrio.system/agrio.system.wast.hpp>
-#include <agrio.system/agrio.system.abi.hpp>
 #include <agrio.token/agrio.token.wast.hpp>
 #include <agrio.token/agrio.token.abi.hpp>
 
