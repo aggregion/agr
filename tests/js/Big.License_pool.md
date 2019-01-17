@@ -2,7 +2,7 @@
 
 There is sales scheme below wich will be implemented using js test file.
 
-![Scheme](/img/scheme.png)
+![Scheme](/tests/js/img/scheme.png?raw=true)
 
 ## Publish offers
 First we need to create two license offers. First of all implement out helper function to set offer property:
