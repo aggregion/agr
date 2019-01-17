@@ -2,7 +2,7 @@
 
 There is sales scheme below wich will be implemented using js test file.
 
-![Scheme](https://github.com/aggregion/agr/tree/master/tests/js/test/docs/scheme.png)
+![Scheme](/img/scheme.png)
 
 ## Publish offers
 First we need to create two license offers. First of all implement out helper function to set offer property:
