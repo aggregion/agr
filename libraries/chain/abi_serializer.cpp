@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/chain/abi_serializer.hpp>
 #include <agrio/chain/contract_types.hpp>

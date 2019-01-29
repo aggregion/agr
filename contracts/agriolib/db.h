@@ -1,6 +1,6 @@
 /**
  *  @file db.h
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  *  @brief Defines C API for interfacing with blockchain database
  */
 #pragma once

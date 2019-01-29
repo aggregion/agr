@@ -3,6 +3,6 @@ configure_file("${ABI_FILES}" "${CMAKE_CURRENT_BINARY_DIR}" COPYONLY)
 
 add_wast_executable(TARGET agrio.bios
   INCLUDE_FOLDERS "${STANDARD_INCLUDE_FOLDERS}"
-  LIBRARIES libc libc++ agriolib
+  LIBRARIES libc++ libc agriolib
   DESTINATION_FOLDER ${CMAKE_CURRENT_BINARY_DIR}
 )

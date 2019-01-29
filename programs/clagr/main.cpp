@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  *  @defgroup agrclienttool AGRIO Command Line Client Reference
  *  @brief Tool for sending transactions and querying state from @ref nodagr
  *  @ingroup agrclienttool

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/faucet_testnet_plugin/faucet_testnet_plugin.hpp>
 #include <agrio/chain_plugin/chain_plugin.hpp>

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/test_control_plugin/test_control_plugin.hpp>
 #include <fc/optional.hpp>

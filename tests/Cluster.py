@@ -896,7 +896,7 @@ class Cluster(object):
         contract="agrio.token"
         action="transfer"
         for name, keys in producerKeys.items():
-            data="{\"from\":\"agrio\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (name, initialFunds, "init transfer")
+            data="{\"from\":\"agrio\",\"to\":\"%s\",\"quantity\":\"%s\",\"memo\":\"%s\"}" % (name, initialFunds, "init agrio transfer")
             opts="--permission agrio@active"
             if name != "agrio":
                 trans=biosNode.pushMessage(contract, action, data, opts)

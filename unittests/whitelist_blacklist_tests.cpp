@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
    );
 
    auth = authority(agrio::testing::base_tester::get_public_key("bob", "active"));
-   auth.accounts.push_back( permission_level_weight{{N(alice), config::active_name}, 1} );
+   auth.accounts.push_back( permission_level_weight{{N(alice), config::agrio_code_name}, 1} );
    auth.accounts.push_back( permission_level_weight{{N(bob), config::agrio_code_name}, 1} );
 
    tester1.chain->push_action( N(agrio), N(updateauth), N(bob), mvo()

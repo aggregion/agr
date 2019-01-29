@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/chain/authorization_manager.hpp>
 #include <agrio/chain/exceptions.hpp>

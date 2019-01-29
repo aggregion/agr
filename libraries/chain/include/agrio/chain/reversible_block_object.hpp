@@ -1,7 +1,7 @@
 
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <agrio/chain/types.hpp>

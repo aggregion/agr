@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 
 #include <agrio/chain/chain_id_type.hpp>
@@ -8,7 +8,7 @@
 
 namespace agrio { namespace chain {
 
-   void chain_id_type::reflector_verify()const {
+   void chain_id_type::reflector_init()const {
       AGR_ASSERT( *reinterpret_cast<const fc::sha256*>(this) != fc::sha256(), chain_id_type_exception, "chain_id_type cannot be zero" );
    }
 

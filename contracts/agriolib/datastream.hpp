@@ -1,6 +1,6 @@
 /**
  *  @file datastream.hpp
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <agriolib/system.h>

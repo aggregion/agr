@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/wallet_plugin/se_wallet.hpp>
 #include <agrio/wallet_plugin/macos_user_auth.h>

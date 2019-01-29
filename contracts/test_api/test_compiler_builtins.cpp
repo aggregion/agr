@@ -1,6 +1,6 @@
 /**
  *    @file test_compiler_builtins.cpp
- *    @copyright defined in agr/LICENSE.txt
+ *    @copyright defined in agr/LICENSE
  */
 
 #include <agriolib/agrio.hpp>

@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/chain_api_plugin/chain_api_plugin.hpp>
 #include <agrio/chain/exceptions.hpp>

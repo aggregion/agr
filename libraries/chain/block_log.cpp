@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/chain/block_log.hpp>
 #include <agrio/chain/exceptions.hpp>
@@ -473,7 +473,7 @@ namespace agrio { namespace chain {
             old_block_stream.read( reinterpret_cast<char*>(&tmp_pos), sizeof(tmp_pos) );
          }
          if( pos != tmp_pos ) {
-            bad_block = tmp;
+            bad_block.emplace(std::move(tmp));
             break;
          }
 

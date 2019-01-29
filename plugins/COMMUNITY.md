@@ -13,6 +13,10 @@ Third parties are encouraged to make pull requests to this file (`develop` branc
 | SQL | https://github.com/asiniscalchi/agrio_sql_plugin |
 | Watch for specific actions and send them to an HTTP URL | https://github.com/agrauthority/agrio-watcher-plugin |
 | ZMQ / history | https://github.com/cc32d9/agr_zmq_plugin |
+| ZMQ Light History API | https://github.com/cc32d9/agr_zmq_light_api |
+| Chintai ZMQ Watcher | https://github.com/acoutts/chintai-zeromq-watcher-plugin |
+| Mongo History API | https://github.com/CryptoLions/AGR-mongo-history-API |
+| State History API | https://github.com/acoutts/AGR-state-history-API |
 
 ## DISCLAIMER:
 

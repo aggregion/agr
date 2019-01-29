@@ -1,6 +1,6 @@
 /**
  * @file action_test.cpp
- * @copyright defined in agr/LICENSE.txt
+ * @copyright defined in agr/LICENSE
  */
 #include <agriolib/permission.h>
 #include <agriolib/db.h>
