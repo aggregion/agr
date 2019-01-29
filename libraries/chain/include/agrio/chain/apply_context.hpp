@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/controller.hpp>
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/contract_table_objects.hpp>
+#include <agrio/chain/controller.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/chain/contract_table_objects.hpp>
 #include <fc/utility.hpp>
 #include <sstream>
 #include <algorithm>
@@ -13,7 +13,7 @@
 
 namespace chainbase { class database; }
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 class controller;
 class transaction_context;
@@ -42,36 +42,36 @@ class apply_context {
 
             const table_id_object& get_table( table_id_object::id_type i )const {
                auto itr = _table_cache.find(i);
-               EOS_ASSERT( itr != _table_cache.end(), table_not_in_cache, "an invariant was broken, table should be in cache" );
+               AGR_ASSERT( itr != _table_cache.end(), table_not_in_cache, "an invariant was broken, table should be in cache" );
                return *itr->second.first;
             }
 
             int get_end_iterator_by_table_id( table_id_object::id_type i )const {
                auto itr = _table_cache.find(i);
-               EOS_ASSERT( itr != _table_cache.end(), table_not_in_cache, "an invariant was broken, table should be in cache" );
+               AGR_ASSERT( itr != _table_cache.end(), table_not_in_cache, "an invariant was broken, table should be in cache" );
                return itr->second.second;
             }
 
             const table_id_object* find_table_by_end_iterator( int ei )const {
-               EOS_ASSERT( ei < -1, invalid_table_iterator, "not an end iterator" );
+               AGR_ASSERT( ei < -1, invalid_table_iterator, "not an end iterator" );
                auto indx = end_iterator_to_index(ei);
                if( indx >= _end_iterator_to_table.size() ) return nullptr;
                return _end_iterator_to_table[indx];
             }
 
             const T& get( int iterator ) {
-               EOS_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
-               EOS_ASSERT( iterator >= 0, table_operation_not_permitted, "dereference of end iterator" );
-               EOS_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
+               AGR_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
+               AGR_ASSERT( iterator >= 0, table_operation_not_permitted, "dereference of end iterator" );
+               AGR_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
                auto result = _iterator_to_object[iterator];
-               EOS_ASSERT( result, table_operation_not_permitted, "dereference of deleted object" );
+               AGR_ASSERT( result, table_operation_not_permitted, "dereference of deleted object" );
                return *result;
             }
 
             void remove( int iterator ) {
-               EOS_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
-               EOS_ASSERT( iterator >= 0, table_operation_not_permitted, "cannot call remove on end iterators" );
-               EOS_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
+               AGR_ASSERT( iterator != -1, invalid_table_iterator, "invalid iterator" );
+               AGR_ASSERT( iterator >= 0, table_operation_not_permitted, "cannot call remove on end iterators" );
+               AGR_ASSERT( iterator < _iterator_to_object.size(), invalid_table_iterator, "iterator out of range" );
                auto obj_ptr = _iterator_to_object[iterator];
                if( !obj_ptr ) return;
                _iterator_to_object[iterator] = nullptr;
@@ -179,7 +179,7 @@ class apply_context {
             int store( uint64_t scope, uint64_t table, const account_name& payer,
                        uint64_t id, secondary_key_proxy_const_type value )
             {
-               EOS_ASSERT( payer != account_name(), invalid_table_payer, "must specify a valid account to pay for new record" );
+               AGR_ASSERT( payer != account_name(), invalid_table_payer, "must specify a valid account to pay for new record" );
 
 //               context.require_write_lock( scope );
 
@@ -207,7 +207,7 @@ class apply_context {
                context.update_db_usage( obj.payer, -( config::billable_size_v<ObjectType> ) );
 
                const auto& table_obj = itr_cache.get_table( obj.t_id );
-               EOS_ASSERT( table_obj.code == context.receiver, table_access_violation, "db access violation" );
+               AGR_ASSERT( table_obj.code == context.receiver, table_access_violation, "db access violation" );
 
 //               context.require_write_lock( table_obj.scope );
 
@@ -227,7 +227,7 @@ class apply_context {
                const auto& obj = itr_cache.get( iterator );
 
                const auto& table_obj = itr_cache.get_table( obj.t_id );
-               EOS_ASSERT( table_obj.code == context.receiver, table_access_violation, "db access violation" );
+               AGR_ASSERT( table_obj.code == context.receiver, table_access_violation, "db access violation" );
 
 //               context.require_write_lock( table_obj.scope );
 
@@ -322,7 +322,7 @@ class apply_context {
                if( iterator < -1 ) // is end iterator
                {
                   auto tab = itr_cache.find_table_by_end_iterator(iterator);
-                  EOS_ASSERT( tab, invalid_table_iterator, "not a valid end iterator" );
+                  AGR_ASSERT( tab, invalid_table_iterator, "not a valid end iterator" );
 
                   auto itr = idx.upper_bound(tab->id);
                   if( idx.begin() == idx.end() || itr == idx.begin() ) return -1; // Empty index
@@ -411,7 +411,7 @@ class apply_context {
                if( iterator < -1 ) // is end iterator
                {
                   auto tab = itr_cache.find_table_by_end_iterator(iterator);
-                  EOS_ASSERT( tab, invalid_table_iterator, "not a valid end iterator" );
+                  AGR_ASSERT( tab, invalid_table_iterator, "not a valid end iterator" );
 
                   auto itr = idx.upper_bound(tab->id);
                   if( idx.begin() == idx.end() || itr == idx.begin() ) return -1; // Empty table
@@ -609,6 +609,6 @@ class apply_context {
 
 using apply_handler = std::function<void(apply_context&)>;
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain
 
-//FC_REFLECT(eosio::chain::apply_context::apply_results, (applied_actions)(deferred_transaction_requests)(deferred_transactions_count))
+//FC_REFLECT(agrio::chain::apply_context::apply_results, (applied_actions)(deferred_transaction_requests)(deferred_transactions_count))

@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/types.hpp>
-#include <eosiolib/action.hpp>
-#include <eosiolib/print.hpp>
-#include <eosiolib/multi_index.hpp>
-#include <eosiolib/dispatcher.hpp>
-#include <eosiolib/contract.hpp>
+#include <agriolib/types.hpp>
+#include <agriolib/action.hpp>
+#include <agriolib/print.hpp>
+#include <agriolib/multi_index.hpp>
+#include <agriolib/dispatcher.hpp>
+#include <agriolib/contract.hpp>

@@ -1,21 +1,21 @@
-#include <eosiolib/action.h>
-#include <eosiolib/contract.hpp>
-#include <eosiolib/dispatcher.hpp>
+#include <agriolib/action.h>
+#include <agriolib/contract.hpp>
+#include <agriolib/dispatcher.hpp>
 #include <identity/interface.hpp>
 
 namespace identity_test {
    
-   using eosio::action_meta;
-   using eosio::singleton;
+   using agrio::action_meta;
+   using agrio::singleton;
    using std::string;
    using std::vector;
 
-   class contract : public eosio::contract {
+   class contract : public agrio::contract {
       public:
          static constexpr uint64_t code = N(identitytest);
          typedef singleton<N(result), uint64_t> result_table;
 
-         using eosio::contract::contract;
+         using agrio::contract::contract;
 
          void getowner( const uint64_t identity ) {
             identity::interface iface( N(identity) );
@@ -32,4 +32,4 @@ namespace identity_test {
 
 } /// namespace identity
 
-EOSIO_ABI( identity_test::contract, (getowner)(getidentity) );
+AGRIO_ABI( identity_test::contract, (getowner)(getidentity) );

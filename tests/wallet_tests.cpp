@@ -1,23 +1,23 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
-#include <eosio/chain/genesis_state.hpp>
-#include <eosio/wallet_plugin/wallet.hpp>
-#include <eosio/wallet_plugin/wallet_manager.hpp>
+#include <agrio/chain/genesis_state.hpp>
+#include <agrio/wallet_plugin/wallet.hpp>
+#include <agrio/wallet_plugin/wallet_manager.hpp>
 
 #include <boost/test/unit_test.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-namespace eosio {
+namespace agrio {
 
 BOOST_AUTO_TEST_SUITE(wallet_tests)
 
 /// Test creating the wallet
 BOOST_AUTO_TEST_CASE(wallet_test)
 { try {
-   using namespace eosio::wallet;
+   using namespace agrio::wallet;
 
    wallet_data d;
    soft_wallet wallet(d);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(wallet_test)
 /// Test wallet manager
 BOOST_AUTO_TEST_CASE(wallet_manager_test)
 { try {
-   using namespace eosio::wallet;
+   using namespace agrio::wallet;
 
    if (fc::exists("test.wallet")) fc::remove("test.wallet");
    if (fc::exists("test2.wallet")) fc::remove("test2.wallet");
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(wallet_manager_test)
 
    constexpr auto key1 = "5JktVNHnRX48BUdtewU7N1CyL4Z886c42x7wYW7XhNWkDQRhdcS";
    constexpr auto key2 = "5Ju5RTcVDo35ndtzHioPMgebvBM6LkJ6tvuU6LTNQv8yaz3ggZr";
-   constexpr auto key3 = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3";
+   constexpr auto key3 = "5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS";
 
    wallet_manager wm;
    BOOST_CHECK_EQUAL(0, wm.list_wallets().size());
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(wallet_manager_test)
 /// Test wallet manager
 BOOST_AUTO_TEST_CASE(wallet_manager_create_test) {
    try {
-      using namespace eosio::wallet;
+      using namespace agrio::wallet;
 
       if (fc::exists("test.wallet")) fc::remove("test.wallet");
 
@@ -269,4 +269,4 @@ BOOST_AUTO_TEST_CASE(wallet_manager_create_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-} // namespace eos
+} // namespace agr

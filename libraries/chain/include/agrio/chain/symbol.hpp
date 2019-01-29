@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <fc/exception/exception.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/core_symbol.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/core_symbol.hpp>
 #include <string>
 #include <functional>
 
-namespace eosio {
+namespace agrio {
    namespace chain {
 
       /**
@@ -17,7 +17,7 @@ namespace eosio {
          When encoded as a uint64_t, first byte represents the number of decimals, remaining bytes
          represent token name.
          Name must only include upper case alphabets.
-         from_string constructs a symbol from an input a string of the form "4,EOS"
+         from_string constructs a symbol from an input a string of the form "4,AGR"
          where the integer represents number of decimals. Number of decimals must be larger than zero.
        */
 
@@ -35,7 +35,7 @@ namespace eosio {
          return result;
       }
 
-#define SY(P,X) ::eosio::chain::string_to_symbol_c(P,#X)
+#define SY(P,X) ::agrio::chain::string_to_symbol_c(P,#X)
 
       static uint64_t string_to_symbol(uint8_t precision, const char* str) {
          try {
@@ -44,7 +44,7 @@ namespace eosio {
             uint64_t result = 0;
             for (uint32_t i = 0; i < len; ++i) {
                // All characters must be upper case alphabets
-               EOS_ASSERT (str[i] >= 'A' && str[i] <= 'Z', symbol_type_exception, "invalid character in symbol name");
+               AGR_ASSERT (str[i] >= 'A' && str[i] <= 'Z', symbol_type_exception, "invalid character in symbol name");
                result |= (uint64_t(str[i]) << (8*(i+1)));
             }
             result |= uint64_t(precision);
@@ -64,22 +64,22 @@ namespace eosio {
             static constexpr uint8_t max_precision = 18;
 
             explicit symbol(uint8_t p, const char* s): m_value(string_to_symbol(p, s)) {
-               EOS_ASSERT(valid(), symbol_type_exception, "invalid symbol: ${s}", ("s",s));
+               AGR_ASSERT(valid(), symbol_type_exception, "invalid symbol: ${s}", ("s",s));
             }
             explicit symbol(uint64_t v = CORE_SYMBOL): m_value(v) {
-               EOS_ASSERT(valid(), symbol_type_exception, "invalid symbol: ${name}", ("name",name()));
+               AGR_ASSERT(valid(), symbol_type_exception, "invalid symbol: ${name}", ("name",name()));
             }
             static symbol from_string(const string& from)
             {
                try {
                   string s = fc::trim(from);
-                  EOS_ASSERT(!s.empty(), symbol_type_exception, "creating symbol from empty string");
+                  AGR_ASSERT(!s.empty(), symbol_type_exception, "creating symbol from empty string");
                   auto comma_pos = s.find(',');
-                  EOS_ASSERT(comma_pos != string::npos, symbol_type_exception, "missing comma in symbol");
+                  AGR_ASSERT(comma_pos != string::npos, symbol_type_exception, "missing comma in symbol");
                   auto prec_part = s.substr(0, comma_pos);
                   uint8_t p = fc::to_int64(prec_part);
                   string name_part = s.substr(comma_pos + 1);
-                  EOS_ASSERT( p <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", p));
+                  AGR_ASSERT( p <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", p));
                   return symbol(string_to_symbol(p, name_part.c_str()));
                } FC_CAPTURE_LOG_AND_RETHROW((from))
             }
@@ -97,7 +97,7 @@ namespace eosio {
             uint8_t decimals() const { return m_value & 0xFF; }
             uint64_t precision() const
             {
-               EOS_ASSERT( decimals() <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", decimals()) );
+               AGR_ASSERT( decimals() <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", decimals()) );
                uint64_t p10 = 1;
                uint64_t p = decimals();
                while( p > 0  ) {
@@ -124,7 +124,7 @@ namespace eosio {
             {
                uint64_t v = m_value;
                uint8_t p = v & 0xFF;
-               string ret = eosio::chain::to_string(p);
+               string ret = agrio::chain::to_string(p);
                ret += ',';
                ret += name();
                return ret;
@@ -138,8 +138,8 @@ namespace eosio {
             }
 
             void reflector_init()const {
-               EOS_ASSERT( decimals() <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", decimals()) );
-               EOS_ASSERT( valid_name(name()), symbol_type_exception, "invalid symbol: ${name}", ("name",name()));
+               AGR_ASSERT( decimals() <= max_precision, symbol_type_exception, "precision ${p} should be <= 18", ("p", decimals()) );
+               AGR_ASSERT( valid_name(name()), symbol_type_exception, "invalid symbol: ${name}", ("name",name()));
             }
 
          private:
@@ -170,24 +170,24 @@ namespace eosio {
       }
 
    } // namespace chain
-} // namespace eosio
+} // namespace agrio
 
 namespace fc {
-   inline void to_variant(const eosio::chain::symbol& var, fc::variant& vo) { vo = var.to_string(); }
-   inline void from_variant(const fc::variant& var, eosio::chain::symbol& vo) {
-      vo = eosio::chain::symbol::from_string(var.get_string());
+   inline void to_variant(const agrio::chain::symbol& var, fc::variant& vo) { vo = var.to_string(); }
+   inline void from_variant(const fc::variant& var, agrio::chain::symbol& vo) {
+      vo = agrio::chain::symbol::from_string(var.get_string());
    }
 }
 
 namespace fc {
-   inline void to_variant(const eosio::chain::symbol_code& var, fc::variant& vo) {
-      vo = eosio::chain::symbol(var.value << 8).name();
+   inline void to_variant(const agrio::chain::symbol_code& var, fc::variant& vo) {
+      vo = agrio::chain::symbol(var.value << 8).name();
    }
-   inline void from_variant(const fc::variant& var, eosio::chain::symbol_code& vo) {
-      vo = eosio::chain::symbol(0, var.get_string().c_str()).to_symbol_code();
+   inline void from_variant(const fc::variant& var, agrio::chain::symbol_code& vo) {
+      vo = agrio::chain::symbol(0, var.get_string().c_str()).to_symbol_code();
    }
 }
 
-FC_REFLECT(eosio::chain::symbol_code, (value))
-FC_REFLECT(eosio::chain::symbol, (m_value))
-FC_REFLECT(eosio::chain::extended_symbol, (sym)(contract))
+FC_REFLECT(agrio::chain::symbol_code, (value))
+FC_REFLECT(agrio::chain::symbol, (m_value))
+FC_REFLECT(agrio::chain::extended_symbol, (sym)(contract))

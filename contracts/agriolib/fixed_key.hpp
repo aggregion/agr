@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
@@ -8,9 +8,9 @@
 #include <algorithm>
 #include <type_traits>
 
-#include <eosiolib/system.h>
+#include <agriolib/system.h>
 
-namespace eosio {
+namespace agrio {
 
    template<size_t Size>
    class fixed_key;
@@ -65,7 +65,7 @@ namespace eosio {
                    continue;
                }
 
-               eosio_assert( sub_words_left == 1, "unexpected error in fixed_key constructor" );
+               agrio_assert( sub_words_left == 1, "unexpected error in fixed_key constructor" );
                temp_word |= static_cast<word_t>(w);
                sub_words_left = num_sub_words;
 

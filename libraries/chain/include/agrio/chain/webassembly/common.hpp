@@ -1,13 +1,13 @@
 #pragma once
 
-#include <eosio/chain/wasm_interface.hpp>
-#include <eosio/chain/wasm_eosio_constraints.hpp>
+#include <agrio/chain/wasm_interface.hpp>
+#include <agrio/chain/wasm_agrio_constraints.hpp>
 
-#define EOSIO_INJECTED_MODULE_NAME "eosio_injection"
+#define AGRIO_INJECTED_MODULE_NAME "agrio_injection"
 
 using namespace fc;
 
-namespace eosio { namespace chain { 
+namespace agrio { namespace chain { 
 
    class apply_context;
    class transaction_context;
@@ -98,4 +98,4 @@ namespace eosio { namespace chain {
       char *value;
    };
 
- } } // eosio::chain
+ } } // agrio::chain

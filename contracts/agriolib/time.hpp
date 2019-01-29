@@ -1,9 +1,9 @@
 #pragma once
 #include <stdint.h>
 #include <string>
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
-namespace eosio {
+namespace agrio {
   class microseconds {
     public:
         explicit microseconds( int64_t c = 0) :_count(c){}
@@ -24,7 +24,7 @@ namespace eosio {
         int64_t to_seconds()const { return _count/1000000; }
 
         int64_t _count;
-        EOSLIB_SERIALIZE( microseconds, (_count) )
+        AGRLIB_SERIALIZE( microseconds, (_count) )
     private:
         friend class time_point;
   };
@@ -55,7 +55,7 @@ namespace eosio {
         time_point   operator - (const microseconds& m) const { return time_point(elapsed-m); }
         microseconds operator - (const time_point& m) const { return microseconds(elapsed.count() - m.elapsed.count()); }
         microseconds elapsed;
-        EOSLIB_SERIALIZE( time_point, (elapsed) )
+        AGRLIB_SERIALIZE( time_point, (elapsed) )
   };
 
   /**
@@ -76,10 +76,10 @@ namespace eosio {
         static time_point_sec maximum() { return time_point_sec(0xffffffff); }
         static time_point_sec min() { return time_point_sec(0); }
 
-        operator time_point()const { return time_point( eosio::seconds( utc_seconds) ); }
+        operator time_point()const { return time_point( agrio::seconds( utc_seconds) ); }
         uint32_t sec_since_epoch()const { return utc_seconds; }
 
-        time_point_sec operator = ( const eosio::time_point& t )
+        time_point_sec operator = ( const agrio::time_point& t )
         {
           utc_seconds = uint32_t(t.time_since_epoch().count() / 1000000ll);
           return *this;
@@ -105,7 +105,7 @@ namespace eosio {
         friend microseconds operator - ( const time_point& t, const time_point_sec& m ) { return time_point(t) - time_point(m); }
         uint32_t utc_seconds;
 
-        EOSLIB_SERIALIZE( time_point_sec, (utc_seconds) )
+        AGRLIB_SERIALIZE( time_point_sec, (utc_seconds) )
   };
 
    /**
@@ -129,7 +129,7 @@ namespace eosio {
          static block_timestamp min() { return block_timestamp(0); }
 
          block_timestamp next() const {
-            eosio_assert( std::numeric_limits<uint32_t>::max() - slot >= 1, "block timestamp overflow" );
+            agrio_assert( std::numeric_limits<uint32_t>::max() - slot >= 1, "block timestamp overflow" );
             auto result = block_timestamp(*this);
             result.slot += 1;
             return result;
@@ -159,7 +159,7 @@ namespace eosio {
          static constexpr int32_t block_interval_ms = 500;
          static constexpr int64_t block_timestamp_epoch = 946684800000ll;  // epoch is year 2000
 
-         EOSLIB_SERIALIZE( block_timestamp, (slot) )
+         AGRLIB_SERIALIZE( block_timestamp, (slot) )
       private:
       
 
@@ -176,4 +176,4 @@ namespace eosio {
    }; // block_timestamp
    typedef block_timestamp block_timestamp_type; 
 
-} // namespace eosio
+} // namespace agrio

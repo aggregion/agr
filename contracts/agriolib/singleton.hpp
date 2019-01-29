@@ -1,12 +1,12 @@
 #pragma once
-#include <eosiolib/multi_index.hpp>
-#include <eosiolib/system.h>
+#include <agriolib/multi_index.hpp>
+#include <agriolib/system.h>
 
-namespace  eosio {
+namespace  agrio {
 
    /**
     *  @defgroup singleton Singleton Table 
-    *  @brief Defines EOSIO Singleton Table
+    *  @brief Defines AGRIO Singleton Table
     *  @ingroup databasecpp 
     *  @{
     */
@@ -48,10 +48,10 @@ namespace  eosio {
           */
          uint64_t primary_key() const { return pk_value; }
 
-         EOSLIB_SERIALIZE( row, (value) )
+         AGRLIB_SERIALIZE( row, (value) )
       };
 
-      typedef eosio::multi_index<SingletonName, row> table;
+      typedef agrio::multi_index<SingletonName, row> table;
 
       public:
 
@@ -83,7 +83,7 @@ namespace  eosio {
           */
          T get() {
             auto itr = _t.find( pk_value );
-            eosio_assert( itr != _t.end(), "singleton does not exist" );
+            agrio_assert( itr != _t.end(), "singleton does not exist" );
             return itr->value;
          }
 
@@ -147,4 +147,4 @@ namespace  eosio {
    };
 
 /// @} singleton
-} /// namespace eosio
+} /// namespace agrio

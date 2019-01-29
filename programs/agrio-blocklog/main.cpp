@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eosio/LICENSE.txt
+ *  @copyright defined in agrio/LICENSE.txt
  */
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/block_log.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/reversible_block_object.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/block_log.hpp>
+#include <agrio/chain/config.hpp>
+#include <agrio/chain/reversible_block_object.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/filesystem.hpp>
@@ -16,7 +16,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 
-using namespace eosio::chain;
+using namespace agrio::chain;
 namespace bfs = boost::filesystem;
 namespace bpo = boost::program_options;
 using bpo::options_description;
@@ -41,8 +41,8 @@ struct blocklog {
 void blocklog::read_log() {
    block_log block_logger(blocks_dir);
    const auto end = block_logger.read_head();
-   EOS_ASSERT( end, block_log_exception, "No blocks found in block log" );
-   EOS_ASSERT( end->block_num() > 1, block_log_exception, "Only one block found in block log" );
+   AGR_ASSERT( end, block_log_exception, "No blocks found in block log" );
+   AGR_ASSERT( end->block_num() > 1, block_log_exception, "Only one block found in block log" );
 
    ilog( "existing block log contains block num 1 through block num ${n}", ("n",end->block_num()) );
 
@@ -173,7 +173,7 @@ void blocklog::initialize(const variables_map& options) {
 int main(int argc, char** argv)
 {
    std::ios::sync_with_stdio(false); // for potential performance boost for large block log files
-   options_description cli ("eosio-blocklog command line options");
+   options_description cli ("agrio-blocklog command line options");
    try {
       blocklog blog;
       blog.set_program_options(cli);

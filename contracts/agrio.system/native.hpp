@@ -1,21 +1,21 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosiolib/action.hpp>
-#include <eosiolib/public_key.hpp>
-#include <eosiolib/types.hpp>
-#include <eosiolib/print.hpp>
-#include <eosiolib/privileged.h>
-#include <eosiolib/optional.hpp>
-#include <eosiolib/producer_schedule.hpp>
-#include <eosiolib/contract.hpp>
+#include <agriolib/action.hpp>
+#include <agriolib/public_key.hpp>
+#include <agriolib/types.hpp>
+#include <agriolib/print.hpp>
+#include <agriolib/privileged.h>
+#include <agriolib/optional.hpp>
+#include <agriolib/producer_schedule.hpp>
+#include <agriolib/contract.hpp>
 
-namespace eosiosystem {
-   using eosio::permission_level;
-   using eosio::public_key;
+namespace agriosystem {
+   using agrio::permission_level;
+   using agrio::public_key;
 
    typedef std::vector<char> bytes;
 
@@ -24,7 +24,7 @@ namespace eosiosystem {
       weight_type       weight;
 
       // explicit serialization macro is not necessary, used here only to improve compilation time
-      EOSLIB_SERIALIZE( permission_level_weight, (permission)(weight) )
+      AGRLIB_SERIALIZE( permission_level_weight, (permission)(weight) )
    };
 
    struct key_weight {
@@ -32,7 +32,7 @@ namespace eosiosystem {
       weight_type  weight;
 
       // explicit serialization macro is not necessary, used here only to improve compilation time
-      EOSLIB_SERIALIZE( key_weight, (key)(weight) )
+      AGRLIB_SERIALIZE( key_weight, (key)(weight) )
    };
 
    struct authority {
@@ -42,7 +42,7 @@ namespace eosiosystem {
       std::vector<permission_level_weight>  accounts;
 
       // explicit serialization macro is not necessary, used here only to improve compilation time
-      EOSLIB_SERIALIZE( authority, (threshold)(delay_sec)(keys)(accounts) )
+      AGRLIB_SERIALIZE( authority, (threshold)(delay_sec)(keys)(accounts) )
    };
 
    struct block_header {
@@ -53,10 +53,10 @@ namespace eosiosystem {
       checksum256                               transaction_mroot;
       checksum256                               action_mroot;
       uint32_t                                  schedule_version = 0;
-      eosio::optional<eosio::producer_schedule> new_producers;
+      agrio::optional<agrio::producer_schedule> new_producers;
 
       // explicit serialization macro is not necessary, used here only to improve compilation time
-      EOSLIB_SERIALIZE(block_header, (timestamp)(producer)(confirmed)(previous)(transaction_mroot)(action_mroot)
+      AGRLIB_SERIALIZE(block_header, (timestamp)(producer)(confirmed)(previous)(transaction_mroot)(action_mroot)
                                      (schedule_version)(new_producers))
    };
 
@@ -64,10 +64,10 @@ namespace eosiosystem {
    /*
     * Method parameters commented out to prevent generation of code that parses input data.
     */
-   class native : public eosio::contract {
+   class native : public agrio::contract {
       public:
 
-         using eosio::contract::contract;
+         using agrio::contract::contract;
 
          /**
           *  Called after a new account is created. This code enforces resource-limits rules

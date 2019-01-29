@@ -1,22 +1,22 @@
 #pragma once
 
-#include <eosio/chain/webassembly/common.hpp>
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/webassembly/runtime_interface.hpp>
-#include <eosio/chain/apply_context.hpp>
+#include <agrio/chain/webassembly/common.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/webassembly/runtime_interface.hpp>
+#include <agrio/chain/apply_context.hpp>
 #include <softfloat.hpp>
 #include "Runtime/Runtime.h"
 #include "IR/Types.h"
 
 
-namespace eosio { namespace chain { namespace webassembly { namespace wavm {
+namespace agrio { namespace chain { namespace webassembly { namespace wavm {
 
 using namespace IR;
 using namespace Runtime;
 using namespace fc;
-using namespace eosio::chain::webassembly::common;
+using namespace agrio::chain::webassembly::common;
 
-class wavm_runtime : public eosio::chain::wasm_runtime_interface {
+class wavm_runtime : public agrio::chain::wasm_runtime_interface {
    public:
       wavm_runtime();
       ~wavm_runtime();
@@ -588,7 +588,7 @@ struct intrinsic_invoker_impl<Ret, std::tuple<T &, Inputs...>, std::tuple<Transl
    template<then_type Then, typename U=T>
    static auto translate_one(running_instance_context& ctx, Inputs... rest, Translated... translated, I32 ptr) -> std::enable_if_t<std::is_const<U>::value, Ret> {
       // references cannot be created for null pointers
-      EOS_ASSERT((U32)ptr != 0, wasm_exception, "references cannot be created for null pointers");
+      AGR_ASSERT((U32)ptr != 0, wasm_exception, "references cannot be created for null pointers");
       MemoryInstance* mem = ctx.memory;
       if(!mem || (U32)ptr+sizeof(T) >= IR::numBytesPerPage*Runtime::getMemoryNumPages(mem))
          Runtime::causeException(Exception::Cause::accessViolation);
@@ -607,7 +607,7 @@ struct intrinsic_invoker_impl<Ret, std::tuple<T &, Inputs...>, std::tuple<Transl
    template<then_type Then, typename U=T>
    static auto translate_one(running_instance_context& ctx, Inputs... rest, Translated... translated, I32 ptr) -> std::enable_if_t<!std::is_const<U>::value, Ret> {
       // references cannot be created for null pointers
-      EOS_ASSERT((U32)ptr != 0, wasm_exception, "reference cannot be created for null pointers");
+      AGR_ASSERT((U32)ptr != 0, wasm_exception, "reference cannot be created for null pointers");
       MemoryInstance* mem = ctx.memory;
       if(!mem || (U32)ptr+sizeof(T) >= IR::numBytesPerPage*Runtime::getMemoryNumPages(mem))
          Runtime::causeException(Exception::Cause::accessViolation);
@@ -708,9 +708,9 @@ struct intrinsic_function_invoker_wrapper<WasmSig, Ret (Cls::*)(Params...) const
 #define _REGISTER_WAVM_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
    static Intrinsics::Function _INTRINSIC_NAME(__intrinsic_fn, __COUNTER__) (\
       MOD "." NAME,\
-      eosio::chain::webassembly::wavm::wasm_function_type_provider<WASM_SIG>::type(),\
-      (void *)eosio::chain::webassembly::wavm::intrinsic_function_invoker_wrapper<WASM_SIG, SIG>::type::fn<&CLS::METHOD>()\
+      agrio::chain::webassembly::wavm::wasm_function_type_provider<WASM_SIG>::type(),\
+      (void *)agrio::chain::webassembly::wavm::intrinsic_function_invoker_wrapper<WASM_SIG, SIG>::type::fn<&CLS::METHOD>()\
    );\
 
 
-} } } }// eosio::chain::webassembly::wavm
+} } } }// agrio::chain::webassembly::wavm

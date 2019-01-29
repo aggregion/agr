@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/symbol.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/symbol.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 /**
 
@@ -23,8 +23,8 @@ struct asset
    static constexpr int64_t max_amount = (1LL << 62) - 1;
 
    explicit asset(share_type a = 0, symbol id = symbol(CORE_SYMBOL)) :amount(a), sym(id) {
-      EOS_ASSERT( is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62" );
-      EOS_ASSERT( sym.valid(), asset_type_exception, "invalid symbol" );
+      AGR_ASSERT( is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62" );
+      AGR_ASSERT( sym.valid(), asset_type_exception, "invalid symbol" );
    }
 
    bool is_amount_within_range()const { return -max_amount <= amount && amount <= max_amount; }
@@ -43,14 +43,14 @@ struct asset
 
    asset& operator += (const asset& o)
    {
-      EOS_ASSERT(get_symbol() == o.get_symbol(), asset_type_exception, "addition between two different asset is not allowed");
+      AGR_ASSERT(get_symbol() == o.get_symbol(), asset_type_exception, "addition between two different asset is not allowed");
       amount += o.amount;
       return *this;
    }
 
    asset& operator -= (const asset& o)
    {
-      EOS_ASSERT(get_symbol() == o.get_symbol(), asset_type_exception, "subtraction between two different asset is not allowed");
+      AGR_ASSERT(get_symbol() == o.get_symbol(), asset_type_exception, "subtraction between two different asset is not allowed");
       amount -= o.amount;
       return *this;
    }
@@ -62,7 +62,7 @@ struct asset
    }
    friend bool operator < (const asset& a, const asset& b)
    {
-      EOS_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "logical operation between two different asset is not allowed");
+      AGR_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "logical operation between two different asset is not allowed");
       return std::tie(a.amount,a.get_symbol()) < std::tie(b.amount,b.get_symbol());
    }
    friend bool operator <= (const asset& a, const asset& b) { return (a == b) || (a < b); }
@@ -71,12 +71,12 @@ struct asset
    friend bool operator >= (const asset& a, const asset& b) { return !(a < b);  }
 
    friend asset operator - (const asset& a, const asset& b) {
-      EOS_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "subtraction between two different asset is not allowed");
+      AGR_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "subtraction between two different asset is not allowed");
       return asset(a.amount - b.amount, a.get_symbol());
    }
 
    friend asset operator + (const asset& a, const asset& b) {
-      EOS_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "addition between two different asset is not allowed");
+      AGR_ASSERT(a.get_symbol() == b.get_symbol(), asset_type_exception, "addition between two different asset is not allowed");
       return asset(a.amount + b.amount, a.get_symbol());
    }
 
@@ -85,8 +85,8 @@ struct asset
    friend struct fc::reflector<asset>;
 
    void reflector_init()const {
-      EOS_ASSERT( is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62" );
-      EOS_ASSERT( sym.valid(), asset_type_exception, "invalid symbol" );
+      AGR_ASSERT( is_amount_within_range(), asset_type_exception, "magnitude of asset amount must be less than 2^62" );
+      AGR_ASSERT( sym.valid(), asset_type_exception, "invalid symbol" );
    }
 
 private:
@@ -105,14 +105,14 @@ struct extended_asset  {
 bool  operator <  (const asset& a, const asset& b);
 bool  operator <= (const asset& a, const asset& b);
 
-}} // namespace eosio::chain
+}} // namespace agrio::chain
 
 namespace fc {
-inline void to_variant(const eosio::chain::asset& var, fc::variant& vo) { vo = var.to_string(); }
-inline void from_variant(const fc::variant& var, eosio::chain::asset& vo) {
-   vo = eosio::chain::asset::from_string(var.get_string());
+inline void to_variant(const agrio::chain::asset& var, fc::variant& vo) { vo = var.to_string(); }
+inline void from_variant(const fc::variant& var, agrio::chain::asset& vo) {
+   vo = agrio::chain::asset::from_string(var.get_string());
 }
 }
 
-FC_REFLECT(eosio::chain::asset, (amount)(sym))
-FC_REFLECT(eosio::chain::extended_asset, (quantity)(contract) )
+FC_REFLECT(agrio::chain::asset, (amount)(sym))
+FC_REFLECT(agrio::chain::extended_asset, (quantity)(contract) )

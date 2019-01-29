@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
@@ -9,7 +9,7 @@
 #include <future>
 #include <memory>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    // async on thread_pool and return future
    template<typename F>
@@ -19,6 +19,6 @@ namespace eosio { namespace chain {
       return task->get_future();
    }
 
-} } // eosio::chain
+} } // agrio::chain
 
 

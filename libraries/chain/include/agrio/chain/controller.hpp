@@ -1,12 +1,12 @@
 #pragma once
-#include <eosio/chain/block_state.hpp>
-#include <eosio/chain/trace.hpp>
-#include <eosio/chain/genesis_state.hpp>
+#include <agrio/chain/block_state.hpp>
+#include <agrio/chain/trace.hpp>
+#include <agrio/chain/genesis_state.hpp>
 #include <boost/signals2/signal.hpp>
 
-#include <eosio/chain/abi_serializer.hpp>
-#include <eosio/chain/account_object.hpp>
-#include <eosio/chain/snapshot.hpp>
+#include <agrio/chain/abi_serializer.hpp>
+#include <agrio/chain/account_object.hpp>
+#include <agrio/chain/snapshot.hpp>
 
 namespace chainbase {
    class database;
@@ -15,7 +15,7 @@ namespace boost { namespace asio {
    class thread_pool;
 }}
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class authorization_manager;
 
@@ -301,9 +301,9 @@ namespace eosio { namespace chain {
 
    };
 
-} }  /// eosio::chain
+} }  /// agrio::chain
 
-FC_REFLECT( eosio::chain::controller::config,
+FC_REFLECT( agrio::chain::controller::config,
             (actor_whitelist)
             (actor_blacklist)
             (contract_whitelist)

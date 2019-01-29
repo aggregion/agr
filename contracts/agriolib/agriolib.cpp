@@ -38,20 +38,20 @@ void* sbrk(size_t num_bytes) {
       return reinterpret_cast<void*>(prev_num_bytes);
 }
 
-namespace eosio {
+namespace agrio {
 
-   void set_blockchain_parameters(const eosio::blockchain_parameters& params) {
-      char buf[sizeof(eosio::blockchain_parameters)];
-      eosio::datastream<char *> ds( buf, sizeof(buf) );
+   void set_blockchain_parameters(const agrio::blockchain_parameters& params) {
+      char buf[sizeof(agrio::blockchain_parameters)];
+      agrio::datastream<char *> ds( buf, sizeof(buf) );
       ds << params;
       set_blockchain_parameters_packed( buf, ds.tellp() );
    }
 
-   void get_blockchain_parameters(eosio::blockchain_parameters& params) {
-      char buf[sizeof(eosio::blockchain_parameters)];
+   void get_blockchain_parameters(agrio::blockchain_parameters& params) {
+      char buf[sizeof(agrio::blockchain_parameters)];
       size_t size = get_blockchain_parameters_packed( buf, sizeof(buf) );
-      eosio_assert( size <= sizeof(buf), "buffer is too small" );
-      eosio::datastream<const char*> ds( buf, size_t(size) );
+      agrio_assert( size <= sizeof(buf), "buffer is too small" );
+      agrio::datastream<const char*> ds( buf, size_t(size) );
       ds >> params;
    }
 
@@ -292,7 +292,7 @@ namespace eosio {
 
          char* malloc_from_freed(uint32_t size)
          {
-            eosio_assert(_offset == _heap_size, "malloc_from_freed was designed to only be called after _heap was completely allocated");
+            agrio_assert(_offset == _heap_size, "malloc_from_freed was designed to only be called after _heap was completely allocated");
 
             char* current = _heap + _size_marker;
             while (current != nullptr)
@@ -527,7 +527,7 @@ namespace eosio {
 
    memory_manager memory_heap;
 
-} /// namespace eosio
+} /// namespace agrio
 
 extern "C" {
 
@@ -535,24 +535,24 @@ void* __dso_handle = 0;
 
 void* malloc(size_t size)
 {
-   return eosio::memory_heap.malloc(size);
+   return agrio::memory_heap.malloc(size);
 }
 
 void* calloc(size_t count, size_t size)
 {
-   void* ptr = eosio::memory_heap.malloc(count*size);
+   void* ptr = agrio::memory_heap.malloc(count*size);
    memset(ptr, 0, count*size);
    return ptr;
 }
 
 void* realloc(void* ptr, size_t size)
 {
-   return eosio::memory_heap.realloc(ptr, size);
+   return agrio::memory_heap.realloc(ptr, size);
 }
 
 void free(void* ptr)
 {
-   return eosio::memory_heap.free(ptr);
+   return agrio::memory_heap.free(ptr);
 }
 
 }

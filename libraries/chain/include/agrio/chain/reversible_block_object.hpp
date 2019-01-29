@@ -1,17 +1,17 @@
 
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/block_timestamp.hpp>
-#include <eosio/chain/contract_types.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/block_timestamp.hpp>
+#include <agrio/chain/contract_types.hpp>
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class reversible_block_object : public chainbase::object<reversible_block_object_type, reversible_block_object> {
       OBJECT_CTOR(reversible_block_object,(packedblock) )
@@ -43,6 +43,6 @@ namespace eosio { namespace chain {
       >
    >;
 
-} } // eosio::chain
+} } // agrio::chain
 
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::reversible_block_object, eosio::chain::reversible_block_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::reversible_block_object, agrio::chain::reversible_block_index)

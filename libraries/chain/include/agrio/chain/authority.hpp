@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <chainbase/chainbase.hpp>
-#include <eosio/chain/transaction.hpp>
-#include <eosio/chain/config.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/chain/config.hpp>
 
 #include <type_traits>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 
 struct permission_level_weight {
@@ -186,11 +186,11 @@ inline bool validate( const Authority& auth ) {
    return total_weight >= auth.threshold;
 }
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain
 
 
-FC_REFLECT(eosio::chain::permission_level_weight, (permission)(weight) )
-FC_REFLECT(eosio::chain::key_weight, (key)(weight) )
-FC_REFLECT(eosio::chain::wait_weight, (wait_sec)(weight) )
-FC_REFLECT(eosio::chain::authority, (threshold)(keys)(accounts)(waits) )
-FC_REFLECT(eosio::chain::shared_authority, (threshold)(keys)(accounts)(waits) )
+FC_REFLECT(agrio::chain::permission_level_weight, (permission)(weight) )
+FC_REFLECT(agrio::chain::key_weight, (key)(weight) )
+FC_REFLECT(agrio::chain::wait_weight, (wait_sec)(weight) )
+FC_REFLECT(agrio::chain::authority, (threshold)(keys)(accounts)(waits) )
+FC_REFLECT(agrio::chain::shared_authority, (threshold)(keys)(accounts)(waits) )

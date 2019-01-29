@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosiolib/memory.h>
-#include <eosiolib/print.hpp>
+#include <agriolib/memory.h>
+#include <agriolib/print.hpp>
 
 void* sbrk(size_t num_bytes);
 

@@ -1,16 +1,16 @@
-Welcome to the EOS.IO Documentation
+Welcome to the AGR.IO Documentation
 -----------------------------------
 
-@note This documentation is in progress and subject to change due to rapid development. Please report inaccuracies identified to the [EOS.IO Developer Telegram Group](https://t.me/joinchat/EaEnSUPktgfoI-XPfMYtcQ)
+@note This documentation is in progress and subject to change due to rapid development. Please report inaccuracies identified to the [AGR.IO Developer Telegram Group](https://t.me/joinchat/EaEnSUPktgfoI-XPfMYtcQ)
 
-## EOS.IO
- - [Additional resources - Github Readme](https://github.com/EOSIO/eos#readme)
+## AGR.IO
+ - [Additional resources - Github Readme](https://github.com/aggregion/agr#readme)
 
 ## Smart Contract Developers
-- @ref eosiorpc
+- @ref agriorpc
 - @ref contractdev
 	- @ref chainapi - Define API for querying internal chain state
-	- @ref database - APIs that store and retreive data on the blockchainEOS.IO organizes data according to the following broad structure
+	- @ref database - APIs that store and retreive data on the blockchainAGR.IO organizes data according to the following broad structure
 	- @ref actionapi - Defines API for querying action properties
 	- @ref consoleapi - Enables applications to log/print text messages
 	- @ref systemapi - 	Define API for interating with system level intrinsics

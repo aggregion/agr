@@ -1,7 +1,7 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
-#include <eosiolib/eosio.hpp>
+#include <agriolib/agrio.hpp>
 
 

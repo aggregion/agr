@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/action.h>
-#include <eosiolib/datastream.hpp>
-#include <eosiolib/serialize.hpp>
+#include <agriolib/action.h>
+#include <agriolib/datastream.hpp>
+#include <agriolib/serialize.hpp>
 
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/to_tuple.hpp>
 #include <boost/preprocessor/tuple/enum.hpp>
 #include <boost/preprocessor/facilities/overload.hpp>
 
-namespace eosio {
+namespace agrio {
 
    /**
     * @defgroup actioncppapi Action C++ API
@@ -39,7 +39,7 @@ namespace eosio {
     *    unsigned long long b; //8
     *    int  c; //4
     *
-    *    EOSLIB_SERIALIZE( dummy_action, (a)(b)(c) )
+    *    AGRLIB_SERIALIZE( dummy_action, (a)(b)(c) )
     *  };
     *  dummy_action msg = unpack_action_data<dummy_action>();
     *  @endcode
@@ -134,7 +134,7 @@ namespace eosio {
          return std::tie( a.actor, a.permission ) == std::tie( b.actor, b.permission );
       }
 
-      EOSLIB_SERIALIZE( permission_level, (actor)(permission) )
+      AGRLIB_SERIALIZE( permission_level, (actor)(permission) )
    };
 
    /**
@@ -265,7 +265,7 @@ namespace eosio {
       action( vector<permission_level> auths, account_name a, action_name n, T&& value )
       :account(a), name(n), authorization(std::move(auths)), data(pack(std::forward<T>(value))) {}
 
-      EOSLIB_SERIALIZE( action, (account)(name)(authorization)(data) )
+      AGRLIB_SERIALIZE( action, (account)(name)(authorization)(data) )
 
       /**
        * Send the action as inline action
@@ -284,7 +284,7 @@ namespace eosio {
        * @pre This action should not contain any authorizations
        */
       void send_context_free() const {
-         eosio_assert( authorization.size() == 0, "context free actions cannot have authorizations");
+         agrio_assert( authorization.size() == 0, "context free actions cannot have authorizations");
          auto serialize = pack(*this);
          ::send_context_free_inline(serialize.data(), serialize.size());
       }
@@ -298,8 +298,8 @@ namespace eosio {
        */
       template<typename T>
       T data_as() {
-         eosio_assert( name == T::get_name(), "Invalid name" );
-         eosio_assert( account == T::get_account(), "Invalid account" );
+         agrio_assert( name == T::get_name(), "Invalid name" );
+         agrio_assert( account == T::get_account(), "Invalid account" );
          return unpack<T>( &data[0], data.size() );
       }
 
@@ -355,13 +355,13 @@ namespace eosio {
    };
 
 
-} // namespace eosio
+} // namespace agrio
 
 #define INLINE_ACTION_SENDER3( CONTRACT_CLASS, FUNCTION_NAME, ACTION_NAME  )\
-::eosio::inline_dispatcher<decltype(&CONTRACT_CLASS::FUNCTION_NAME), ACTION_NAME>::call
+::agrio::inline_dispatcher<decltype(&CONTRACT_CLASS::FUNCTION_NAME), ACTION_NAME>::call
 
 #define INLINE_ACTION_SENDER2( CONTRACT_CLASS, NAME )\
-INLINE_ACTION_SENDER3( CONTRACT_CLASS, NAME, ::eosio::string_to_name(#NAME) )
+INLINE_ACTION_SENDER3( CONTRACT_CLASS, NAME, ::agrio::string_to_name(#NAME) )
 
 #define INLINE_ACTION_SENDER(...) BOOST_PP_OVERLOAD(INLINE_ACTION_SENDER,__VA_ARGS__)(__VA_ARGS__)
 
@@ -390,6 +390,6 @@ BOOST_PP_TUPLE_ENUM(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), BOOST_PP_VARIADIC_TO_TU
  * @param CODE - The account this action is intended for
  * @param NAME - The name of the action
  */
-#define ACTION( CODE, NAME ) struct NAME : ::eosio::action_meta<CODE, ::eosio::string_to_name(#NAME) >
+#define ACTION( CODE, NAME ) struct NAME : ::agrio::action_meta<CODE, ::agrio::string_to_name(#NAME) >
 
    /// @}

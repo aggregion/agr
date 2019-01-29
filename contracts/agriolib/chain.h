@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosiolib/types.h>
+#include <agriolib/types.h>
 
 /**
  *  @defgroup chainapi Chain API

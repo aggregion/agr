@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosiolib/permission.h>
-#include <eosiolib/transaction.hpp>
+#include <agriolib/permission.h>
+#include <agriolib/transaction.hpp>
 
 #include <set>
 #include <limits>
 
-namespace eosio {
+namespace agrio {
 
    /**
     *  @brief Checks if a transaction is authorized by a provided set of keys and permissions

@@ -1,14 +1,14 @@
 /**
  *  @file datastream.hpp
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/system.h>
-#include <eosiolib/memory.h>
-#include <eosiolib/vector.hpp>
+#include <agriolib/system.h>
+#include <agriolib/memory.h>
+#include <agriolib/vector.hpp>
 #include <boost/container/flat_set.hpp>
 #include <boost/container/flat_map.hpp>
-#include <eosiolib/varint.hpp>
+#include <agriolib/varint.hpp>
 #include <array>
 #include <set>
 #include <map>
@@ -20,7 +20,7 @@
 #include <boost/pfr.hpp>
 
 
-namespace eosio {
+namespace agrio {
 
 /**
  * @defgroup datastream Data Stream
@@ -65,7 +65,7 @@ class datastream {
       *  @return true
       */
       inline bool read( char* d, size_t s ) {
-        eosio_assert( size_t(_end - _pos) >= (size_t)s, "read" );
+        agrio_assert( size_t(_end - _pos) >= (size_t)s, "read" );
         memcpy( d, _pos, s );
         _pos += s;
         return true;
@@ -80,7 +80,7 @@ class datastream {
       *  @return true
       */
       inline bool write( const char* d, size_t s ) {
-        eosio_assert( _end - _pos >= (int32_t)s, "write" );
+        agrio_assert( _end - _pos >= (int32_t)s, "write" );
         memcpy( (void*)_pos, d, s );
         _pos += s;
         return true;
@@ -94,7 +94,7 @@ class datastream {
       *  @return true
       */
       inline bool put(char c) {
-        eosio_assert( _pos < _end, "put" );
+        agrio_assert( _pos < _end, "put" );
         *_pos = c;
         ++_pos;
         return true;
@@ -118,7 +118,7 @@ class datastream {
       */
       inline bool get( char& c )
       {
-        eosio_assert( _pos < _end, "get" );
+        agrio_assert( _pos < _end, "get" );
         c = *_pos;
         ++_pos;
         return true;
@@ -558,7 +558,7 @@ template<typename DataStream, typename T, std::size_t N,
 DataStream& operator >> ( DataStream& ds, T (&v)[N] ) {
    unsigned_int s;
    ds >> s;
-   eosio_assert( N == s.value, "T[] size and unpacked size don't match");
+   agrio_assert( N == s.value, "T[] size and unpacked size don't match");
    for( uint32_t i = 0; i < N; ++i )
       ds >> v[i];
    return ds;
@@ -580,7 +580,7 @@ template<typename DataStream, typename T, std::size_t N,
 DataStream& operator >> ( DataStream& ds, T (&v)[N] ) {
    unsigned_int s;
    ds >> s;
-   eosio_assert( N == s.value, "T[] size and unpacked size don't match");
+   agrio_assert( N == s.value, "T[] size and unpacked size don't match");
    ds.read((char*)&v[0], sizeof(v));
    return ds;
 }

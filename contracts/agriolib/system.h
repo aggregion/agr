@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/types.h>
+#include <agriolib/types.h>
 
 extern "C" {
 
@@ -30,13 +30,13 @@ extern "C" {
     *  Example:
 *
     *  @code
-    *  eosio_assert(1 == 2, "One is not equal to two.");
-    *  eosio_assert(1 == 1, "One is not equal to one.");
+    *  agrio_assert(1 == 2, "One is not equal to two.");
+    *  agrio_assert(1 == 1, "One is not equal to one.");
     *  @endcode
     *
     *  @param msg - a null terminated string explaining the reason for failure
     */
-   void  eosio_assert( uint32_t test, const char* msg );
+   void  agrio_assert( uint32_t test, const char* msg );
 
    /**
     *  Aborts processing of this action and unwinds all pending changes if the test condition is true
@@ -45,7 +45,7 @@ extern "C" {
     *  @param msg - a pointer to the start of string explaining the reason for failure
     *  @param msg_len - length of the string
     */
-   void  eosio_assert_message( uint32_t test, const char* msg, uint32_t msg_len );
+   void  agrio_assert_message( uint32_t test, const char* msg, uint32_t msg_len );
 
    /**
     *  Aborts processing of this action and unwinds all pending changes if the test condition is true
@@ -53,7 +53,7 @@ extern "C" {
     *  @param test - 0 to abort, 1 to ignore
     *  @param code - the error code
     */
-   void  eosio_assert_code( uint32_t test, uint64_t code );
+   void  agrio_assert_code( uint32_t test, uint64_t code );
 
     /**
     *  This method will abort execution of wasm without failing the contract. This is used to bypass all cleanup / destructors that would normally be called.
@@ -62,13 +62,13 @@ extern "C" {
     *  Example:
 *
     *  @code
-    *  eosio_exit(0);
-    *  eosio_exit(1);
-    *  eosio_exit(2);
-    *  eosio_exit(3);
+    *  agrio_exit(0);
+    *  agrio_exit(1);
+    *  agrio_exit(2);
+    *  agrio_exit(3);
     *  @endcode
     */
-   [[noreturn]] void  eosio_exit( int32_t code );
+   [[noreturn]] void  agrio_exit( int32_t code );
 
 
    /**

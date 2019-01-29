@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/types.h>
+#include <agriolib/types.h>
 extern "C" {
 
 /**
@@ -39,7 +39,7 @@ extern "C" {
  *  uint32_t length;
  *  assert_sha256( data, length, hash )
  *  //If the sha256 hash generated from data does not equal provided hash, anything below will never fire.
- *  eosio::print("sha256 hash generated from data equals provided hash");
+ *  agrio::print("sha256 hash generated from data equals provided hash");
  *  @endcode
  */
 void assert_sha256( const char* data, uint32_t length, const checksum256* hash );
@@ -64,7 +64,7 @@ void assert_sha256( const char* data, uint32_t length, const checksum256* hash )
  *  uint32_t length;
  *  assert_sha1( data, length, hash )
  *  //If the sha1 hash generated from data does not equal provided hash, anything below will never fire.
- *  eosio::print("sha1 hash generated from data equals provided hash");
+ *  agrio::print("sha1 hash generated from data equals provided hash");
  *  @endcode
  */
 void assert_sha1( const char* data, uint32_t length, const checksum160* hash );
@@ -89,7 +89,7 @@ void assert_sha1( const char* data, uint32_t length, const checksum160* hash );
  *  uint32_t length;
  *  assert_sha512( data, length, hash )
  *  //If the sha512 hash generated from data does not equal provided hash, anything below will never fire.
- *  eosio::print("sha512 hash generated from data equals provided hash");
+ *  agrio::print("sha512 hash generated from data equals provided hash");
  *  @endcode
  */
 void assert_sha512( const char* data, uint32_t length, const checksum512* hash );
@@ -113,7 +113,7 @@ void assert_sha512( const char* data, uint32_t length, const checksum512* hash )
  *  uint32_t length;
  *  assert_ripemod160( data, length, hash )
  *  //If the ripemod160 hash generated from data does not equal provided hash, anything below will never fire.
- *  eosio::print("ripemod160 hash generated from data equals provided hash");
+ *  agrio::print("ripemod160 hash generated from data equals provided hash");
  *  @endcode
  */
 void assert_ripemd160( const char* data, uint32_t length, const checksum160* hash );
@@ -131,7 +131,7 @@ void assert_ripemd160( const char* data, uint32_t length, const checksum160* has
  *  @code
  *  checksum calc_hash;
  *  sha256( data, length, &calc_hash );
- *  eos_assert( calc_hash == hash, "invalid hash" );
+ *  agr_assert( calc_hash == hash, "invalid hash" );
  *  @endcode
  */
 void sha256( const char* data, uint32_t length, checksum256* hash );
@@ -149,7 +149,7 @@ void sha256( const char* data, uint32_t length, checksum256* hash );
  *  @code
  *  checksum calc_hash;
  *  sha1( data, length, &calc_hash );
- *  eos_assert( calc_hash == hash, "invalid hash" );
+ *  agr_assert( calc_hash == hash, "invalid hash" );
  *  @endcode
  */
 void sha1( const char* data, uint32_t length, checksum160* hash );
@@ -167,7 +167,7 @@ void sha1( const char* data, uint32_t length, checksum160* hash );
  *  @code
  *  checksum calc_hash;
  *  sha512( data, length, &calc_hash );
- *  eos_assert( calc_hash == hash, "invalid hash" );
+ *  agr_assert( calc_hash == hash, "invalid hash" );
  *  @endcode
  */
 void sha512( const char* data, uint32_t length, checksum512* hash );
@@ -185,7 +185,7 @@ void sha512( const char* data, uint32_t length, checksum512* hash );
  *  @code
  *  checksum calc_hash;
  *  ripemod160( data, length, &calc_hash );
- *  eos_assert( calc_hash == hash, "invalid hash" );
+ *  agr_assert( calc_hash == hash, "invalid hash" );
  *  @endcode
  */
 void ripemd160( const char* data, uint32_t length, checksum160* hash );
@@ -230,7 +230,7 @@ int recover_key( const checksum256* digest, const char* sig, size_t siglen, char
  *  size_t publen;
  *  assert_recover_key( digest, sig, siglen, pub, publen )
  *  // If the given public key does not match with the generated key from digest and the signature, anything below will never fire.
- *  eosio::print("pub key matches the pub key generated from digest");
+ *  agrio::print("pub key matches the pub key generated from digest");
  *  @endcode
  */
 void assert_recover_key( const checksum256* digest, const char* sig, size_t siglen, const char* pub, size_t publen );

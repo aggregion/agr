@@ -1,8 +1,8 @@
 #pragma once
-#include <eosio/chain/block_timestamp.hpp>
-#include <eosio/chain/producer_schedule.hpp>
+#include <agrio/chain/block_timestamp.hpp>
+#include <agrio/chain/producer_schedule.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct block_header
    {
@@ -53,12 +53,12 @@ namespace eosio { namespace chain {
       signature_type  producer_signature;
    };
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT(eosio::chain::block_header, 
+FC_REFLECT(agrio::chain::block_header, 
            (timestamp)(producer)(confirmed)(previous)
            (transaction_mroot)(action_mroot)
            (schedule_version)(new_producers)(header_extensions))
 
-FC_REFLECT_DERIVED(eosio::chain::signed_block_header, (eosio::chain::block_header), (producer_signature))
-FC_REFLECT(eosio::chain::header_confirmation,  (block_id)(producer)(producer_signature) )
+FC_REFLECT_DERIVED(agrio::chain::signed_block_header, (agrio::chain::block_header), (producer_signature))
+FC_REFLECT(agrio::chain::header_confirmation,  (block_id)(producer)(producer_signature) )

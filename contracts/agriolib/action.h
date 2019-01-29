@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosiolib/system.h>
+#include <agriolib/system.h>
 
 extern "C" {
    /**
@@ -19,7 +19,7 @@ extern "C" {
     * @brief Defines API for querying action and sending action
     *
     *
-    * A EOS.IO action has the following abstract structure:
+    * A AGR.IO action has the following abstract structure:
     *
     * ```
     *   struct action {
@@ -36,7 +36,7 @@ extern "C" {
     * @code
     * // Assume this action is used for the following examples:
     * // {
-    * //  "code": "eos",
+    * //  "code": "agr",
     * //  "type": "transfer",
     * //  "authorization": [{ "account": "inita", "permission": "active" }],
     * //  "data": {
