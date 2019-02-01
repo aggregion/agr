@@ -1,3 +1,5 @@
+	. "${SOURCE_DIR}/scripts/helpers.sh"
+
 	OS_VER=$( grep VERSION_ID /etc/os-release | cut -d'=' -f2 | sed 's/[^0-9\.]//gI' )
 	OS_MAJ=$(echo "${OS_VER}" | cut -d'.' -f1)
 	OS_MIN=$(echo "${OS_VER}" | cut -d'.' -f2)
@@ -91,7 +93,7 @@
 		printf "\\n\\tThe following dependencies are required to install AGRIO.\\n"
 		printf "\\n\\t${DISPLAY}\\n\\n" 
 		printf "\\tDo you wish to install these packages?\\n"
-		select yn in "Yes" "No"; do
+		while agr_batch_select yn "Yes" "No"; do
 			case $yn in
 				[Yy]* ) 
 					printf "\\n\\n\\tInstalling dependencies\\n\\n"
