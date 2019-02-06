@@ -627,9 +627,14 @@ launcher_def::initialize (const variables_map &vmap) {
   if (prod_nodes > total_nodes)
     total_nodes = prod_nodes;
 
+  char cwd[PATH_MAX] = {0x00};
   char* erd_env_var = getenv ("AGRIO_HOME");
   if (erd_env_var == nullptr || std::string(erd_env_var).empty()) {
-     erd_env_var = getenv ("PWD");
+    if (getcwd(cwd, sizeof(cwd))) {
+      erd_env_var = cwd;
+    } else {
+      erd_env_var = getenv ("PWD");
+    }
   }
 
   if (erd_env_var != nullptr) {
