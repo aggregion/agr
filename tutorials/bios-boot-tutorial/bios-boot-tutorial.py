@@ -168,7 +168,7 @@ def createStakedAccounts(b, e):
         stakeCpu = stake - stakeNet
         print('%s: total funds=%s, ram=%s, net=%s, cpu=%s, unstaked=%s' % (a['name'], intToCurrency(a['funds']), intToCurrency(ramFunds), intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(unstaked)))
         assert(funds == ramFunds + stakeNet + stakeCpu + unstaked)
-        retry(args.clagr + 'system newaccount --transfer agrio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' % 
+        retry(args.clagr + 'system newaccount --transfer agrio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' %
             (a['name'], a['pub'], intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(ramFunds)))
         if unstaked:
             retry(args.clagr + 'transfer agrio %s "%s"' % (a['name'], intToCurrency(unstaked)))
@@ -243,7 +243,7 @@ def msigProposeReplaceSystem(proposer, proposalName):
     trxPermissions = [{'actor': 'agrio', 'permission': 'active'}]
     with open(fastUnstakeSystem, mode='rb') as f:
         setcode = {'account': 'agrio', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
-    run(args.clagr + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) + 
+    run(args.clagr + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) +
         jsonArg(trxPermissions) + 'agrio setcode' + jsonArg(setcode) + ' -p ' + proposer)
 
 def msigApproveReplaceSystem(proposer, proposalName):
@@ -349,8 +349,8 @@ commands = [
     ('l', 'log',                stepLog,                    True,    "Show tail of node's log"),
 ]
 
-parser.add_argument('--public-key', metavar='', help="AGRIO Public Key", default='EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
-parser.add_argument('--private-Key', metavar='', help="AGRIO Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
+parser.add_argument('--public-key', metavar='', help="AGRIO Public Key", default='AGR7W2ZHV5PAwxSRbWRMkzuangVF64X2AkYEEKjpdXu3BUPXPW6vA', dest="public_key")
+parser.add_argument('--private-Key', metavar='', help="AGRIO Private Key", default='5KDF6hrE58eEj3B38AiCFdCp43JqCTPSRLigCeFc4ze3otae4LM', dest="private_key")
 parser.add_argument('--clagr', metavar='', help="Clagr command", default='../../build/programs/clagr/clagr --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--nodagr', metavar='', help="Path to nodagr binary", default='../../build/programs/nodagr/nodagr')
 parser.add_argument('--kagrd', metavar='', help="Path to kagrd binary", default='../../build/programs/kagrd/kagrd')
@@ -382,7 +382,7 @@ for (flag, command, function, inAll, help) in commands:
         parser.add_argument('-' + flag, '--' + command, action='store_true', help=help, dest=command)
     else:
         parser.add_argument('--' + command, action='store_true', help=help, dest=command)
-        
+
 args = parser.parse_args()
 
 args.clagr += '--url http://127.0.0.1:%d ' % args.http_port
