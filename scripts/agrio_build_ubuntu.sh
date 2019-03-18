@@ -206,7 +206,7 @@
 	fi
 
 	printf "\\n\\tChecking MongoDB installation.\\n"
-    if [ ! -e "${MONGOD_CONF}" ]; then
+    if [ ! -e "${MONGODB_CONF}" ]; then
 		printf "\\n\\tInstalling MongoDB 3.6.3.\\n"
 		if ! cd "${HOME}/opt"
 		then
@@ -256,7 +256,7 @@
 			printf "\\n\\tExiting now.\\n\\n"
 			exit 1;
 		fi
-if ! tee > /dev/null "${MONGOD_CONF}" <<mongodconf
+if ! tee > /dev/null "${MONGODB_CONF}" <<mongodconf
 systemLog:
  destination: file
  path: ${HOME}/opt/mongodb/log/mongodb.log
@@ -269,13 +269,13 @@ storage:
  dbPath: ${HOME}/opt/mongodb/data
 mongodconf
 		then
-			printf "\\tUnable to write to file %s.\\n" "${MONGOD_CONF}"
+			printf "\\tUnable to write to file %s.\\n" "${MONGODB_CONF}"
 			printf "\\n\\tExiting now.\\n\\n"
 			exit 1;
 		fi
 		printf "\\n\\tMongoDB successfully installed at %s/opt/mongodb.\\n" "${HOME}"
 	else
-		printf "\\tMongoDB configuration found at %s.\\n" "${MONGOD_CONF}"
+		printf "\\tMongoDB configuration found at %s.\\n" "${MONGODB_CONF}"
 	fi
 
 	printf "\\n\\tChecking MongoDB C++ driver installation.\\n"
@@ -508,7 +508,7 @@ mongodconf
 	function print_instructions()
 	{
 		printf '\n\texport PATH=${HOME}/opt/mongodb/bin:$PATH\n'
-		printf "\\t%s -f %s &\\n" "$( command -v mongod )" "${MONGOD_CONF}"
+		printf "\\t%s -f %s &\\n" "$( command -v mongod )" "${MONGODB_CONF}"
 		printf "\\tcd %s; make test\\n\\n" "${BUILD_DIR}"
 	return 0
 	}
