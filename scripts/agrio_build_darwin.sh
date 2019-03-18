@@ -39,13 +39,13 @@ if [ "${MEM_GIG}" -lt 7 ]; then
 fi
 
 if [ "${OS_MIN}" -lt 12 ]; then
-	echo "You must be running Mac OS 10.12.x or higher to install EOSIO."
+	echo "You must be running Mac OS 10.12.x or higher to install AGRIO."
 	echo "Exiting now."
 	exit 1
 fi
 
 if [ "${DISK_AVAIL}" -lt "$DISK_MIN" ]; then
-	echo "You must have at least ${DISK_MIN}GB of available storage to install EOSIO."
+	echo "You must have at least ${DISK_MIN}GB of available storage to install AGRIO."
 	echo "Exiting now."
 	exit 1
 fi
@@ -71,7 +71,7 @@ printf " - Ruby installation found @ ${RUBY}\\n"
 printf "Checking Home Brew installation...\\n"
 if ! BREW=$( command -v brew )
 then
-	printf "Homebrew must be installed to compile EOS.IO!\\n"
+	printf "Homebrew must be installed to compile AGR.IO!\\n"
 	if [ $ANSWER != 1 ]; then read -p "Do you wish to install HomeBrew? (y/n)? " ANSWER; fi
 	case $ANSWER in
 		1 | [Yy]* )
@@ -109,7 +109,7 @@ while read -r name tester testee brewname uri; do
 	DISPLAY="${DISPLAY}${COUNT}. ${name}\\n"
 	printf " - %s ${bldred}NOT${txtrst} found.\\n" "${name}"
 	(( COUNT++ ))
-done < "${REPO_ROOT}/scripts/eosio_build_darwin_deps"
+done < "${REPO_ROOT}/scripts/agrio_build_darwin_deps"
 IFS="${var_ifs}"
 
 if [ ! -d /usr/local/Frameworks ]; then
@@ -119,7 +119,7 @@ if [ ! -d /usr/local/Frameworks ]; then
 fi
 
 if [ $COUNT -gt 1 ]; then
-	printf "\\nThe following dependencies are required to install EOSIO:\\n"
+	printf "\\nThe following dependencies are required to install AGRIO:\\n"
 	printf "${DISPLAY}\\n\\n"
 	if [ $ANSWER != 1 ]; then read -p "Do you wish to install these packages? (y/n) " ANSWER; fi
 	case $ANSWER in
@@ -138,10 +138,10 @@ if [ $COUNT -gt 1 ]; then
 				[Nn]* ) echo "Proceeding without update!";;
 				* ) echo "Please type 'y' for yes or 'n' for no."; exit;;
 			esac
-			brew tap eosio/eosio # Required to install mongo-cxx-driver with static library
+			brew tap agrio/agrio # Required to install mongo-cxx-driver with static library
 			printf "\\nInstalling Dependencies...\\n"
 			# Ignore cmake so we don't install a newer version.
-			# Build from source to use local cmake; see homebrew-eosio repo for examples
+			# Build from source to use local cmake; see homebrew-agrio repo for examples
 			# DON'T INSTALL llvm@4 WITH --force!
 			OIFS="$IFS"
 			IFS=$','

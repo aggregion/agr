@@ -2,7 +2,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        ./scripts/eosio_build.sh -y && \
+        ./scripts/agrio_build.sh -y && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":ubuntu: 16.04 Build"
@@ -23,7 +23,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        ./scripts/eosio_build.sh -y && \
+        ./scripts/agrio_build.sh -y && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":ubuntu: 18.04 Build"
@@ -44,7 +44,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        ./scripts/eosio_build.sh -y && \
+        ./scripts/agrio_build.sh -y && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":centos: 7 Build"
@@ -65,7 +65,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        ./scripts/eosio_build.sh -y && \
+        ./scripts/agrio_build.sh -y && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":aws: 1 Build"
@@ -86,7 +86,7 @@ steps:
 
   # - command: |
   #       echo "+++ :hammer: Building" && \
-  #       ./scripts/eosio_build.sh -y && \
+  #       ./scripts/agrio_build.sh -y && \
   #       echo "--- :compression: Compressing build directory" && \
   #       tar -pczf build.tar.gz build/
   #   label: ":aws: 2 Build"
@@ -107,7 +107,7 @@ steps:
 
   - command: |
         echo "+++ :hammer: Building" && \
-        ./scripts/eosio_build.sh -y && \
+        ./scripts/agrio_build.sh -y && \
         echo "--- :compression: Compressing build directory" && \
         tar -pczf build.tar.gz build/
     label: ":fedora: 27 Build"
@@ -130,7 +130,7 @@ steps:
       echo "--- Creating symbolic link to job directory :file_folder:" && \
       sleep 5 && ln -s "$(pwd)" /data/job && cd /data/job && \
       echo "+++ Building :hammer:" && \
-      ./scripts/eosio_build.sh -y && \
+      ./scripts/agrio_build.sh -y && \
       echo "--- Compressing build directory :compression:" && \
       tar -pczf build.tar.gz build/
     label: ":darwin: Mojave Build"
@@ -144,7 +144,7 @@ steps:
       echo "--- Creating symbolic link to job directory :file_folder:" && \
       sleep 5 && ln -s "$(pwd)" /data/job && cd /data/job && \
       echo "+++ Building :hammer:" && \
-      ./scripts/eosio_build.sh -y && \
+      ./scripts/agrio_build.sh -y && \
       echo "--- Compressing build directory :compression:" && \
       tar -pczf build.tar.gz build/
     label: ":darwin: High Sierra Build"
@@ -707,13 +707,13 @@ steps:
 
   - command: |
         echo "--- :arrow_down: Downloading brew files" && \
-        buildkite-agent artifact download "build/packages/eosio.rb" . --step ":darwin: High Sierra Package Builder" && \
-        mv build/packages/eosio.rb build/packages/eosio_highsierra.rb && \
-        buildkite-agent artifact download "build/packages/eosio.rb" . --step ":darwin: Mojave Package Builder"
+        buildkite-agent artifact download "build/packages/agrio.rb" . --step ":darwin: High Sierra Package Builder" && \
+        mv build/packages/agrio.rb build/packages/agrio_highsierra.rb && \
+        buildkite-agent artifact download "build/packages/agrio.rb" . --step ":darwin: Mojave Package Builder"
     label: ":darwin: Brew Updater"
     agents:
       queue: "automation-large-builder-fleet"
     artifact_paths:
-      - "build/packages/eosio_highsierra.rb"
-      - "build/packages/eosio.rb"
+      - "build/packages/agrio_highsierra.rb"
+      - "build/packages/agrio.rb"
     timeout: 60

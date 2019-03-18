@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct permission_level {
       account_name    actor;
@@ -45,7 +45,7 @@ namespace eosio { namespace chain {
     *
     *  This follows the design pattern of React Flux where actions are
     *  named and then dispatched to one or more action handlers (aka stores).
-    *  In the context of eosio, every action is dispatched to the handler defined
+    *  In the context of agrio, every action is dispatched to the handler defined
     *  by account 'scope' and function 'name', but the default handler may also
     *  forward the action to any number of additional handlers. Any application
     *  can write a handler for "scope::name" that will get executed if and only if
@@ -87,8 +87,8 @@ namespace eosio { namespace chain {
 
       template<typename T>
       T data_as()const {
-         EOS_ASSERT( account == T::get_account(), action_type_exception, "account is not consistent with action struct" );
-         EOS_ASSERT( name == T::get_name(), action_type_exception, "action name is not consistent with action struct"  );
+         AGR_ASSERT( account == T::get_account(), action_type_exception, "account is not consistent with action struct" );
+         AGR_ASSERT( name == T::get_name(), action_type_exception, "action name is not consistent with action struct"  );
          return fc::raw::unpack<T>(data);
       }
    };
@@ -97,7 +97,7 @@ namespace eosio { namespace chain {
       account_name receiver;
    };
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT( eosio::chain::permission_level, (actor)(permission) )
-FC_REFLECT( eosio::chain::action, (account)(name)(authorization)(data) )
+FC_REFLECT( agrio::chain::permission_level, (actor)(permission) )
+FC_REFLECT( agrio::chain::action, (account)(name)(authorization)(data) )

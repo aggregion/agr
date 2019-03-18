@@ -1,26 +1,26 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <agrio/agrio.hpp>
 #include <vector>
 
-class [[eosio::contract]] deferred_test : public eosio::contract {
+class [[agrio::contract]] deferred_test : public agrio::contract {
 public:
-   using eosio::contract::contract;
+   using agrio::contract::contract;
 
-   [[eosio::action]]
-   void defercall( eosio::name payer, uint64_t sender_id, eosio::name contract, uint64_t payload );
+   [[agrio::action]]
+   void defercall( agrio::name payer, uint64_t sender_id, agrio::name contract, uint64_t payload );
 
-   [[eosio::action]]
+   [[agrio::action]]
    void deferfunc( uint64_t payload );
-   using deferfunc_action = eosio::action_wrapper<"deferfunc"_n, &deferred_test::deferfunc>;
+   using deferfunc_action = agrio::action_wrapper<"deferfunc"_n, &deferred_test::deferfunc>;
 
-   [[eosio::action]]
-   void inlinecall( eosio::name contract, eosio::name authorizer, uint64_t payload );
+   [[agrio::action]]
+   void inlinecall( agrio::name contract, agrio::name authorizer, uint64_t payload );
 
-   [[eosio::on_notify("eosio::onerror")]]
-   void on_error( uint128_t sender_id, eosio::ignore<std::vector<char>> sent_trx );
+   [[agrio::on_notify("agrio::onerror")]]
+   void on_error( uint128_t sender_id, agrio::ignore<std::vector<char>> sent_trx );
 };

@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
-#include <eosio/chain/global_property_object.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/chain/global_property_object.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -15,8 +15,8 @@
 #define TESTER validating_tester
 #endif
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio::chain;
+using namespace agrio::testing;
 namespace bfs = boost::filesystem;
 
 BOOST_AUTO_TEST_SUITE(database_tests)
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(database_tests)
          TESTER test;
 
          // Bypass read-only restriction on state DB access for this unit test which really needs to mutate the DB to properly conduct its test.
-         eosio::chain::database& db = const_cast<eosio::chain::database&>( test.control->db() );
+         agrio::chain::database& db = const_cast<agrio::chain::database&>( test.control->db() );
 
          auto ses = db.start_undo_session(true);
 
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_SUITE(database_tests)
          // Utility function to check expected irreversible block
          auto calc_exp_last_irr_block_num = [&](uint32_t head_block_num) -> uint32_t {
             const auto producers_size = test.control->head_block_state()->active_schedule.producers.size();
-            const auto max_reversible_rounds = EOS_PERCENT(producers_size, config::percent_100 - config::irreversible_threshold_percent);
+            const auto max_reversible_rounds = AGR_PERCENT(producers_size, config::percent_100 - config::irreversible_threshold_percent);
             if( max_reversible_rounds == 0) {
                return head_block_num;
             } else {

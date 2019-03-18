@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/abi_def.hpp>
-#include <eosio/chain/trace.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/abi_def.hpp>
+#include <agrio/chain/trace.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include <fc/variant_object.hpp>
 #include <fc/scoped_exit.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 using std::map;
 using std::string;
@@ -536,8 +536,8 @@ namespace impl {
       {
          auto h = ctx.enter_scope();
          const variant_object& vo = v.get_object();
-         EOS_ASSERT(vo.contains("account"), packed_transaction_type_exception, "Missing account");
-         EOS_ASSERT(vo.contains("name"), packed_transaction_type_exception, "Missing name");
+         AGR_ASSERT(vo.contains("account"), packed_transaction_type_exception, "Missing account");
+         AGR_ASSERT(vo.contains("name"), packed_transaction_type_exception, "Missing name");
          from_variant(vo["account"], act.account);
          from_variant(vo["name"], act.name);
 
@@ -574,7 +574,7 @@ namespace impl {
             }
          }
 
-         EOS_ASSERT(valid_empty_data || !act.data.empty(), packed_transaction_type_exception,
+         AGR_ASSERT(valid_empty_data || !act.data.empty(), packed_transaction_type_exception,
                     "Failed to deserialize data for ${account}:${name}", ("account", act.account)("name", act.name));
       }
 
@@ -583,8 +583,8 @@ namespace impl {
       {
          auto h = ctx.enter_scope();
          const variant_object& vo = v.get_object();
-         EOS_ASSERT(vo.contains("signatures"), packed_transaction_type_exception, "Missing signatures");
-         EOS_ASSERT(vo.contains("compression"), packed_transaction_type_exception, "Missing compression");
+         AGR_ASSERT(vo.contains("signatures"), packed_transaction_type_exception, "Missing signatures");
+         AGR_ASSERT(vo.contains("compression"), packed_transaction_type_exception, "Missing compression");
          std::vector<signature_type> signatures;
          packed_transaction::compression_type compression;
          from_variant(vo["signatures"], signatures);
@@ -609,7 +609,7 @@ namespace impl {
                ptrx = packed_transaction( std::move( packed_trx ), std::move( signatures ), std::move( cfd ), compression );
             }
          } else {
-            EOS_ASSERT(vo.contains("transaction"), packed_transaction_type_exception, "Missing transaction");
+            AGR_ASSERT(vo.contains("transaction"), packed_transaction_type_exception, "Missing transaction");
             if( use_packed_cfd ) {
                transaction trx;
                extract( vo["transaction"], trx, resolver, ctx );
@@ -680,7 +680,7 @@ namespace impl {
       const variant_object& vo = v.get_object();
       fc::reflector<M>::visit( abi_from_variant_visitor<M, decltype(resolver)>( vo, o, resolver, ctx ) );
    }
-} /// namespace eosio::chain::impl
+} /// namespace agrio::chain::impl
 
 template<typename T, typename Resolver>
 void abi_serializer::to_variant( const T& o, variant& vo, Resolver resolver, const fc::microseconds& max_serialization_time ) try {
@@ -697,4 +697,4 @@ void abi_serializer::from_variant( const variant& v, T& o, Resolver resolver, co
 } FC_RETHROW_EXCEPTIONS(error, "Failed to deserialize variant", ("variant",v))
 
 
-} } // eosio::chain
+} } // agrio::chain

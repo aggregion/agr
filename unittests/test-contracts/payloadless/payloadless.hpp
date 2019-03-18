@@ -1,15 +1,15 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <agrio/agrio.hpp>
 
-class [[eosio::contract]] payloadless : public eosio::contract {
+class [[agrio::contract]] payloadless : public agrio::contract {
 public:
-   using eosio::contract::contract;
+   using agrio::contract::contract;
 
-   [[eosio::action]]
+   [[agrio::action]]
    void doit();
 };

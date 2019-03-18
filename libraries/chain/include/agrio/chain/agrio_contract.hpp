@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/contract_types.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/contract_types.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class apply_context;
 
@@ -15,22 +15,22 @@ namespace eosio { namespace chain {
     * @defgroup native_action_handlers Native Action Handlers
     */
    ///@{
-   void apply_eosio_newaccount(apply_context&);
-   void apply_eosio_updateauth(apply_context&);
-   void apply_eosio_deleteauth(apply_context&);
-   void apply_eosio_linkauth(apply_context&);
-   void apply_eosio_unlinkauth(apply_context&);
+   void apply_agrio_newaccount(apply_context&);
+   void apply_agrio_updateauth(apply_context&);
+   void apply_agrio_deleteauth(apply_context&);
+   void apply_agrio_linkauth(apply_context&);
+   void apply_agrio_unlinkauth(apply_context&);
 
    /*
-   void apply_eosio_postrecovery(apply_context&);
-   void apply_eosio_passrecovery(apply_context&);
-   void apply_eosio_vetorecovery(apply_context&);
+   void apply_agrio_postrecovery(apply_context&);
+   void apply_agrio_passrecovery(apply_context&);
+   void apply_agrio_vetorecovery(apply_context&);
    */
 
-   void apply_eosio_setcode(apply_context&);
-   void apply_eosio_setabi(apply_context&);
+   void apply_agrio_setcode(apply_context&);
+   void apply_agrio_setabi(apply_context&);
 
-   void apply_eosio_canceldelay(apply_context&);
+   void apply_agrio_canceldelay(apply_context&);
    ///@}  end action handlers
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain

@@ -1,33 +1,33 @@
 #!/bin/bash
 #
-# eosio-tn_up is a helper script used to start a node that was previously stopped.
+# agrio-tn_up is a helper script used to start a node that was previously stopped.
 # It is not intended to be run stand-alone; it is a companion to the
-# eosio-tn_bounce.sh and eosio-tn_roll.sh scripts.
+# agrio-tn_bounce.sh and agrio-tn_roll.sh scripts.
 
 connected="0"
 
-rundir=programs/nodeos
-prog=nodeos
+rundir=programs/nodagr
+prog=nodagr
 
 # Quote any args that are "*", so they are not expanded
 qargs=`echo "$*" | sed -e 's/ \* / "*" /' -e 's/ \*$/ "*"/'`
 
-if [ "$PWD" != "$EOSIO_HOME" ]; then
-    echo $0 must only be run from $EOSIO_HOME
+if [ "$PWD" != "$AGRIO_HOME" ]; then
+    echo $0 must only be run from $AGRIO_HOME
     exit -1
 fi
 
 if [ ! -e $rundir/$prog ]; then
-    echo unable to locate binary for nodeos
+    echo unable to locate binary for nodagr
     exit -1
 fi
 
-if [ -z "$EOSIO_NODE" ]; then
+if [ -z "$AGRIO_NODE" ]; then
     echo data directory not set
     exit -1
 fi
 
-datadir=var/lib/node_$EOSIO_NODE
+datadir=var/lib/node_$AGRIO_NODE
 now=`date +'%Y_%m_%d_%H_%M_%S'`
 log=stderr.$now.txt
 touch $datadir/$log
@@ -35,8 +35,8 @@ rm $datadir/stderr.txt
 ln -s $log $datadir/stderr.txt
 
 relaunch() {
-    echo "$rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/eosio/node_$EOSIO_NODE > $datadir/stdout.txt  2>> $datadir/$log "
-    nohup $rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/eosio/node_$EOSIO_NODE > $datadir/stdout.txt  2>> $datadir/$log &
+    echo "$rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log "
+    nohup $rundir/$prog $qargs $* --data-dir $datadir --config-dir etc/agrio/node_$AGRIO_NODE > $datadir/stdout.txt  2>> $datadir/$log &
     pid=$!
     echo pid = $pid
     echo $pid > $datadir/$prog.pid
@@ -56,26 +56,26 @@ relaunch() {
     done
 }
 
-if [ -z "$EOSIO_LEVEL" ]; then
+if [ -z "$AGRIO_LEVEL" ]; then
     echo starting with no modifiers
     relaunch
     if [ "$connected" -eq 0 ]; then
-        EOSIO_LEVEL=replay
+        AGRIO_LEVEL=replay
     else
         exit 0
     fi
 fi
 
-if [ "$EOSIO_LEVEL" == replay ]; then
+if [ "$AGRIO_LEVEL" == replay ]; then
     echo starting with replay
     relaunch --hard-replay-blockchain
     if [  "$connected" -eq 0 ]; then
-        EOSIO_LEVEL=resync
+        AGRIO_LEVEL=resync
     else
         exit 0
     fi
 fi
-if [ "$EOSIO_LEVEL" == resync ]; then
+if [ "$AGRIO_LEVEL" == resync ]; then
     echo starting with delete-all-blocks
     relaunch --delete-all-blocks
 fi

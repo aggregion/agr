@@ -5,7 +5,7 @@
 #include <boost/preprocessor/seq/remove.hpp>
 #include <boost/preprocessor/seq/push_back.hpp>
 #include <fc/reflect/reflect.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/exceptions.hpp>
 
 #include <cstdint>
 #include <functional>
@@ -21,7 +21,7 @@
 #include "IR/Operators.h"
 #include "IR/Module.h"
 
-namespace eosio { namespace chain { namespace wasm_ops {
+namespace agrio { namespace chain { namespace wasm_ops {
 
 class instruction_stream {
    public:
@@ -137,9 +137,9 @@ template <typename Field>
 struct field_specific_params {
    static constexpr int skip_ahead = sizeof(uint16_t) + sizeof(Field);
    static auto unpack( char* opcode, Field& f ) { f = *reinterpret_cast<Field*>(opcode); }
-   static void pack(instruction_stream* stream, Field& f) { return eosio::chain::wasm_ops::pack(stream, f); }
+   static void pack(instruction_stream* stream, Field& f) { return agrio::chain::wasm_ops::pack(stream, f); }
    static auto to_string(Field& f) { return std::string(" ")+
-                                       eosio::chain::wasm_ops::to_string(f); }
+                                       agrio::chain::wasm_ops::to_string(f); }
 };
 template <>
 struct field_specific_params<voidtype> {
@@ -653,9 +653,9 @@ using namespace IR;
 // Decodes an operator from an input stream and dispatches by opcode.
 // This code is from wasm-jit/Include/IR/Operators.h
 template <class Op_Types>
-struct EOSIO_OperatorDecoderStream
+struct AGRIO_OperatorDecoderStream
 {
-   EOSIO_OperatorDecoderStream(const std::vector<U8>& codeBytes)
+   AGRIO_OperatorDecoderStream(const std::vector<U8>& codeBytes)
    : start(codeBytes.data()), nextByte(codeBytes.data()), end(codeBytes.data()+codeBytes.size()) {
      if(!_cached_ops)
         _cached_ops = cached_ops<Op_Types>::get_cached_ops();
@@ -664,14 +664,14 @@ struct EOSIO_OperatorDecoderStream
    operator bool() const { return nextByte < end; }
 
    instr* decodeOp() {
-      EOS_ASSERT(nextByte + sizeof(IR::Opcode) <= end, wasm_exception, "");
+      AGR_ASSERT(nextByte + sizeof(IR::Opcode) <= end, wasm_exception, "");
       IR::Opcode opcode = *(IR::Opcode*)nextByte;  
       switch(opcode)
       {
       #define VISIT_OPCODE(opcode,name,nameString,Imm,...) \
          case IR::Opcode::name: \
          { \
-            EOS_ASSERT(nextByte + sizeof(IR::OpcodeAndImm<IR::Imm>) <= end, wasm_exception, ""); \
+            AGR_ASSERT(nextByte + sizeof(IR::OpcodeAndImm<IR::Imm>) <= end, wasm_exception, ""); \
             IR::OpcodeAndImm<IR::Imm>* encodedOperator = (IR::OpcodeAndImm<IR::Imm>*)nextByte; \
             nextByte += sizeof(IR::OpcodeAndImm<IR::Imm>); \
             auto op = _cached_ops->at(BOOST_PP_CAT(name, _code)); \
@@ -702,11 +702,11 @@ private:
 };
 
 template <class Op_Types>
-const std::vector<instr*>* EOSIO_OperatorDecoderStream<Op_Types>::_cached_ops;
+const std::vector<instr*>* AGRIO_OperatorDecoderStream<Op_Types>::_cached_ops;
 
-}}} // namespace eosio, chain, wasm_ops
+}}} // namespace agrio, chain, wasm_ops
 
-FC_REFLECT_TEMPLATE( (typename T), eosio::chain::wasm_ops::block< T >, (code)(rt) )
-FC_REFLECT( eosio::chain::wasm_ops::memarg, (a)(o) )
-FC_REFLECT( eosio::chain::wasm_ops::blocktype, (result) )
-FC_REFLECT( eosio::chain::wasm_ops::memoryoptype, (end) )
+FC_REFLECT_TEMPLATE( (typename T), agrio::chain::wasm_ops::block< T >, (code)(rt) )
+FC_REFLECT( agrio::chain::wasm_ops::memarg, (a)(o) )
+FC_REFLECT( agrio::chain::wasm_ops::blocktype, (result) )
+FC_REFLECT( agrio::chain::wasm_ops::memoryoptype, (end) )

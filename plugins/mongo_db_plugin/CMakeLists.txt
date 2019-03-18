@@ -4,7 +4,7 @@ if(BUILD_MONGO_DB_PLUGIN)
 
   if (libmongoc-1.0_FOUND)
 
-      # EOS has no direct dependencies on libmongoc but its shared libraries
+      # AGR has no direct dependencies on libmongoc but its shared libraries
       # will need to be present at runtime for the C++ libraries we use:
       # libbsoncxx & libmongocxx (both from github.com/mongodb/mongo-cxx-driver)
 
@@ -21,13 +21,13 @@ if(BUILD_MONGO_DB_PLUGIN)
       # mongo-cxx-driver 3.2 release altered LIBBSONCXX_LIBRARIES semantics. Instead of library names,
       #  it now hold library paths.
       if((LIBBSONCXX_STATIC_VERSION_MAJOR LESS 3) OR ((LIBBSONCXX_STATIC_VERSION_MAJOR EQUAL 3) AND (LIBBSONCXX_STATIC_VERSION_MINOR LESS 2)))
-        find_library(EOS_LIBBSONCXX ${LIBBSONCXX_STATIC_LIBRARIES}
+        find_library(AGR_LIBBSONCXX ${LIBBSONCXX_STATIC_LIBRARIES}
           PATHS ${LIBBSONCXX_STATIC_LIBRARY_DIRS} NO_DEFAULT_PATH)
       else()
-        set(EOS_LIBBSONCXX ${LIBBSONCXX_STATIC_LIBRARIES})
+        set(AGR_LIBBSONCXX ${LIBBSONCXX_STATIC_LIBRARIES})
       endif()
 
-      message(STATUS "Found bsoncxx library: ${EOS_LIBBSONCXX}")
+      message(STATUS "Found bsoncxx library: ${AGR_LIBBSONCXX}")
 
       find_package(libmongocxx-static REQUIRED)
       message(STATUS "Found mongocxx headers: ${LIBMONGOCXX_STATIC_INCLUDE_DIRS}")
@@ -35,20 +35,20 @@ if(BUILD_MONGO_DB_PLUGIN)
       # mongo-cxx-driver 3.2 release altered LIBBSONCXX_LIBRARIES semantics. Instead of library names,
       #  it now hold library paths.
       if((LIBMONGOCXX_STATIC_VERSION_MAJOR LESS 3) OR ((LIBMONGOCXX_STATIC_VERSION_MAJOR EQUAL 3) AND (LIBMONGOCXX_STATIC_VERSION_MINOR LESS 2)))
-        find_library(EOS_LIBMONGOCXX ${LIBMONGOCXX_STATIC_LIBRARIES}
+        find_library(AGR_LIBMONGOCXX ${LIBMONGOCXX_STATIC_LIBRARIES}
           PATHS ${LIBMONGOCXX_STATIC_LIBRARY_DIRS} NO_DEFAULT_PATH)
       else()
-        set(EOS_LIBMONGOCXX ${LIBMONGOCXX_STATIC_LIBRARIES})
+        set(AGR_LIBMONGOCXX ${LIBMONGOCXX_STATIC_LIBRARIES})
       endif()
 
-      message(STATUS "Found mongocxx library: ${EOS_LIBMONGOCXX}")
+      message(STATUS "Found mongocxx library: ${AGR_LIBMONGOCXX}")
   else()
       message("Could NOT find MongoDB. mongo_db_plugin with MongoDB support will not be included.")
       return()
   endif()
 
   # This needs to be after the else/return in the situation that libmongoc isn't found and we need to avoid building mongo :: 'bsoncxx/builder/basic/kvp.hpp' file not found
-  file(GLOB HEADERS "include/eosio/mongo_db_plugin/*.hpp")
+  file(GLOB HEADERS "include/agrio/mongo_db_plugin/*.hpp")
   add_library( mongo_db_plugin
                mongo_db_plugin.cpp
                ${HEADERS} )
@@ -63,8 +63,8 @@ if(BUILD_MONGO_DB_PLUGIN)
     )
 
   target_link_libraries(mongo_db_plugin
-          PUBLIC chain_plugin eosio_chain appbase
-          ${EOS_LIBMONGOCXX} ${EOS_LIBBSONCXX}
+          PUBLIC chain_plugin agrio_chain appbase
+          ${AGR_LIBMONGOCXX} ${AGR_LIBBSONCXX}
           )
                
 else()

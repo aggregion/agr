@@ -1,20 +1,20 @@
-#include <eosio/chain/webassembly/wabt.hpp>
-#include <eosio/chain/apply_context.hpp>
-#include <eosio/chain/wasm_eosio_constraints.hpp>
+#include <agrio/chain/webassembly/wabt.hpp>
+#include <agrio/chain/apply_context.hpp>
+#include <agrio/chain/wasm_agrio_constraints.hpp>
 
 //wabt includes
 #include <src/interp.h>
 #include <src/binary-reader-interp.h>
 #include <src/error-formatter.h>
 
-namespace eosio { namespace chain { namespace webassembly { namespace wabt_runtime {
+namespace agrio { namespace chain { namespace webassembly { namespace wabt_runtime {
 
 //yep 🤮
 static wabt_apply_instance_vars* static_wabt_vars;
 
 using namespace wabt;
 using namespace wabt::interp;
-namespace wasm_constraints = eosio::chain::wasm_constraints;
+namespace wasm_constraints = agrio::chain::wasm_constraints;
 
 class wabt_instantiated_module : public wasm_instantiated_module_interface {
    public:
@@ -55,10 +55,10 @@ class wabt_instantiated_module : public wasm_instantiated_module_interface {
          _params[2].set_i64(uint64_t(context.act.name));
 
          ExecResult res = _executor.RunStartFunction(_instatiated_module);
-         EOS_ASSERT( res.result == interp::Result::Ok, wasm_execution_error, "wabt start function failure (${s})", ("s", ResultToString(res.result)) );
+         AGR_ASSERT( res.result == interp::Result::Ok, wasm_execution_error, "wabt start function failure (${s})", ("s", ResultToString(res.result)) );
 
          res = _executor.RunExportByName(_instatiated_module, "apply", _params);
-         EOS_ASSERT( res.result == interp::Result::Ok, wasm_execution_error, "wabt execution failure (${s})", ("s", ResultToString(res.result)) );
+         AGR_ASSERT( res.result == interp::Result::Ok, wasm_execution_error, "wabt execution failure (${s})", ("s", ResultToString(res.result)) );
       }
 
    private:
@@ -91,7 +91,7 @@ std::unique_ptr<wasm_instantiated_module_interface> wabt_runtime::instantiate_mo
    wabt::Errors errors;
 
    wabt::Result res = ReadBinaryInterp(env.get(), code_bytes, code_size, read_binary_options, &errors, &instantiated_module);
-   EOS_ASSERT( Succeeded(res), wasm_execution_error, "Error building wabt interp: ${e}", ("e", wabt::FormatErrorsToString(errors, Location::Type::Binary)) );
+   AGR_ASSERT( Succeeded(res), wasm_execution_error, "Error building wabt interp: ${e}", ("e", wabt::FormatErrorsToString(errors, Location::Type::Binary)) );
    
    return std::make_unique<wabt_instantiated_module>(std::move(env), initial_memory, instantiated_module);
 }

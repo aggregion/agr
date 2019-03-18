@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #include <sstream>
 
-#include <eosio/chain/snapshot.hpp>
-#include <eosio/testing/tester.hpp>
+#include <agrio/chain/snapshot.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <boost/mpl/list.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <contracts.hpp>
 
-using namespace eosio;
+using namespace agrio;
 using namespace testing;
 using namespace chain;
 
