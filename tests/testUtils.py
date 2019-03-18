@@ -34,6 +34,8 @@ class Utils:
 
     AgrBlockLogPath="programs/agrio-blocklog/agrio-blocklog"
 
+    FileDivider="================================================================="
+
     @staticmethod
     def Print(*args, **kwargs):
         stackDepth=len(inspect.stack())-2

@@ -1,6 +1,6 @@
 /**
  *  @file
-x *  @copyright defined in agr/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 

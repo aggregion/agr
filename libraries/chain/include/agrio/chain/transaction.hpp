@@ -102,7 +102,7 @@ namespace agrio { namespace chain {
                                                     bool allow_duplicate_keys = false )const;
    };
 
-   struct packed_transaction {
+   struct packed_transaction : fc::reflect_init {
       enum compression_type {
          none = 0,
          zlib = 1,
@@ -158,6 +158,7 @@ namespace agrio { namespace chain {
 
       friend struct fc::reflector<packed_transaction>;
       friend struct fc::reflector_init_visitor<packed_transaction>;
+      friend struct fc::has_reflector_init<packed_transaction>;
       void reflector_init();
    private:
       vector<signature_type>                  signatures;
@@ -218,6 +219,7 @@ FC_REFLECT( agrio::chain::transaction_header, (expiration)(ref_block_num)(ref_bl
 FC_REFLECT_DERIVED( agrio::chain::transaction, (agrio::chain::transaction_header), (context_free_actions)(actions)(transaction_extensions) )
 FC_REFLECT_DERIVED( agrio::chain::signed_transaction, (agrio::chain::transaction), (signatures)(context_free_data) )
 FC_REFLECT_ENUM( agrio::chain::packed_transaction::compression_type, (none)(zlib))
+// @ignore unpacked_trx
 FC_REFLECT( agrio::chain::packed_transaction, (signatures)(compression)(packed_context_free_data)(packed_trx) )
 FC_REFLECT_DERIVED( agrio::chain::deferred_transaction, (agrio::chain::signed_transaction), (sender_id)(sender)(payer)(execute_after) )
 FC_REFLECT( agrio::chain::deferred_reference, (sender)(sender_id) )

@@ -4,19 +4,12 @@
  */
 #pragma once
 
-#include <agrio/testing/tester.hpp>
 #include <agrio/chain/abi_serializer.hpp>
-
-#include <agrio.system/agrio.system.wast.hpp>
-#include <agrio.system/agrio.system.abi.hpp>
-
-#include <agrio.token/agrio.token.wast.hpp>
-#include <agrio.token/agrio.token.abi.hpp>
-
-#include <agrio.msig/agrio.msig.wast.hpp>
-#include <agrio.msig/agrio.msig.abi.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <fc/variant_object.hpp>
+
+#include <contracts.hpp>
 
 using namespace agrio::chain;
 using namespace agrio::testing;
@@ -49,11 +42,10 @@ public:
       create_accounts({ N(agrio.token), N(agrio.ram), N(agrio.ramfee), N(agrio.stake),
                N(agrio.bpay), N(agrio.vpay), N(agrio.saving), N(agrio.names) });
 
-
       produce_blocks( 100 );
 
-      set_code( N(agrio.token), agrio_token_wast );
-      set_abi( N(agrio.token), agrio_token_abi );
+      set_code( N(agrio.token), contracts::agrio_token_wasm() );
+      set_abi( N(agrio.token), contracts::agrio_token_abi().data() );
 
       {
          const auto& accnt = control->db().get<account_object,by_name>( N(agrio.token) );
@@ -66,8 +58,13 @@ public:
       issue(config::system_account_name,      core_from_string("1000000000.0000"));
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance( "agrio" ) );
 
-      set_code( config::system_account_name, agrio_system_wast );
-      set_abi( config::system_account_name, agrio_system_abi );
+      set_code( config::system_account_name, contracts::agrio_system_wasm() );
+      set_abi( config::system_account_name, contracts::agrio_system_abi().data() );
+
+      base_tester::push_action(config::system_account_name, N(init),
+                            config::system_account_name,  mutable_variant_object()
+                            ("version", 0)
+                            ("core", CORE_SYM_STR));
 
       {
          const auto& accnt = control->db().get<account_object,by_name>( config::system_account_name );
@@ -85,6 +82,15 @@ public:
       BOOST_REQUIRE_EQUAL( core_from_string("1000000000.0000"), get_balance("agrio")  + get_balance("agrio.ramfee") + get_balance("agrio.stake") + get_balance("agrio.ram") );
    }
 
+   action_result open( account_name  owner,
+                       const string& symbolname,
+                       account_name  ram_payer    ) {
+      return push_action( ram_payer, N(open), mvo()
+                          ( "owner", owner )
+                          ( "symbol", symbolname )
+                          ( "ram_payer", ram_payer )
+         );
+   }
 
    void create_accounts_with_resources( vector<account_name> accounts, account_name creator = config::system_account_name ) {
       for( auto a : accounts ) {
@@ -417,8 +423,8 @@ public:
                                                ("is_priv", 1)
          );
 
-         set_code( N(agrio.msig), agrio_msig_wast );
-         set_abi( N(agrio.msig), agrio_msig_abi );
+         set_code( N(agrio.msig), contracts::agrio_msig_wasm() );
+         set_abi( N(agrio.msig), contracts::agrio_msig_abi().data() );
 
          produce_blocks();
          const auto& accnt = control->db().get<account_object,by_name>( N(agrio.msig) );
@@ -535,7 +541,6 @@ inline fc::mutable_variant_object voter( account_name acct ) {
       ("proxy", name(0).to_string())
       ("producers", variants() )
       ("staked", int64_t(0))
-      //("last_vote_weight", double(0))
       ("proxied_vote_weight", double(0))
       ("is_proxy", 0)
       ;

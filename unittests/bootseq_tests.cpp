@@ -1,18 +1,17 @@
-#include <boost/test/unit_test.hpp>
-#include <agrio/testing/tester.hpp>
+/**
+ *  @file
+ *  @copyright defined in agr/LICENSE.txt
+ */
 #include <agrio/chain/abi_serializer.hpp>
-
-#include <agrio.system/agrio.system.wast.hpp>
-#include <agrio.system/agrio.system.abi.hpp>
-// These contracts are still under dev
-#include <agrio.token/agrio.token.wast.hpp>
-#include <agrio.token/agrio.token.abi.hpp>
-#include <agrio.msig/agrio.msig.wast.hpp>
-#include <agrio.msig/agrio.msig.abi.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <Runtime/Runtime.h>
 
 #include <fc/variant_object.hpp>
+
+#include <boost/test/unit_test.hpp>
+
+#include <contracts.hpp>
 
 #ifdef NON_VALIDATING_TEST
 #define TESTER tester
@@ -34,10 +33,10 @@ struct genesis_account {
 };
 
 std::vector<genesis_account> test_genesis( {
-  {N(b1),    400'000'000'0000ll},
-  {N(whale4), 40'000'000'0000ll},
-  {N(whale3), 30'000'000'0000ll},
-  {N(whale2), 20'000'000'0000ll},
+  {N(b1),       400'000'000'0000ll},
+  {N(whale4),    40'000'000'0000ll},
+  {N(whale3),    30'000'000'0000ll},
+  {N(whale2),    20'000'000'0000ll},
   {N(proda),      1'000'000'0000ll},
   {N(prodb),      1'000'000'0000ll},
   {N(prodc),      1'000'000'0000ll},
@@ -59,23 +58,37 @@ std::vector<genesis_account> test_genesis( {
   {N(prods),      1'000'000'0000ll},
   {N(prodt),      1'000'000'0000ll},
   {N(produ),      1'000'000'0000ll},
-  {N(runnerup1),1'000'000'0000ll},
-  {N(runnerup2),1'000'000'0000ll},
-  {N(runnerup3),1'000'000'0000ll},
-  {N(minow1),        100'0000ll},
-  {N(minow2),          1'0000ll},
-  {N(minow3),          1'0000ll},
-  {N(masses),800'000'000'0000ll}
+  {N(runnerup1),  1'000'000'0000ll},
+  {N(runnerup2),  1'000'000'0000ll},
+  {N(runnerup3),  1'000'000'0000ll},
+  {N(minow1),           100'0000ll},
+  {N(minow2),             1'0000ll},
+  {N(minow3),             1'0000ll},
+  {N(masses),   800'000'000'0000ll}
 });
 
 class bootseq_tester : public TESTER {
 public:
+   void deploy_contract( bool call_init = true ) {
+      set_code( config::system_account_name, contracts::agrio_system_wasm() );
+      set_abi( config::system_account_name, contracts::agrio_system_abi().data() );
+      if( call_init ) {
+         base_tester::push_action(config::system_account_name, N(init),
+                                  config::system_account_name,  mutable_variant_object()
+                                  ("version", 0)
+                                  ("core", CORE_SYM_STR)
+            );
+      }
+      const auto& accnt = control->db().get<account_object,by_name>( config::system_account_name );
+      abi_def abi;
+      BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
+      abi_ser.set_abi(abi, abi_serializer_max_time);
+   }
 
    fc::variant get_global_state() {
       vector<char> data = get_row_by_account( config::system_account_name, config::system_account_name, N(global), N(global) );
       if (data.empty()) std::cout << "\nData is empty\n" << std::endl;
       return data.empty() ? fc::variant() : abi_ser.binary_to_variant( "agrio_global_state", data, abi_serializer_max_time );
-
    }
 
     auto buyram( name payer, name receiver, asset ram ) {
@@ -157,9 +170,9 @@ public:
          return get_currency_balance(N(agrio.token), symbol(CORE_SYMBOL), act);
     }
 
-    void set_code_abi(const account_name& account, const char* wast, const char* abi, const private_key_type* signer = nullptr) {
+    void set_code_abi(const account_name& account, const vector<uint8_t>& wasm, const char* abi, const private_key_type* signer = nullptr) {
        wdump((account));
-        set_code(account, wast, signer);
+        set_code(account, wasm, signer);
         set_abi(account, abi, signer);
         if (account == config::system_account_name) {
            const auto& accnt = control->db().get<account_object,by_name>( account );
@@ -181,13 +194,19 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
 
         // Create agrio.msig and agrio.token
         create_accounts({N(agrio.msig), N(agrio.token), N(agrio.ram), N(agrio.ramfee), N(agrio.stake), N(agrio.vpay), N(agrio.bpay), N(agrio.saving) });
-
         // Set code for the following accounts:
         //  - agrio (code: agrio.bios) (already set by tester constructor)
         //  - agrio.msig (code: agrio.msig)
         //  - agrio.token (code: agrio.token)
-        set_code_abi(N(agrio.msig), agrio_msig_wast, agrio_msig_abi);//, &agrio_active_pk);
-        set_code_abi(N(agrio.token), agrio_token_wast, agrio_token_abi); //, &agrio_active_pk);
+        // set_code_abi(N(agrio.msig), contracts::agrio_msig_wasm(), contracts::agrio_msig_abi().data());//, &agrio_active_pk);
+        // set_code_abi(N(agrio.token), contracts::agrio_token_wasm(), contracts::agrio_token_abi().data()); //, &agrio_active_pk);
+
+        set_code_abi(N(agrio.msig),
+                     contracts::agrio_msig_wasm(),
+                     contracts::agrio_msig_abi().data());//, &agrio_active_pk);
+        set_code_abi(N(agrio.token),
+                     contracts::agrio_token_wasm(),
+                     contracts::agrio_token_abi().data()); //, &agrio_active_pk);
 
         // Set privileged for agrio.msig and agrio.token
         set_privileged(N(agrio.msig));
@@ -215,8 +234,7 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
            create_account( a.aname, config::system_account_name );
         }
 
-        // Set agrio.system to agrio
-        set_code_abi(config::system_account_name, agrio_system_wast, agrio_system_abi);
+        deploy_contract();
 
         // Buy ram and stake cpu and net for each genesis accounts
         for( const auto& a : test_genesis ) {
@@ -260,12 +278,13 @@ BOOST_FIXTURE_TEST_CASE( bootseq_test, bootseq_tester ) {
         votepro( N(whale3), {N(proda), N(prodb), N(prodc), N(prodd), N(prode)} );
 
         // Total Stakes = b1 + whale2 + whale3 stake = (400,000,000 - 1,000) + (20,000,000 - 1,000) + (30,000,000 - 1,000)
-        BOOST_REQUIRE_EQUAL(4499999997000, get_global_state()["total_activated_stake"].as<int64_t>());
+        vector<char> data = get_row_by_account( config::system_account_name, config::system_account_name, N(global), N(global) );
+        
 
         // No producers will be set, since the total activated stake is less than 450,000,000
         produce_blocks_for_n_rounds(2); // 2 rounds since new producer schedule is set when the first block of next round is irreversible
         auto active_schedule = control->head_block_state()->active_schedule;
-        BOOST_TEST(active_schedule.producers.size() == 1);
+        BOOST_TEST(active_schedule.producers.size() == 1u);
         BOOST_TEST(active_schedule.producers.front().producer_name == "agrio");
 
         // Spend some time so the producer pay pool is filled by the inflation rate

@@ -3,10 +3,14 @@
  *  @copyright defined in agr/LICENSE
  */
 #include <cstdlib>
+
 #include <iostream>
-#include <boost/test/included/unit_test.hpp>
-#include <fc/log/logger.hpp>
+
 #include <agrio/chain/exceptions.hpp>
+
+#include <fc/log/logger.hpp>
+
+#include <boost/test/included/unit_test.hpp>
 
 //extern uint32_t AGR_TESTING_GENESIS_TIMESTAMP;
 

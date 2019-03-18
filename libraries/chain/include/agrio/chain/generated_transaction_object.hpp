@@ -3,6 +3,7 @@
  *  @copyright defined in agr/LICENSE
  */
 #pragma once
+#include <agrio/chain/config.hpp>
 #include <agrio/chain/database_utils.hpp>
 
 #include <agrio/chain/transaction.hpp>

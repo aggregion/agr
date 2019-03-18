@@ -1,13 +1,17 @@
-#include <boost/test/unit_test.hpp>
-#include <agrio/testing/tester.hpp>
+/**
+ *  @file
+ *  @copyright defined in agr/LICENSE.txt
+ */
 #include <agrio/chain/abi_serializer.hpp>
-
-#include <agrio.token/agrio.token.wast.hpp>
-#include <agrio.token/agrio.token.abi.hpp>
+#include <agrio/testing/tester.hpp>
 
 #include <Runtime/Runtime.h>
 
 #include <fc/variant_object.hpp>
+
+#include <boost/test/unit_test.hpp>
+
+#include <contracts.hpp>
 
 using namespace agrio::testing;
 using namespace agrio;
@@ -27,8 +31,8 @@ public:
       create_accounts( { N(alice), N(bob), N(carol), N(agrio.token) } );
       produce_blocks( 2 );
 
-      set_code( N(agrio.token), agrio_token_wast );
-      set_abi( N(agrio.token), agrio_token_abi );
+      set_code( N(agrio.token), contracts::agrio_token_wasm() );
+      set_abi( N(agrio.token), contracts::agrio_token_abi().data() );
 
       produce_blocks();
 
