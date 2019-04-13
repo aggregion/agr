@@ -8,6 +8,7 @@
 
 ## Documentation
 * How to run your own node - [RUN_NODE.md](RUN_NODE.md)
+
 **If you have previously installed AGRIO, please run the `agrio_uninstall` script (it is in the directory where you cloned AGRIO) before downloading and using the binary releases.**
 
 #### Mac OS X Brew Install
