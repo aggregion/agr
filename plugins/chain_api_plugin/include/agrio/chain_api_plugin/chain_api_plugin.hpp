@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/http_plugin/http_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
 
 #include <appbase/application.hpp>
-#include <eosio/chain/controller.hpp>
+#include <agrio/chain/controller.hpp>
 
-namespace eosio {
-   using eosio::chain::controller;
+namespace agrio {
+   using agrio::chain::controller;
    using std::unique_ptr;
    using namespace appbase;
 

@@ -1,10 +1,10 @@
 cmake_minimum_required( VERSION 3.5 )
-message(STATUS "Setting up Eosio Tester @VERSION_FULL@ at @EOS_ROOT_DIR@")
+message(STATUS "Setting up Agrio Tester @VERSION_FULL@ at @AGR_ROOT_DIR@")
 
 set(CMAKE_CXX_COMPILER @CMAKE_CXX_COMPILER@)
 set(CMAKE_C_COMPILER   @CMAKE_C_COMPILER@)
 
-set(EOSIO_VERSION "@VERSION_FULL@")
+set(AGRIO_VERSION "@VERSION_FULL@")
 
 enable_testing()
 
@@ -43,8 +43,8 @@ find_package(Boost 1.67 REQUIRED COMPONENTS
    iostreams
    unit_test_framework)
 
-find_library(libtester eosio_testing @CMAKE_BINARY_DIR@/libraries/testing)
-find_library(libchain eosio_chain @CMAKE_BINARY_DIR@/libraries/chain)
+find_library(libtester agrio_testing @CMAKE_BINARY_DIR@/libraries/testing)
+find_library(libchain agrio_chain @CMAKE_BINARY_DIR@/libraries/chain)
 if ( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
    find_library(libfc fc_debug @CMAKE_BINARY_DIR@/libraries/fc)
    find_library(libsecp256k1 secp256k1_debug @CMAKE_BINARY_DIR@/libraries/fc/secp256k1)
@@ -73,7 +73,7 @@ find_library(GMP_LIBRARIES NAMES libgmp.a gmp.lib gmp libgmp-10 mpir
     DOC "Path to the GMP library"
 )
 
-macro(add_eosio_test_executable test_name)
+macro(add_agrio_test_executable test_name)
    add_executable( ${test_name} ${ARGN} )
    target_link_libraries( ${test_name}
        ${LLVM}
@@ -141,8 +141,8 @@ macro(add_eosio_test_executable test_name)
                                @CMAKE_SOURCE_DIR@/libraries/wasm-jit/Include )
 endmacro()
 
-macro(add_eosio_test test_name)
-   add_eosio_test_executable( ${test_name} ${ARGN} )
+macro(add_agrio_test test_name)
+   add_agrio_test_executable( ${test_name} ${ARGN} )
    #This will generate a test with the default runtime
    add_test(NAME ${test_name} COMMAND ${test_name} --report_level=detailed --color_output)
    #Manually run unit_test for all supported runtimes

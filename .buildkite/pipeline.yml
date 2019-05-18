@@ -1,8 +1,8 @@
 env:
   ANKA_MOJAVE_TEMPLATE: "10.14.4_6C_14G_40G"
   ANKA_TEMPLATE_TAG: "clean::cicd::git-ssh::nas::brew::buildkite-agent-3.11.2"
-  CHECKSUMABLE: "scripts/eosio_build*"
-  MAC_TAG: "eosio_1-8-0-rc2"
+  CHECKSUMABLE: "scripts/agrio_build*"
+  MAC_TAG: "agrio_1-8-0-rc2"
   WORKDIR: "/data/job"
 
 steps:
@@ -10,7 +10,7 @@ steps:
 
   - label: ":darwin: Ensure Mojave Anka Template Dependency Tag/Layer Exists"
     command:
-      - "git clone git@github.com:EOSIO/mac-anka-fleet.git"
+      - "git clone git@github.com:AGRIO/mac-anka-fleet.git"
       - "cd mac-anka-fleet && . ./ensure_tag.bash -u 12 -r 25G -a '-n'"
     agents:
       - "queue=mac-anka-templater-fleet"
@@ -20,7 +20,7 @@ steps:
       CHECKSUMABLE: "${CHECKSUMABLE}"
       TEMPLATE: "${ANKA_MOJAVE_TEMPLATE}"
       TEMPLATE_TAG: "${ANKA_TEMPLATE_TAG}"
-      TAG_COMMANDS: "git clone ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO} && cd eos && git checkout ${BUILDKITE_COMMIT} && git submodule update --init --recursive && ./scripts/eosio_build.sh -y -P -f -m && cd .. && rm -rf eos" # CLONED_REPO_DIR IS REQUIRED and is where the repo is always cloned into
+      TAG_COMMANDS: "git clone ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO} && cd agr && git checkout ${BUILDKITE_COMMIT} && git submodule update --init --recursive && ./scripts/agrio_build.sh -y -P -f -m && cd .. && rm -rf agr" # CLONED_REPO_DIR IS REQUIRED and is where the repo is always cloned into
       PROJECT_TAG: "${MAC_TAG}"
     timeout: 320
     skip: $SKIP_MOJAVE
@@ -32,7 +32,7 @@ steps:
       git clone ${BUILDKITE_PULL_REQUEST_REPO:-$BUILDKITE_REPO} .
       git checkout ${BUILDKITE_COMMIT}
       git submodule update --init --recursive
-      ./scripts/eosio_build.sh -y -P -m
+      ./scripts/agrio_build.sh -y -P -m
       tar -pczf build.tar.gz build
       [[ -f build.tar.gz ]] && buildkite-agent artifact upload build.tar.gz || (echo '+++ :no_entry: ERROR: No build.tar.gz artifact found, or artifact upload failed!'; echo '$$ ls -la'; ls -la; exit 1)
     plugins:
@@ -54,7 +54,7 @@ steps:
 
   - label: ":aws: Amazon Linux 2 Build"
     command: |
-      ./scripts/eosio_build.sh -y -P -m
+      ./scripts/agrio_build.sh -y -P -m
       tar -pczf build.tar.gz build
       [[ ! -f build.tar.gz ]] && (echo '+++ :no_entry: ERROR: No build.tar.gz artifact found!'; echo '$$ ls -la'; ls -la; exit 1) || :
     agents:
@@ -76,7 +76,7 @@ steps:
 
   - label: ":centos: CentOS 7 Build"
     command: |
-      ./scripts/eosio_build.sh -y -P -m
+      ./scripts/agrio_build.sh -y -P -m
       tar -pczf build.tar.gz build
       [[ ! -f build.tar.gz ]] && (echo '+++ :no_entry: ERROR: No build.tar.gz artifact found!'; echo '$$ ls -la'; ls -la; exit 1) || :
     agents:
@@ -98,7 +98,7 @@ steps:
 
   - label: ":ubuntu: Ubuntu 16.04 Build"
     command: |
-      ./scripts/eosio_build.sh -y -P -m
+      ./scripts/agrio_build.sh -y -P -m
       tar -pczf build.tar.gz build
       [[ ! -f build.tar.gz ]] && (echo '+++ :no_entry: ERROR: No build.tar.gz artifact found!'; echo '$$ ls -la'; ls -la; exit 1) || :
     label: ":ubuntu: Ubuntu 16.04 Build"
@@ -121,7 +121,7 @@ steps:
 
   - label: ":ubuntu: Ubuntu 18.04 Build"
     command: |
-      ./scripts/eosio_build.sh -y -P -m
+      ./scripts/agrio_build.sh -y -P -m
       tar -pczf build.tar.gz build
       [[ ! -f build.tar.gz ]] && (echo '+++ :no_entry: ERROR: No build.tar.gz artifact found!'; echo '$$ ls -la'; ls -la; exit 1) || :
     agents:
@@ -470,12 +470,12 @@ steps:
 
   - command: | # Brew Updater
         echo "+++ :arrow_down: Downloading brew files"
-        buildkite-agent artifact download "eosio.rb" . --step ":darwin: Mojave Package Builder"
+        buildkite-agent artifact download "agrio.rb" . --step ":darwin: Mojave Package Builder"
     label: ":darwin: Brew Updater"
     agents:
       queue: "automation-large-builder-fleet"
     artifact_paths:
-      - "eosio.rb"
+      - "agrio.rb"
     timeout: 5
     skip: $SKIP_MOJAVE
 

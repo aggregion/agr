@@ -23,13 +23,13 @@ DISPLAY=""
 DEP=""
 
 if ! (. /etc/os-release; [ "$VERSION_ID" = "2" ]); then
-	printf "Amazon Linux 2 is the only version of Amazon Linux supported by EOSIO build scripts.\\n"
+	printf "Amazon Linux 2 is the only version of Amazon Linux supported by AGRIO build scripts.\\n"
 	printf "exiting now.\\n"
 	exit 1
 fi
 
 if [ "${DISK_AVAIL}" -lt "${DISK_MIN}" ]; then
-	printf "You must have at least %sGB of available storage to install EOSIO.\\n" "${DISK_MIN}"
+	printf "You must have at least %sGB of available storage to install AGRIO.\\n" "${DISK_MIN}"
 	printf "exiting now.\\n"
 	exit 1
 fi
@@ -37,7 +37,7 @@ fi
 printf "\\nChecking Yum installation.\\n"
 if ! YUM=$( command -v yum 2>/dev/null )
 then
-	printf "\\nYum must be installed to compile EOS.IO.\\n"
+	printf "\\nYum must be installed to compile AGR.IO.\\n"
 	printf "\\nExiting now.\\n"
 	exit 1
 fi
@@ -71,7 +71,7 @@ for (( i=0; i<${#DEP_ARRAY[@]}; i++ )); do
 	fi
 done
 if [ "${COUNT}" -gt 1 ]; then
-	printf "\\nThe following dependencies are required to install EOSIO:\\n"
+	printf "\\nThe following dependencies are required to install AGRIO:\\n"
 	printf "${DISPLAY}\\n\\n"
 	if [ $ANSWER != 1 ]; then read -p "Do you wish to install these dependencies? (y/n) " ANSWER; fi
 	case $ANSWER in

@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/snapshot.hpp>
-#include <eosio/chain/whitelisted_intrinsics.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/snapshot.hpp>
+#include <agrio/chain/whitelisted_intrinsics.hpp>
 #include <chainbase/chainbase.hpp>
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    /**
     * @class protocol_state_object
@@ -80,16 +80,16 @@ namespace eosio { namespace chain {
 
 }}
 
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::protocol_state_object, eosio::chain::protocol_state_multi_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::protocol_state_object, agrio::chain::protocol_state_multi_index)
 
-FC_REFLECT(eosio::chain::protocol_state_object::activated_protocol_feature,
+FC_REFLECT(agrio::chain::protocol_state_object::activated_protocol_feature,
             (feature_digest)(activation_block_num)
           )
 
-FC_REFLECT(eosio::chain::protocol_state_object,
+FC_REFLECT(agrio::chain::protocol_state_object,
             (activated_protocol_features)(preactivated_protocol_features)(whitelisted_intrinsics)(num_supported_key_types)
           )
 
-FC_REFLECT(eosio::chain::snapshot_protocol_state_object,
+FC_REFLECT(agrio::chain::snapshot_protocol_state_object,
             (activated_protocol_features)(preactivated_protocol_features)(whitelisted_intrinsics)(num_supported_key_types)
           )

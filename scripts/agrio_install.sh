@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################################################
-# This is the EOSIO automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/EOSIO/eos
+# This is the AGRIO automated install script for Linux and Mac OS.
+# This file was downloaded from https://github.com/aggregion/agr
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -27,7 +27,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/EOSIO/eos/blob/master/LICENSE.txt
+# https://github.com/aggregion/agr/blob/master/LICENSE.txt
 ##########################################################################
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -39,7 +39,7 @@ bldred=${txtbld}$(tput setaf 1)
 txtrst=$(tput sgr0)
 
 if [ ! -d $BUILD_DIR ]; then
-   printf "\\nError, eosio_build.sh has not ran.  Please run ./eosio_build.sh first!\\n\\n"
+   printf "\\nError, agrio_build.sh has not ran.  Please run ./agrio_build.sh first!\\n\\n"
    exit -1
 fi
 
@@ -51,7 +51,7 @@ fi
 CMAKE_INSTALL_PREFIX=$(grep ^CMAKE_INSTALL_PREFIX: CMakeCache.txt | sed 's/.*=//')
 
 if ! make install; then
-   printf "\\nMAKE installing EOSIO has exited with the above error.\\n\\n"
+   printf "\\nMAKE installing AGRIO has exited with the above error.\\n\\n"
    exit -1
 fi
 popd &> /dev/null
@@ -69,10 +69,10 @@ printf "    \\  \\::/       \\  \\::/        /__/:/        \\__\\/      \\  \\::
 printf "     \\__\\/         \\__\\/         \\__\\/                     \\__\\/ \n\n${txtrst}"
 
 printf "==============================================================================================\\n"
-printf "EOSIO has been installed into ${CMAKE_INSTALL_PREFIX}/bin!\\n"
+printf "AGRIO has been installed into ${CMAKE_INSTALL_PREFIX}/bin!\\n"
 printf "If you need to, you can uninstall using: ./scripts/full_uninstaller.sh (it will leave your data directory).\\n"
 printf "==============================================================================================\\n\\n"
 
-printf "EOSIO website: https://eos.io\\n"
-printf "EOSIO resources: https://eos.io/resources/\\n"
-printf "EOSIO Stack Exchange: https://eosio.stackexchange.com\\n"
+printf "AGRIO website: https://agr.io\\n"
+printf "AGRIO resources: https://agr.io/resources/\\n"
+printf "AGRIO Stack Exchange: https://agrio.stackexchange.com\\n"

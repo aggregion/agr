@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/transaction.hpp>
-#include <eosio/wallet_plugin/wallet_api.hpp>
+#include <agrio/chain/transaction.hpp>
+#include <agrio/wallet_plugin/wallet_api.hpp>
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
@@ -12,7 +12,7 @@
 
 namespace fc { class variant; }
 
-namespace eosio {
+namespace agrio {
 namespace wallet {
 
 /// Provides associate of wallet name to wallet and manages the interaction with each wallet.
@@ -106,7 +106,7 @@ public:
    /// Imports a WIF Private Key into specified wallet.
    /// Wallet must be opened and unlocked.
    /// @param name the name of the wallet to import into.
-   /// @param wif_key the WIF Private Key to import, e.g. 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+   /// @param wif_key the WIF Private Key to import, e.g. 5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS
    /// @throws fc::exception if wallet not found or locked.
    void import_key(const std::string& name, const std::string& wif_key);
 
@@ -114,7 +114,7 @@ public:
    /// Wallet must be opened and unlocked.
    /// @param name the name of the wallet to remove the key from.
    /// @param password the plaintext password returned from ::create.
-   /// @param key the Public Key to remove, e.g. EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+   /// @param key the Public Key to remove, e.g. AGR8b2ojDi7mMWQxE3W6Fa1dr9bPfe5NTpRmyqBHECLNeFrdZHZrq
    /// @throws fc::exception if wallet not found or locked or key is not removed.
    void remove_key(const std::string& name, const std::string& password, const std::string& key);
 
@@ -148,6 +148,6 @@ private:
 };
 
 } // namespace wallet
-} // namespace eosio
+} // namespace agrio
 
 

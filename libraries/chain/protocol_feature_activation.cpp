@@ -1,21 +1,21 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 
-#include <eosio/chain/protocol_feature_activation.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/protocol_feature_activation.hpp>
+#include <agrio/chain/exceptions.hpp>
 
 #include <algorithm>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    void protocol_feature_activation::reflector_init() {
       static_assert( fc::raw::has_feature_reflector_init_on_unpacked_reflected_types,
                      "protocol_feature_activation expects FC to support reflector_init" );
 
 
-      EOS_ASSERT( protocol_features.size() > 0, ill_formed_protocol_feature_activation,
+      AGR_ASSERT( protocol_features.size() > 0, ill_formed_protocol_feature_activation,
                   "Protocol feature activation extension must have at least one protocol feature digest",
       );
 
@@ -23,7 +23,7 @@ namespace eosio { namespace chain {
 
       for( const auto& d : protocol_features ) {
          auto res = s.insert( d );
-         EOS_ASSERT( res.second, ill_formed_protocol_feature_activation,
+         AGR_ASSERT( res.second, ill_formed_protocol_feature_activation,
                      "Protocol feature digest ${d} was repeated in the protocol feature activation extension",
                      ("d", d)
          );
@@ -46,10 +46,10 @@ namespace eosio { namespace chain {
 
       std::set_union( s1.cbegin(), s1.cend(), s2.cbegin(), s2.cend(), end_inserter( protocol_features ) );
 
-      EOS_ASSERT( !enforce_disjoint || protocol_features.size() == expected_size,
+      AGR_ASSERT( !enforce_disjoint || protocol_features.size() == expected_size,
                   invalid_block_header_extension,
                   "duplication of protocol feature digests"
       );
    }
 
-} }  // eosio::chain
+} }  // agrio::chain

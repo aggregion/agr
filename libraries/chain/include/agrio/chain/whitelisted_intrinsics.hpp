@@ -1,13 +1,13 @@
 
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    using whitelisted_intrinsics_type = shared_flat_multimap<uint64_t, shared_string>;
 
@@ -24,4 +24,4 @@ namespace eosio { namespace chain {
 
    std::set<std::string> convert_intrinsic_whitelist_to_set( const whitelisted_intrinsics_type& whitelisted_intrinsics );
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain

@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/database_utils.hpp>
+#include <agrio/chain/database_utils.hpp>
 #include <boost/tuple/tuple_io.hpp>
 
 #include "multi_index_includes.hpp"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class code_object : public chainbase::object<code_object_type, code_object> {
       OBJECT_CTOR(code_object, (code))
@@ -37,8 +37,8 @@ namespace eosio { namespace chain {
       >
    >;
 
-} } // eosio::chain
+} } // agrio::chain
 
-CHAINBASE_SET_INDEX_TYPE(eosio::chain::code_object, eosio::chain::code_index)
+CHAINBASE_SET_INDEX_TYPE(agrio::chain::code_object, agrio::chain::code_index)
 
-FC_REFLECT(eosio::chain::code_object, (code_hash)(code)(code_ref_count)(first_block_used)(vm_type)(vm_version))
+FC_REFLECT(agrio::chain::code_object, (code_hash)(code)(code_ref_count)(first_block_used)(vm_type)(vm_version))

@@ -1,12 +1,12 @@
 #pragma once
-#include <eosio/chain/code_object.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/whitelisted_intrinsics.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/code_object.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/whitelisted_intrinsics.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include "Runtime/Linker.h"
 #include "Runtime/Runtime.h"
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    class apply_context;
    class wasm_runtime_interface;
@@ -42,7 +42,7 @@ namespace eosio { namespace chain {
             if( whitelisted_intrinsics != nullptr ) {
                // Protect access to "private" injected functions; so for now just simply allow "env" since injected
                // functions are in a different module.
-               EOS_ASSERT( mod_name == "env", wasm_exception,
+               AGR_ASSERT( mod_name == "env", wasm_exception,
                            "importing from module that is not 'env': ${module}.${export}",
                            ("module",mod_name)("export",export_name) );
 
@@ -55,7 +55,7 @@ namespace eosio { namespace chain {
                return true;
             }
 
-            EOS_THROW( wasm_exception, "${module}.${export} unresolveable",
+            AGR_THROW( wasm_exception, "${module}.${export} unresolveable",
                       ("module",mod_name)("export",export_name) );
             return false;
          } FC_CAPTURE_AND_RETHROW( (mod_name)(export_name) ) }
@@ -82,7 +82,7 @@ namespace eosio { namespace chain {
          //call before dtor to skip what can be minutes of dtor overhead with some runtimes; can cause leaks
          void indicate_shutting_down();
 
-         //validates code -- does a WASM validation pass and checks the wasm against EOSIO specific constraints
+         //validates code -- does a WASM validation pass and checks the wasm against AGRIO specific constraints
          static void validate(const controller& control, const bytes& code);
 
          //indicate that a particular code probably won't be used after given block_num
@@ -99,13 +99,13 @@ namespace eosio { namespace chain {
 
       private:
          unique_ptr<struct wasm_interface_impl> my;
-         friend class eosio::chain::webassembly::common::intrinsics_accessor;
+         friend class agrio::chain::webassembly::common::intrinsics_accessor;
    };
 
-} } // eosio::chain
+} } // agrio::chain
 
-namespace eosio{ namespace chain {
+namespace agrio{ namespace chain {
    std::istream& operator>>(std::istream& in, wasm_interface::vm_type& runtime);
 }}
 
-FC_REFLECT_ENUM( eosio::chain::wasm_interface::vm_type, (wavm)(wabt) )
+FC_REFLECT_ENUM( agrio::chain::wasm_interface::vm_type, (wavm)(wabt) )

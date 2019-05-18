@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 
 #pragma once
 
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/http_client_plugin/http_client_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_client_plugin/http_client_plugin.hpp>
 
 #include <appbase/application.hpp>
 
-namespace eosio {
+namespace agrio {
 
 using boost::signals2::signal;
 
@@ -119,14 +119,14 @@ private:
    std::shared_ptr<class producer_plugin_impl> my;
 };
 
-} //eosio
+} //agrio
 
-FC_REFLECT(eosio::producer_plugin::runtime_options, (max_transaction_time)(max_irreversible_block_age)(produce_time_offset_us)(last_block_time_offset_us)(max_scheduled_transaction_time_per_block_ms)(subjective_cpu_leeway_us)(incoming_defer_ratio));
-FC_REFLECT(eosio::producer_plugin::greylist_params, (accounts));
-FC_REFLECT(eosio::producer_plugin::whitelist_blacklist, (actor_whitelist)(actor_blacklist)(contract_whitelist)(contract_blacklist)(action_blacklist)(key_blacklist) )
-FC_REFLECT(eosio::producer_plugin::integrity_hash_information, (head_block_id)(integrity_hash))
-FC_REFLECT(eosio::producer_plugin::snapshot_information, (head_block_id)(snapshot_name))
-FC_REFLECT(eosio::producer_plugin::scheduled_protocol_feature_activations, (protocol_features_to_activate))
-FC_REFLECT(eosio::producer_plugin::get_supported_protocol_features_params, (exclude_disabled)(exclude_unactivatable))
-FC_REFLECT(eosio::producer_plugin::get_account_ram_corrections_params, (lower_bound)(upper_bound)(limit)(reverse))
-FC_REFLECT(eosio::producer_plugin::get_account_ram_corrections_result, (rows)(more))
+FC_REFLECT(agrio::producer_plugin::runtime_options, (max_transaction_time)(max_irreversible_block_age)(produce_time_offset_us)(last_block_time_offset_us)(max_scheduled_transaction_time_per_block_ms)(subjective_cpu_leeway_us)(incoming_defer_ratio));
+FC_REFLECT(agrio::producer_plugin::greylist_params, (accounts));
+FC_REFLECT(agrio::producer_plugin::whitelist_blacklist, (actor_whitelist)(actor_blacklist)(contract_whitelist)(contract_blacklist)(action_blacklist)(key_blacklist) )
+FC_REFLECT(agrio::producer_plugin::integrity_hash_information, (head_block_id)(integrity_hash))
+FC_REFLECT(agrio::producer_plugin::snapshot_information, (head_block_id)(snapshot_name))
+FC_REFLECT(agrio::producer_plugin::scheduled_protocol_feature_activations, (protocol_features_to_activate))
+FC_REFLECT(agrio::producer_plugin::get_supported_protocol_features_params, (exclude_disabled)(exclude_unactivatable))
+FC_REFLECT(agrio::producer_plugin::get_account_ram_corrections_params, (lower_bound)(upper_bound)(limit)(reverse))
+FC_REFLECT(agrio::producer_plugin::get_account_ram_corrections_result, (rows)(more))

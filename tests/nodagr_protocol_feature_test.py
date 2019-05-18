@@ -17,7 +17,7 @@ Utils.Debug = args.v
 killAll=args.clean_run
 dumpErrorDetails=args.dump_error_details
 dontKill=args.leave_running
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 killWallet=not dontKill
 keepLogs=args.keep_logs
 
@@ -39,7 +39,7 @@ try:
     TestHelper.printSystemInfo("BEGIN")
     cluster.killall(allInstances=killAll)
     cluster.cleanup()
-    cluster.launch(extraNodeosArgs=" --plugin eosio::producer_api_plugin ",
+    cluster.launch(extraNodagrArgs=" --plugin agrio::producer_api_plugin ",
                    dontBootstrap=True,
                    pfSetupPolicy=PFSetupPolicy.NONE)
     biosNode = cluster.biosNode
@@ -62,7 +62,7 @@ try:
 
     testSuccessful = True
 finally:
-    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killEosInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killAgrInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
 
 exitCode = 0 if testSuccessful else 1
 exit(exitCode)

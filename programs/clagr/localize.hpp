@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
 #include <libintl.h>
 #include <fc/variant.hpp>
 
-namespace eosio { namespace client { namespace localize {
+namespace agrio { namespace client { namespace localize {
    #if !defined(_)
    #define _(str) str
    #endif

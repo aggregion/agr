@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #include "deferred_test.hpp"
-#include <eosio/transaction.hpp>
-#include <eosio/datastream.hpp>
-#include <eosio/crypto.hpp>
+#include <agrio/transaction.hpp>
+#include <agrio/datastream.hpp>
+#include <agrio/crypto.hpp>
 
-using namespace eosio;
+using namespace agrio;
 
 void deferred_test::defercall( name payer, uint64_t sender_id, name contract, uint64_t payload ) {
    print( "defercall called on ", get_self(), "\n" );

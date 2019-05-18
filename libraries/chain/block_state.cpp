@@ -1,7 +1,7 @@
-#include <eosio/chain/block_state.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/block_state.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    block_state::block_state( const block_header_state& prev,
                              signed_block_ptr b,
@@ -41,4 +41,4 @@ namespace eosio { namespace chain {
    ,trxs( std::move(trx_metas) )
    {}
 
-} } /// eosio::chain
+} } /// agrio::chain

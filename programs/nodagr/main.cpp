@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eosio/LICENSE.txt
+ *  @copyright defined in agrio/LICENSE.txt
  */
 #include <appbase/application.hpp>
 
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/http_plugin/http_plugin.hpp>
-#include <eosio/net_plugin/net_plugin.hpp>
-#include <eosio/producer_plugin/producer_plugin.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
+#include <agrio/http_plugin/http_plugin.hpp>
+#include <agrio/net_plugin/net_plugin.hpp>
+#include <agrio/producer_plugin/producer_plugin.hpp>
 
 #include <fc/log/logger_config.hpp>
 #include <fc/log/appender.hpp>
@@ -19,7 +19,7 @@
 #include "config.hpp"
 
 using namespace appbase;
-using namespace eosio;
+using namespace agrio;
 
 namespace fc {
    std::unordered_map<std::string,appender::ptr>& get_appender_map();
@@ -84,11 +84,11 @@ enum return_codes {
 int main(int argc, char** argv)
 {
    try {
-      app().set_version(eosio::nodeos::config::version);
+      app().set_version(agrio::nodagr::config::version);
 
       auto root = fc::app_path();
-      app().set_default_data_dir(root / "eosio" / nodeos::config::node_executable_name / "data" );
-      app().set_default_config_dir(root / "eosio" / nodeos::config::node_executable_name / "config" );
+      app().set_default_data_dir(root / "agrio" / nodagr::config::node_executable_name / "data" );
+      app().set_default_config_dir(root / "agrio" / nodagr::config::node_executable_name / "config" );
       http_plugin::set_defaults({
          .default_unix_socket_path = "",
          .default_http_port = 8888
@@ -96,9 +96,9 @@ int main(int argc, char** argv)
       if(!app().initialize<chain_plugin, net_plugin, producer_plugin>(argc, argv))
          return INITIALIZE_FAIL;
       initialize_logging();
-      ilog("${name} version ${ver}", ("name", nodeos::config::node_executable_name)("ver", app().version_string()));
-      ilog("${name} using configuration file ${c}", ("name", nodeos::config::node_executable_name)("c", app().full_config_file_path().string()));
-      ilog("${name} data directory is ${d}", ("name", nodeos::config::node_executable_name)("d", app().data_dir().string()));
+      ilog("${name} version ${ver}", ("name", nodagr::config::node_executable_name)("ver", app().version_string()));
+      ilog("${name} using configuration file ${c}", ("name", nodagr::config::node_executable_name)("c", app().full_config_file_path().string()));
+      ilog("${name} data directory is ${d}", ("name", nodagr::config::node_executable_name)("d", app().data_dir().string()));
       app().startup();
       app().exec();
    } catch( const extract_genesis_state_exception& e ) {
@@ -144,6 +144,6 @@ int main(int argc, char** argv)
       return OTHER_FAIL;
    }
 
-   ilog("${name} successfully exiting", ("name", nodeos::config::node_executable_name));
+   ilog("${name} successfully exiting", ("name", nodagr::config::node_executable_name));
    return SUCCESS;
 }

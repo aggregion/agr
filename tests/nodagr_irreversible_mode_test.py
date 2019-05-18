@@ -18,8 +18,8 @@ import shutil
 
 
 ###############################################################
-# nodeos_irreversible_mode_test
-# --dump-error-details <Upon error print etc/eosio/node_*/config.ini and var/lib/node_*/stderr.log to stdout>
+# nodagr_irreversible_mode_test
+# --dump-error-details <Upon error print etc/agrio/node_*/config.ini and var/lib/node_*/stderr.log to stdout>
 # --keep-logs <Don't delete var/lib/node_* folders upon test completion>
 # -v --leave-running --clean-run
 ###############################################################
@@ -37,7 +37,7 @@ Utils.Debug = args.v
 killAll=args.clean_run
 dumpErrorDetails=args.dump_error_details
 dontKill=args.leave_running
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 killWallet=not dontKill
 keepLogs=args.keep_logs
 
@@ -165,11 +165,11 @@ try:
       pnodes=1,
       useBiosBootFile=False,
       topo="mesh",
-      specificExtraNodeosArgs={
+      specificExtraNodagrArgs={
          0:"--enable-stale-production",
          4:"--read-mode irreversible",
          6:"--read-mode irreversible",
-         9:"--plugin eosio::producer_api_plugin"})
+         9:"--plugin agrio::producer_api_plugin"})
 
    producingNodeId = 0
    producingNode = cluster.getNode(producingNodeId)
@@ -399,7 +399,7 @@ try:
 
    testSuccessful = all(testResults)
 finally:
-   TestHelper.shutdown(cluster, walletMgr, testSuccessful, killEosInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
+   TestHelper.shutdown(cluster, walletMgr, testSuccessful, killAgrInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
    # Print test result
    for msg in testResultMsgs: Print(msg)
 

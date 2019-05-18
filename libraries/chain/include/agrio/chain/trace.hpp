@@ -1,14 +1,14 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/action.hpp>
-#include <eosio/chain/action_receipt.hpp>
-#include <eosio/chain/block.hpp>
+#include <agrio/chain/action.hpp>
+#include <agrio/chain/action_receipt.hpp>
+#include <agrio/chain/block.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct account_delta {
       account_delta( const account_name& n, int64_t d):account(n),delta(d){}
@@ -68,16 +68,16 @@ namespace eosio { namespace chain {
       std::exception_ptr                         except_ptr;
    };
 
-} }  /// namespace eosio::chain
+} }  /// namespace agrio::chain
 
-FC_REFLECT( eosio::chain::account_delta,
+FC_REFLECT( agrio::chain::account_delta,
             (account)(delta) )
 
-FC_REFLECT( eosio::chain::action_trace,
+FC_REFLECT( agrio::chain::action_trace,
                (action_ordinal)(creator_action_ordinal)(closest_unnotified_ancestor_action_ordinal)(receipt)
                (receiver)(act)(context_free)(elapsed)(console)(trx_id)(block_num)(block_time)
                (producer_block_id)(account_ram_deltas)(except)(error_code) )
 
-FC_REFLECT( eosio::chain::transaction_trace, (id)(block_num)(block_time)(producer_block_id)
+FC_REFLECT( agrio::chain::transaction_trace, (id)(block_num)(block_time)(producer_block_id)
                                              (receipt)(elapsed)(net_usage)(scheduled)
                                              (action_traces)(account_ram_delta)(failed_dtrx_trace)(except)(error_code) )

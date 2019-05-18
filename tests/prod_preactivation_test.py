@@ -13,7 +13,7 @@ import time
 
 ###############################################################
 # prod_preactivation_test
-# --dump-error-details <Upon error print etc/eosio/node_*/config.ini and var/lib/node_*/stderr.log to stdout>
+# --dump-error-details <Upon error print etc/agrio/node_*/config.ini and var/lib/node_*/stderr.log to stdout>
 # --keep-logs <Don't delete var/lib/node_* folders upon test completion>
 ###############################################################
 
@@ -46,12 +46,12 @@ localTest=True
 cluster=Cluster(host=server, port=port, walletd=True, enableMongo=enableMongo, defproduceraPrvtKey=defproduceraPrvtKey, defproducerbPrvtKey=defproducerbPrvtKey)
 walletMgr=WalletMgr(True, port=walletPort)
 testSuccessful=False
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 killWallet=not dontKill
 dontBootstrap=sanityTest
 
-WalletdName=Utils.EosWalletName
-ClientName="cleos"
+WalletdName=Utils.AgrWalletName
+ClientName="clagr"
 
 try:
     TestHelper.printSystemInfo("BEGIN prod_preactivation_test.py")
@@ -68,9 +68,9 @@ try:
         Print("Stand up cluster")
         if cluster.launch(pnodes=prodCount, totalNodes=prodCount, prodCount=1, onlyBios=onlyBios,
                          dontBootstrap=dontBootstrap, useBiosBootFile=False,
-                         pfSetupPolicy=PFSetupPolicy.NONE, extraNodeosArgs=" --plugin eosio::producer_api_plugin") is False:
+                         pfSetupPolicy=PFSetupPolicy.NONE, extraNodagrArgs=" --plugin agrio::producer_api_plugin") is False:
             cmdError("launcher")
-            errorExit("Failed to stand up eos cluster.")
+            errorExit("Failed to stand up agr cluster.")
 
     Print("Validating system accounts after bootstrap")
     cluster.validateAccounts(None)
@@ -107,13 +107,13 @@ try:
     Print("found digest ", digest, " of PREACTIVATE_FEATURE")
 
     node0 = cluster.getNode(0)
-    contract="eosio.bios"
+    contract="agrio.bios"
     contractDir="unittests/contracts/%s" % (contract)
     wasmFile="%s.wasm" % (contract)
     abiFile="%s.abi" % (contract)
 
     Print("publish a new bios contract %s should fails because env.is_feature_activated unresolveable" % (contractDir))
-    retMap = node0.publishContract("eosio", contractDir, wasmFile, abiFile, True, shouldFail=True)
+    retMap = node0.publishContract("agrio", contractDir, wasmFile, abiFile, True, shouldFail=True)
 
     if retMap["output"].decode("utf-8").find("unresolveable") < 0:
         errorExit("bios contract not result in expected unresolveable error")
@@ -153,7 +153,7 @@ try:
 
     time.sleep(0.6)
     Print("publish a new bios contract %s should fails because node1 is not producing block yet" % (contractDir))
-    retMap = node0.publishContract("eosio", contractDir, wasmFile, abiFile, True, shouldFail=True)
+    retMap = node0.publishContract("agrio", contractDir, wasmFile, abiFile, True, shouldFail=True)
     if retMap["output"].decode("utf-8").find("unresolveable") < 0:
         errorExit("bios contract not result in expected unresolveable error")
 
@@ -170,11 +170,11 @@ try:
        errorExit("No blocks produced by node 1")
 
     time.sleep(0.6)
-    retMap = node0.publishContract("eosio", contractDir, wasmFile, abiFile, True)
+    retMap = node0.publishContract("agrio", contractDir, wasmFile, abiFile, True)
     Print("sucessfully set new contract with new intrinsic!!!")
 
     testSuccessful=True
 finally:
-    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killEosInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
+    TestHelper.shutdown(cluster, walletMgr, testSuccessful, killAgrInstances, killWallet, keepLogs, killAll, dumpErrorDetails)
 
 exit(0)

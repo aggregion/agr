@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
-#include <eosio/chain/name.hpp>
-#include <eosio/chain/chain_id_type.hpp>
+#include <agrio/chain/name.hpp>
+#include <agrio/chain/chain_id_type.hpp>
 
 #include <chainbase/chainbase.hpp>
 
@@ -46,7 +46,7 @@
 
 #define _V(n, v)  fc::mutable_variant_object(n, v)
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
    using                               std::map;
    using                               std::vector;
    using                               std::unordered_map;
@@ -196,11 +196,11 @@ namespace eosio { namespace chain {
    };
 
    /**
-    *  Important notes on using chainbase objects in EOSIO code:
+    *  Important notes on using chainbase objects in AGRIO code:
     *
     *  There are several constraints that need to be followed when using chainbase objects.
     *  Some of these constraints are due to the requirements imposed by the chainbase library,
-    *  others are due to requirements to ensure determinism in the EOSIO chain library.
+    *  others are due to requirements to ensure determinism in the AGRIO chain library.
     *
     *  Before listing the constraints, the "restricted field set" must be defined.
     *
@@ -372,6 +372,6 @@ namespace eosio { namespace chain {
          return ( flags & ~static_cast<F>(field) );
    }
 
-} }  // eosio::chain
+} }  // agrio::chain
 
-FC_REFLECT( eosio::chain::void_t, )
+FC_REFLECT( agrio::chain::void_t, )

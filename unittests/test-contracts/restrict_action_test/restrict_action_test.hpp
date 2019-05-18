@@ -1,34 +1,34 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <agrio/agrio.hpp>
 
-class [[eosio::contract]] restrict_action_test : public eosio::contract {
+class [[agrio::contract]] restrict_action_test : public agrio::contract {
 public:
-   using eosio::contract::contract;
+   using agrio::contract::contract;
 
-   [[eosio::action]]
+   [[agrio::action]]
    void noop( );
 
-   [[eosio::action]]
-   void sendinline( eosio::name authorizer );
+   [[agrio::action]]
+   void sendinline( agrio::name authorizer );
 
-   [[eosio::action]]
-   void senddefer( eosio::name authorizer, uint32_t senderid );
+   [[agrio::action]]
+   void senddefer( agrio::name authorizer, uint32_t senderid );
 
 
-   [[eosio::action]]
-   void notifyinline( eosio::name acctonotify, eosio::name authorizer );
+   [[agrio::action]]
+   void notifyinline( agrio::name acctonotify, agrio::name authorizer );
 
-   [[eosio::action]]
-   void notifydefer( eosio::name acctonotify, eosio::name authorizer, uint32_t senderid );
+   [[agrio::action]]
+   void notifydefer( agrio::name acctonotify, agrio::name authorizer, uint32_t senderid );
 
-   [[eosio::on_notify("testacc::notifyinline")]]
-   void on_notify_inline( eosio::name acctonotify, eosio::name authorizer );
+   [[agrio::on_notify("testacc::notifyinline")]]
+   void on_notify_inline( agrio::name acctonotify, agrio::name authorizer );
 
-   [[eosio::on_notify("testacc::notifydefer")]]
-   void on_notify_defer( eosio::name acctonotify, eosio::name authorizer, uint32_t senderid );
+   [[agrio::on_notify("testacc::notifydefer")]]
+   void on_notify_defer( agrio::name acctonotify, agrio::name authorizer, uint32_t senderid );
 };

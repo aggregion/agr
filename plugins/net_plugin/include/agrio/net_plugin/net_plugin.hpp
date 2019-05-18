@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <appbase/application.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
-#include <eosio/net_plugin/protocol.hpp>
+#include <agrio/chain_plugin/chain_plugin.hpp>
+#include <agrio/net_plugin/protocol.hpp>
 
-namespace eosio {
+namespace agrio {
    using namespace appbase;
 
    struct connection_status {
@@ -45,4 +45,4 @@ namespace eosio {
 
 }
 
-FC_REFLECT( eosio::connection_status, (peer)(connecting)(syncing)(last_handshake) )
+FC_REFLECT( agrio::connection_status, (peer)(connecting)(syncing)(last_handshake) )

@@ -1,13 +1,13 @@
 {
-    "eosio-build-unpinned":
+    "agrio-build-unpinned":
     {
         "pipeline-branch": "protocol-features-sync-nodes"
     },
-    "eosio-lrt":
+    "agrio-lrt":
     {
         "pipeline-branch": "protocol-features-sync-nodes"
     },
-    "eos-multiversion-tests":
+    "agr-multiversion-tests":
     {
         "pipeline-branch": "protocol-features-sync-nodes",
         "configuration":
@@ -15,14 +15,14 @@
             "170=v1.7.0"
         ]
     },
-    "eosio-docker-builds":
+    "agrio-docker-builds":
     {
         "environment":
         {
             "BUILDER_TAG": "v1.8.0"
         }
     },
-    "eosio-sync-tests":
+    "agrio-sync-tests":
     {
         "environment":
         {
@@ -30,7 +30,7 @@
             "SKIP_V180": "false"
         }
     },
-    "eosio-replay-tests":
+    "agrio-replay-tests":
     {
         "environment":
         {

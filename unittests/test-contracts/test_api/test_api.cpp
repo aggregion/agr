@@ -1,9 +1,9 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/transaction.hpp>
+#include <agriolib/agrio.hpp>
+#include <agriolib/transaction.hpp>
 
 #include "test_api.hpp"
 
@@ -21,9 +21,9 @@ name global_receiver;
 
 extern "C" {
    void apply( uint64_t receiver, uint64_t code, uint64_t action ) {
-      if( code == "eosio"_n.value && action == "onerror"_n.value ) {
-         auto error = eosio::onerror::from_current_action();
-         eosio::print("onerror called\n");
+      if( code == "agrio"_n.value && action == "onerror"_n.value ) {
+         auto error = agrio::onerror::from_current_action();
+         agrio::print("onerror called\n");
          auto error_trx = error.unpack_sent_trx();
          auto error_action = error_trx.actions.at(0).name;
 
@@ -163,7 +163,7 @@ extern "C" {
       WASM_TEST_HANDLER_EX( test_permission, test_account_creation_time );
 
       //unhandled test call
-      eosio_assert( false, "Unknown Test" );
+      agrio_assert( false, "Unknown Test" );
 
    }
 }

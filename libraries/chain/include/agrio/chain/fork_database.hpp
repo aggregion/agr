@@ -1,8 +1,8 @@
 #pragma once
-#include <eosio/chain/block_state.hpp>
+#include <agrio/chain/block_state.hpp>
 #include <boost/signals2/signal.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    using boost::signals2::signal;
 
@@ -97,4 +97,4 @@ namespace eosio { namespace chain {
          unique_ptr<fork_database_impl> my;
    };
 
-} } /// eosio::chain
+} } /// agrio::chain

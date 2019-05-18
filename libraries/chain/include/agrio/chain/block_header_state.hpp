@@ -1,9 +1,9 @@
 #pragma once
-#include <eosio/chain/block_header.hpp>
-#include <eosio/chain/incremental_merkle.hpp>
+#include <agrio/chain/block_header.hpp>
+#include <agrio/chain/incremental_merkle.hpp>
 #include <future>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 struct block_header_state;
 
@@ -106,9 +106,9 @@ struct block_header_state : public detail::block_header_state_common {
 
 using block_header_state_ptr = std::shared_ptr<block_header_state>;
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT( eosio::chain::detail::block_header_state_common,
+FC_REFLECT( agrio::chain::detail::block_header_state_common,
             (block_num)
             (dpos_proposed_irreversible_blocknum)
             (dpos_irreversible_blocknum)
@@ -120,13 +120,13 @@ FC_REFLECT( eosio::chain::detail::block_header_state_common,
             (confirm_count)
 )
 
-FC_REFLECT( eosio::chain::detail::schedule_info,
+FC_REFLECT( agrio::chain::detail::schedule_info,
             (schedule_lib_num)
             (schedule_hash)
             (schedule)
 )
 
-FC_REFLECT_DERIVED(  eosio::chain::block_header_state, (eosio::chain::detail::block_header_state_common),
+FC_REFLECT_DERIVED(  agrio::chain::block_header_state, (agrio::chain::detail::block_header_state_common),
                      (id)
                      (header)
                      (pending_schedule)

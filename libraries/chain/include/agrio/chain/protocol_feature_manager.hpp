@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/types.hpp>
 #include <iterator>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 enum class protocol_feature_t : uint32_t {
    builtin
@@ -368,13 +368,13 @@ protected:
    bool                                   _initialized = false;
 };
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain
 
-FC_REFLECT(eosio::chain::protocol_feature_subjective_restrictions,
+FC_REFLECT(agrio::chain::protocol_feature_subjective_restrictions,
                (earliest_allowed_activation_time)(preactivation_required)(enabled))
 
-FC_REFLECT(eosio::chain::protocol_feature_base,
+FC_REFLECT(agrio::chain::protocol_feature_base,
                (protocol_feature_type)(dependencies)(description_digest)(subjective_restrictions))
 
-FC_REFLECT_DERIVED(eosio::chain::builtin_protocol_feature, (eosio::chain::protocol_feature_base),
+FC_REFLECT_DERIVED(agrio::chain::builtin_protocol_feature, (agrio::chain::protocol_feature_base),
                      (builtin_feature_codename))

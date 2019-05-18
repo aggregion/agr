@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 
 #include "payloadless.hpp"
 
-using namespace eosio;
+using namespace agrio;
 
 void payloadless::doit() {
    print("Im a payloadless action");

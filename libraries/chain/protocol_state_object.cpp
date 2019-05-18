@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
-#include <eosio/chain/protocol_state_object.hpp>
+#include <agrio/chain/protocol_state_object.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    namespace detail {
 

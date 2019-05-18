@@ -1,10 +1,10 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #include "asserter.hpp"
 
-using namespace eosio;
+using namespace agrio;
 
 static int global_variable = 45;
 

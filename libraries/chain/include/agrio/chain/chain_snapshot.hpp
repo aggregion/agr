@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/exceptions.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 struct chain_snapshot_header {
    /**
@@ -25,7 +25,7 @@ struct chain_snapshot_header {
    void validate() const {
       auto min = minimum_compatible_version;
       auto max = current_version;
-      EOS_ASSERT(version >= min && version <= max,
+      AGR_ASSERT(version >= min && version <= max,
               snapshot_validation_exception,
               "Unsupported version of chain snapshot: ${version}. Supported version must be between ${min} and ${max} inclusive.",
               ("version",version)("min",min)("max",max));
@@ -34,4 +34,4 @@ struct chain_snapshot_header {
 
 } }
 
-FC_REFLECT(eosio::chain::chain_snapshot_header,(version))
+FC_REFLECT(agrio::chain::chain_snapshot_header,(version))

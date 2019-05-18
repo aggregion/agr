@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/testing/tester.hpp>
+#include <agrio/testing/tester.hpp>
 
-using namespace eosio::chain;
-using namespace eosio::testing;
+using namespace agrio::chain;
+using namespace agrio::testing;
 
 private_key_type get_private_key( name keyname, string role );
 

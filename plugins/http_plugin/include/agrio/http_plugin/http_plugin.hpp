@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <appbase/application.hpp>
@@ -8,7 +8,7 @@
 
 #include <fc/reflect/reflect.hpp>
 
-namespace eosio {
+namespace agrio {
    using namespace appbase;
 
    /**
@@ -153,7 +153,7 @@ namespace eosio {
    };
 }
 
-FC_REFLECT(eosio::error_results::error_info::error_detail, (message)(file)(line_number)(method))
-FC_REFLECT(eosio::error_results::error_info, (code)(name)(what)(details))
-FC_REFLECT(eosio::error_results, (code)(message)(error))
-FC_REFLECT(eosio::http_plugin::get_supported_apis_result, (apis))
+FC_REFLECT(agrio::error_results::error_info::error_detail, (message)(file)(line_number)(method))
+FC_REFLECT(agrio::error_results::error_info, (code)(name)(what)(details))
+FC_REFLECT(agrio::error_results, (code)(message)(error))
+FC_REFLECT(agrio::http_plugin::get_supported_apis_result, (apis))

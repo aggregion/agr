@@ -1,46 +1,46 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <agrio/agrio.hpp>
 
-class [[eosio::contract]] test_api_db : public eosio::contract {
+class [[agrio::contract]] test_api_db : public agrio::contract {
 public:
-   using eosio::contract::contract;
+   using agrio::contract::contract;
 
-   [[eosio::action("pg")]]
+   [[agrio::action("pg")]]
    void primary_i64_general();
 
-   [[eosio::action("pl")]]
+   [[agrio::action("pl")]]
    void primary_i64_lowerbound();
 
-   [[eosio::action("pu")]]
+   [[agrio::action("pu")]]
    void primary_i64_upperbound();
 
-   [[eosio::action("s1g")]]
+   [[agrio::action("s1g")]]
    void idx64_general();
 
-   [[eosio::action("s1l")]]
+   [[agrio::action("s1l")]]
    void idx64_lowerbound();
 
-   [[eosio::action("s1u")]]
+   [[agrio::action("s1u")]]
    void idx64_upperbound();
 
-   [[eosio::action("tia")]]
-   void test_invalid_access( eosio::name code, uint64_t val, uint32_t index, bool store );
+   [[agrio::action("tia")]]
+   void test_invalid_access( agrio::name code, uint64_t val, uint32_t index, bool store );
 
-   [[eosio::action("sdnancreate")]]
+   [[agrio::action("sdnancreate")]]
    void idx_double_nan_create_fail();
 
-   [[eosio::action("sdnanmodify")]]
+   [[agrio::action("sdnanmodify")]]
    void idx_double_nan_modify_fail();
 
-   [[eosio::action("sdnanlookup")]]
+   [[agrio::action("sdnanlookup")]]
    void idx_double_nan_lookup_fail( uint32_t lookup_type );
 
-   [[eosio::action("sk32align")]]
+   [[agrio::action("sk32align")]]
    void misaligned_secondary_key256_tests();
 
 };

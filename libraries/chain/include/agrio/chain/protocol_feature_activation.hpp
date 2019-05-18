@@ -1,12 +1,12 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 struct protocol_feature_activation : fc::reflect_init {
    static constexpr uint16_t extension_id() { return 0; }
@@ -43,7 +43,7 @@ struct protocol_feature_activation_set {
 };
 
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain
 
-FC_REFLECT(eosio::chain::protocol_feature_activation,     (protocol_features))
-FC_REFLECT(eosio::chain::protocol_feature_activation_set, (protocol_features))
+FC_REFLECT(agrio::chain::protocol_feature_activation,     (protocol_features))
+FC_REFLECT(agrio::chain::protocol_feature_activation_set, (protocol_features))

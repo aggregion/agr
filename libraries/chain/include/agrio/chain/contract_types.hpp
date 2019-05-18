@@ -1,13 +1,13 @@
 #pragma once
 
-#include <eosio/chain/authority.hpp>
-#include <eosio/chain/chain_config.hpp>
-#include <eosio/chain/config.hpp>
-#include <eosio/chain/types.hpp>
+#include <agrio/chain/authority.hpp>
+#include <agrio/chain/chain_config.hpp>
+#include <agrio/chain/config.hpp>
+#include <agrio/chain/types.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
-using action_name    = eosio::chain::action_name;
+using action_name    = agrio::chain::action_name;
 
 struct newaccount {
    account_name                     creator;
@@ -154,14 +154,14 @@ struct onerror {
    }
 };
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT( eosio::chain::newaccount                       , (creator)(name)(owner)(active) )
-FC_REFLECT( eosio::chain::setcode                          , (account)(vmtype)(vmversion)(code) )
-FC_REFLECT( eosio::chain::setabi                           , (account)(abi) )
-FC_REFLECT( eosio::chain::updateauth                       , (account)(permission)(parent)(auth) )
-FC_REFLECT( eosio::chain::deleteauth                       , (account)(permission) )
-FC_REFLECT( eosio::chain::linkauth                         , (account)(code)(type)(requirement) )
-FC_REFLECT( eosio::chain::unlinkauth                       , (account)(code)(type) )
-FC_REFLECT( eosio::chain::canceldelay                      , (canceling_auth)(trx_id) )
-FC_REFLECT( eosio::chain::onerror                          , (sender_id)(sent_trx) )
+FC_REFLECT( agrio::chain::newaccount                       , (creator)(name)(owner)(active) )
+FC_REFLECT( agrio::chain::setcode                          , (account)(vmtype)(vmversion)(code) )
+FC_REFLECT( agrio::chain::setabi                           , (account)(abi) )
+FC_REFLECT( agrio::chain::updateauth                       , (account)(permission)(parent)(auth) )
+FC_REFLECT( agrio::chain::deleteauth                       , (account)(permission) )
+FC_REFLECT( agrio::chain::linkauth                         , (account)(code)(type)(requirement) )
+FC_REFLECT( agrio::chain::unlinkauth                       , (account)(code)(type) )
+FC_REFLECT( agrio::chain::canceldelay                      , (canceling_auth)(trx_id) )
+FC_REFLECT( agrio::chain::onerror                          , (sender_id)(sent_trx) )

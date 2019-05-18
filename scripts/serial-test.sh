@@ -4,7 +4,7 @@ set -e # exit on failure of any "simple" command (excludes &&, ||, or | chains)
 PATH=$PATH:~/opt/mongodb/bin
 echo "Extracting build directory..."
 [[ -f build.tar.gz ]] && tar -xzf build.tar.gz
-[[ $(uname) == "Darwin" ]] && cd /data/job/eos/build || cd /data/job/build
+[[ $(uname) == "Darwin" ]] && cd /data/job/agr/build || cd /data/job/build
 echo "Starting MongoDB..."
 mongod --fork --dbpath ~/data/mongodb -f ~/etc/mongod.conf --logpath "$(pwd)"/mongod.log
 # run tests

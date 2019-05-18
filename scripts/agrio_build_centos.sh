@@ -36,13 +36,13 @@ if [ "${MEM_MEG}" -lt 7000 ]; then
 fi
 
 if ! (. /etc/os-release; [ "$VERSION_ID" = "7" ]); then
-	printf "\\nCentos 7 is the only version of Centos supported by EOSIO build scripts.\\n"
+	printf "\\nCentos 7 is the only version of Centos supported by AGRIO build scripts.\\n"
 	printf "Exiting now.\\n\\n"
 	exit 1;
 fi
 
 if [ "${DISK_AVAIL%.*}" -lt "${DISK_MIN}" ]; then
-	printf "\\nYou must have at least %sGB of available storage to install EOSIO.\\n" "${DISK_MIN}"
+	printf "\\nYou must have at least %sGB of available storage to install AGRIO.\\n" "${DISK_MIN}"
 	printf "Exiting now.\\n\\n"
 	exit 1;
 fi
@@ -51,7 +51,7 @@ printf "\\n"
 
 printf "Checking Yum installation...\\n"
 if ! YUM=$( command -v yum 2>/dev/null ); then
-		printf "!! Yum must be installed to compile EOS.IO !!\\n"
+		printf "!! Yum must be installed to compile AGR.IO !!\\n"
 		printf "Exiting now.\\n"
 		exit 1;
 fi
@@ -145,7 +145,7 @@ for (( i=0; i<${#DEP_ARRAY[@]}; i++ )); do
 	fi
 done
 if [ "${COUNT}" -gt 1 ]; then
-	printf "\\nThe following dependencies are required to install EOSIO:\\n"
+	printf "\\nThe following dependencies are required to install AGRIO:\\n"
 	printf "${DISPLAY}\\n\\n"
 	if [ $ANSWER != 1 ]; then read -p "Do you wish to install these dependencies? (y/n) " ANSWER; fi
 	case $ANSWER in

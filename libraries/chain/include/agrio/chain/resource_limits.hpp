@@ -1,11 +1,11 @@
 #pragma once
-#include <eosio/chain/exceptions.hpp>
-#include <eosio/chain/types.hpp>
-#include <eosio/chain/snapshot.hpp>
+#include <agrio/chain/exceptions.hpp>
+#include <agrio/chain/types.hpp>
+#include <agrio/chain/snapshot.hpp>
 #include <chainbase/chainbase.hpp>
 #include <set>
 
-namespace eosio { namespace chain { namespace resource_limits {
+namespace agrio { namespace chain { namespace resource_limits {
    namespace impl {
       template<typename T>
       struct ratio {
@@ -98,8 +98,8 @@ namespace eosio { namespace chain { namespace resource_limits {
       private:
          chainbase::database& _db;
    };
-} } } /// eosio::chain
+} } } /// agrio::chain
 
-FC_REFLECT( eosio::chain::resource_limits::account_resource_limit, (used)(available)(max) )
-FC_REFLECT( eosio::chain::resource_limits::ratio, (numerator)(denominator))
-FC_REFLECT( eosio::chain::resource_limits::elastic_limit_parameters, (target)(max)(periods)(max_multiplier)(contract_rate)(expand_rate))
+FC_REFLECT( agrio::chain::resource_limits::account_resource_limit, (used)(available)(max) )
+FC_REFLECT( agrio::chain::resource_limits::ratio, (numerator)(denominator))
+FC_REFLECT( agrio::chain::resource_limits::elastic_limit_parameters, (target)(max)(periods)(max_multiplier)(contract_rate)(expand_rate))

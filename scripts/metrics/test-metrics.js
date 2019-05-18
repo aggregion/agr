@@ -14,8 +14,8 @@ const inBuildkite = (process.env.BUILDKITE === 'true') ? true : false;
 const outputFile = 'test-metrics.json';
 const pipelineWhitelist = // the pipelines for which we run diagnostics
 [
-    'eosio',
-    'eosio-lrt'
+    'agrio',
+    'agrio-lrt'
 ];
 
 /* functions */
@@ -44,7 +44,7 @@ async function download(url)
 async function getBuild(pipeline, buildNumber)
 {
     if (debug) console.log(`getBuild(${pipeline}, ${buildNumber})`); // DEBUG
-    const httpResponse = await fetch(`https://api.buildkite.com/v2/organizations/EOSIO/pipelines/${pipeline}/builds/${buildNumber}${buildkiteAccessToken}`);
+    const httpResponse = await fetch(`https://api.buildkite.com/v2/organizations/AGRIO/pipelines/${pipeline}/builds/${buildNumber}${buildkiteAccessToken}`);
     return httpResponse.json();
 }
 
@@ -328,7 +328,7 @@ async function testMetrics(buildkiteObject)
                 job: env.BUILDKITE_LABEL,
                 os: getOS(env),
                 pipeline: env.BUILDKITE_PIPELINE_SLUG,
-                repo: env.BUILDKITE_REPO.replace(new RegExp('^git@github.com:(EOSIO/)?'), '').replace(new RegExp('.git$'), ''),
+                repo: env.BUILDKITE_REPO.replace(new RegExp('^git@github.com:(AGRIO/)?'), '').replace(new RegExp('.git$'), ''),
                 testTime: parseFloat(result.testTime),
                 url: job.web_url,
             };

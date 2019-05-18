@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
 #include <chainbase/chainbase.hpp>
 #include <fc/array.hpp>
 
-namespace eosio {
+namespace agrio {
 using chain::account_name;
 using chain::public_key_type;
 using chain::permission_name;
@@ -49,7 +49,7 @@ typedef chainbase::generic_index<public_key_history_multi_index> public_key_hist
 
 }
 
-CHAINBASE_SET_INDEX_TYPE( eosio::public_key_history_object, eosio::public_key_history_multi_index )
+CHAINBASE_SET_INDEX_TYPE( agrio::public_key_history_object, agrio::public_key_history_multi_index )
 
-FC_REFLECT( eosio::public_key_history_object, (public_key)(name)(permission) )
+FC_REFLECT( agrio::public_key_history_object, (public_key)(name)(permission) )
 

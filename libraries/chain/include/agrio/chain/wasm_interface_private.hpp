@@ -1,13 +1,13 @@
 #pragma once
 
-#include <eosio/chain/wasm_interface.hpp>
-#include <eosio/chain/webassembly/wavm.hpp>
-#include <eosio/chain/webassembly/wabt.hpp>
-#include <eosio/chain/webassembly/runtime_interface.hpp>
-#include <eosio/chain/wasm_eosio_injection.hpp>
-#include <eosio/chain/transaction_context.hpp>
-#include <eosio/chain/code_object.hpp>
-#include <eosio/chain/exceptions.hpp>
+#include <agrio/chain/wasm_interface.hpp>
+#include <agrio/chain/webassembly/wavm.hpp>
+#include <agrio/chain/webassembly/wabt.hpp>
+#include <agrio/chain/webassembly/runtime_interface.hpp>
+#include <agrio/chain/wasm_agrio_injection.hpp>
+#include <agrio/chain/transaction_context.hpp>
+#include <agrio/chain/code_object.hpp>
+#include <agrio/chain/exceptions.hpp>
 #include <fc/scoped_exit.hpp>
 
 #include "IR/Module.h"
@@ -17,12 +17,12 @@
 #include "IR/Validate.h"
 
 using namespace fc;
-using namespace eosio::chain::webassembly;
+using namespace agrio::chain::webassembly;
 using namespace IR;
 using namespace Runtime;
 using boost::multi_index_container;
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct wasm_interface_impl {
       struct wasm_cache_entry {
@@ -43,7 +43,7 @@ namespace eosio { namespace chain {
          else if(vm == wasm_interface::vm_type::wabt)
             runtime_interface = std::make_unique<webassembly::wabt_runtime::wabt_runtime>();
          else
-            EOS_THROW(wasm_exception, "wasm_interface_impl fall through");
+            AGR_THROW(wasm_exception, "wasm_interface_impl fall through");
       }
 
       ~wasm_interface_impl() {
@@ -58,8 +58,8 @@ namespace eosio { namespace chain {
          std::vector<uint8_t> mem_image;
 
          for(const DataSegment& data_segment : module.dataSegments) {
-            EOS_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const, wasm_exception, "");
-            EOS_ASSERT(module.memories.defs.size(), wasm_exception, "");
+            AGR_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const, wasm_exception, "");
+            AGR_ASSERT(module.memories.defs.size(), wasm_exception, "");
             const U32 base_offset = data_segment.baseOffset.i32;
             const Uptr memory_size = (module.memories.defs[0].type.size.min << IR::numBytesPerPageLog2);
             if(base_offset >= memory_size || base_offset + data_segment.data.size() > memory_size)
@@ -118,9 +118,9 @@ namespace eosio { namespace chain {
                WASM::serialize(stream, module);
                module.userSections.clear();
             } catch(const Serialization::FatalSerializationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               AGR_ASSERT(false, wasm_serialization_error, e.message.c_str());
             } catch(const IR::ValidationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               AGR_ASSERT(false, wasm_serialization_error, e.message.c_str());
             }
 
             wasm_injections::wasm_binary_injection injector(module);
@@ -132,9 +132,9 @@ namespace eosio { namespace chain {
                WASM::serialize(outstream, module);
                bytes = outstream.getBytes();
             } catch(const Serialization::FatalSerializationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               AGR_ASSERT(false, wasm_serialization_error, e.message.c_str());
             } catch(const IR::ValidationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               AGR_ASSERT(false, wasm_serialization_error, e.message.c_str());
             }
 
             wasm_instantiation_cache.modify(it, [&](auto& c) {
@@ -197,9 +197,9 @@ namespace eosio { namespace chain {
    BOOST_PP_SEQ_FOR_EACH(_REGISTER_INTRINSIC, CLS, _WRAPPED_SEQ(MEMBERS))
 
 #define _REGISTER_INJECTED_INTRINSIC(R, CLS, INFO)\
-   BOOST_PP_CAT(BOOST_PP_OVERLOAD(_REGISTER_INTRINSIC, _UNWRAP_SEQ INFO) _EXPAND_ARGS(CLS, EOSIO_INJECTED_MODULE_NAME, INFO), BOOST_PP_EMPTY())
+   BOOST_PP_CAT(BOOST_PP_OVERLOAD(_REGISTER_INTRINSIC, _UNWRAP_SEQ INFO) _EXPAND_ARGS(CLS, AGRIO_INJECTED_MODULE_NAME, INFO), BOOST_PP_EMPTY())
 
 #define REGISTER_INJECTED_INTRINSICS(CLS, MEMBERS)\
    BOOST_PP_SEQ_FOR_EACH(_REGISTER_INJECTED_INTRINSIC, CLS, _WRAPPED_SEQ(MEMBERS))
 
-} } // eosio::chain
+} } // agrio::chain

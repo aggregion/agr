@@ -1,11 +1,11 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 
-#include <eosio/chain/genesis_intrinsics.hpp>
+#include <agrio/chain/genesis_intrinsics.hpp>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
 const std::vector<const char*> genesis_intrinsics = {
    "__ashrti3",
@@ -138,10 +138,10 @@ const std::vector<const char*> genesis_intrinsics = {
    "current_time",
    "publication_time",
    "abort",
-   "eosio_assert",
-   "eosio_assert_message",
-   "eosio_assert_code",
-   "eosio_exit",
+   "agrio_assert",
+   "agrio_assert_message",
+   "agrio_assert_code",
+   "agrio_exit",
    "read_action_data",
    "action_data_size",
    "current_receiver",
@@ -178,4 +178,4 @@ const std::vector<const char*> genesis_intrinsics = {
    "memset"
 };
 
-} } // namespace eosio::chain
+} } // namespace agrio::chain

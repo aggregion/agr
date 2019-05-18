@@ -1,32 +1,32 @@
 /**
  * @file action_test.cpp
- * @copyright defined in eos/LICENSE
+ * @copyright defined in agr/LICENSE
  */
 #include <limits>
 
-#include <eosiolib/action.hpp>
-#include <eosiolib/db.h>
-#include <eosiolib/eosio.hpp>
-#include <eosiolib/permission.h>
-#include <eosiolib/print.hpp>
-#include <eosiolib/serialize.hpp>
+#include <agriolib/action.hpp>
+#include <agriolib/db.h>
+#include <agriolib/agrio.hpp>
+#include <agriolib/permission.h>
+#include <agriolib/print.hpp>
+#include <agriolib/serialize.hpp>
 
 #include "test_api.hpp"
 
 
 
 struct check_auth_msg {
-   eosio::name                    account;
-   eosio::name                    permission;
-   std::vector<eosio::public_key> pubkeys;
+   agrio::name                    account;
+   agrio::name                    permission;
+   std::vector<agrio::public_key> pubkeys;
 
-   EOSLIB_SERIALIZE( check_auth_msg, (account)(permission)(pubkeys)  )
+   AGRLIB_SERIALIZE( check_auth_msg, (account)(permission)(pubkeys)  )
 };
 
 void test_permission::check_authorization( uint64_t receiver, uint64_t code, uint64_t action ) {
    (void)code;
    (void)action;
-   using namespace eosio;
+   using namespace agrio;
 
    auto self = receiver;
    auto params = unpack_action_data<check_auth_msg>();
@@ -47,29 +47,29 @@ void test_permission::check_authorization( uint64_t receiver, uint64_t code, uin
 }
 
 struct test_permission_last_used_msg {
-   eosio::name account;
-   eosio::name permission;
+   agrio::name account;
+   agrio::name permission;
    int64_t     last_used_time;
 
-   EOSLIB_SERIALIZE( test_permission_last_used_msg, (account)(permission)(last_used_time) )
+   AGRLIB_SERIALIZE( test_permission_last_used_msg, (account)(permission)(last_used_time) )
 };
 
 void test_permission::test_permission_last_used( uint64_t /* receiver */, uint64_t code, uint64_t action ) {
    (void)code;
    (void)action;
-   using namespace eosio;
+   using namespace agrio;
 
    auto params = unpack_action_data<test_permission_last_used_msg>();
 
-   eosio_assert( get_permission_last_used(params.account.value, params.permission.value) == params.last_used_time, "unexpected last used permission time" );
+   agrio_assert( get_permission_last_used(params.account.value, params.permission.value) == params.last_used_time, "unexpected last used permission time" );
 }
 
 void test_permission::test_account_creation_time( uint64_t /* receiver */, uint64_t code, uint64_t action ) {
    (void)code;
    (void)action;
-   using namespace eosio;
+   using namespace agrio;
 
    auto params = unpack_action_data<test_permission_last_used_msg>();
 
-   eosio_assert( get_account_creation_time(params.account.value) == params.last_used_time, "unexpected account creation time" );
+   agrio_assert( get_account_creation_time(params.account.value) == params.last_used_time, "unexpected account creation time" );
 }

@@ -1,18 +1,18 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/eosio.hpp>
+#include <agrio/agrio.hpp>
 
-class [[eosio::contract]] asserter : public eosio::contract {
+class [[agrio::contract]] asserter : public agrio::contract {
 public:
-   using eosio::contract::contract;
+   using agrio::contract::contract;
 
-   [[eosio::action]]
+   [[agrio::action]]
    void procassert( int8_t condition, std::string message );
 
-   [[eosio::action]]
+   [[agrio::action]]
    void provereset();
 };

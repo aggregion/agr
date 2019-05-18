@@ -1,16 +1,16 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <appbase/application.hpp>
 #include <fc/variant.hpp>
-#include <eosio/chain/contract_types.hpp>
-#include <eosio/chain/transaction.hpp>
+#include <agrio/chain/contract_types.hpp>
+#include <agrio/chain/transaction.hpp>
 
 namespace fc { class variant; }
 
-namespace eosio {
+namespace agrio {
    using namespace appbase;
 
    namespace wallet {

@@ -16,7 +16,7 @@ import math
 import re
 
 ###############################################################
-# nodeos_startup_catchup
+# nodagr_startup_catchup
 #  Test configures a producing node and <--txn-plugins count> non-producing nodes with the
 #  txn_test_gen_plugin.  Each non-producing node starts generating transactions and sending them
 #  to the producing node.
@@ -53,11 +53,11 @@ totalNodes=startedNonProdNodes+pnodes+catchupCount
 
 walletMgr=WalletMgr(True, port=walletPort)
 testSuccessful=False
-killEosInstances=not dontKill
+killAgrInstances=not dontKill
 killWallet=not dontKill
 
-WalletdName=Utils.EosWalletName
-ClientName="cleos"
+WalletdName=Utils.AgrWalletName
+ClientName="clagr"
 
 try:
     TestHelper.printSystemInfo("BEGIN")
@@ -65,14 +65,14 @@ try:
 
     cluster.killall(allInstances=killAll)
     cluster.cleanup()
-    specificExtraNodeosArgs={}
+    specificExtraNodagrArgs={}
     txnGenNodeNum=pnodes  # next node after producer nodes
     for nodeNum in range(txnGenNodeNum, txnGenNodeNum+startedNonProdNodes):
-        specificExtraNodeosArgs[nodeNum]="--plugin eosio::txn_test_gen_plugin --txn-test-gen-account-prefix txntestacct"
+        specificExtraNodagrArgs[nodeNum]="--plugin agrio::txn_test_gen_plugin --txn-test-gen-account-prefix txntestacct"
     Print("Stand up cluster")
     if cluster.launch(prodCount=prodCount, onlyBios=False, pnodes=pnodes, totalNodes=totalNodes, totalProducers=pnodes*prodCount,
-                      useBiosBootFile=False, specificExtraNodeosArgs=specificExtraNodeosArgs, unstartedNodes=catchupCount, loadSystemContract=False) is False:
-        Utils.errorExit("Failed to stand up eos cluster.")
+                      useBiosBootFile=False, specificExtraNodagrArgs=specificExtraNodagrArgs, unstartedNodes=catchupCount, loadSystemContract=False) is False:
+        Utils.errorExit("Failed to stand up agr cluster.")
 
     Print("Validating system accounts after bootstrap")
     cluster.validateAccounts(None)
@@ -83,7 +83,7 @@ try:
         txnGenNodes.append(cluster.getNode(nodeNum))
 
     Print("Create accounts for generated txns")
-    txnGenNodes[0].txnGenCreateTestAccounts(cluster.eosioAccount.name, cluster.eosioAccount.activePrivateKey)
+    txnGenNodes[0].txnGenCreateTestAccounts(cluster.agrioAccount.name, cluster.agrioAccount.activePrivateKey)
 
     def lib(node):
         return node.getBlockNum(BlockType.lib)
@@ -187,6 +187,6 @@ try:
     testSuccessful=True
 
 finally:
-    TestHelper.shutdown(cluster, walletMgr, testSuccessful=testSuccessful, killEosInstances=killEosInstances, killWallet=killWallet, keepLogs=keepLogs, cleanRun=killAll, dumpErrorDetails=dumpErrorDetails)
+    TestHelper.shutdown(cluster, walletMgr, testSuccessful=testSuccessful, killAgrInstances=killAgrInstances, killWallet=killWallet, keepLogs=keepLogs, cleanRun=killAll, dumpErrorDetails=dumpErrorDetails)
 
 exit(0)

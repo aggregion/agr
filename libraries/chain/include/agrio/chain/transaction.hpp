@@ -1,13 +1,13 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 
-#include <eosio/chain/action.hpp>
+#include <agrio/chain/action.hpp>
 #include <numeric>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    struct deferred_transaction_generation_context : fc::reflect_init {
       static constexpr uint16_t extension_id() { return 0; }
@@ -108,7 +108,7 @@ namespace eosio { namespace chain {
          return account_name();
       }
 
-      vector<eosio::chain::transaction_extensions> validate_and_extract_extensions()const;
+      vector<agrio::chain::transaction_extensions> validate_and_extract_extensions()const;
    };
 
    struct signed_transaction : public transaction
@@ -210,13 +210,13 @@ namespace eosio { namespace chain {
 
    uint128_t transaction_id_to_sender_id( const transaction_id_type& tid );
 
-} } /// namespace eosio::chain
+} } /// namespace agrio::chain
 
-FC_REFLECT(eosio::chain::deferred_transaction_generation_context, (sender_trx_id)(sender_id)(sender) )
-FC_REFLECT( eosio::chain::transaction_header, (expiration)(ref_block_num)(ref_block_prefix)
+FC_REFLECT(agrio::chain::deferred_transaction_generation_context, (sender_trx_id)(sender_id)(sender) )
+FC_REFLECT( agrio::chain::transaction_header, (expiration)(ref_block_num)(ref_block_prefix)
                                               (max_net_usage_words)(max_cpu_usage_ms)(delay_sec) )
-FC_REFLECT_DERIVED( eosio::chain::transaction, (eosio::chain::transaction_header), (context_free_actions)(actions)(transaction_extensions) )
-FC_REFLECT_DERIVED( eosio::chain::signed_transaction, (eosio::chain::transaction), (signatures)(context_free_data) )
-FC_REFLECT_ENUM( eosio::chain::packed_transaction::compression_type, (none)(zlib))
+FC_REFLECT_DERIVED( agrio::chain::transaction, (agrio::chain::transaction_header), (context_free_actions)(actions)(transaction_extensions) )
+FC_REFLECT_DERIVED( agrio::chain::signed_transaction, (agrio::chain::transaction), (signatures)(context_free_data) )
+FC_REFLECT_ENUM( agrio::chain::packed_transaction::compression_type, (none)(zlib))
 // @ignore unpacked_trx
-FC_REFLECT( eosio::chain::packed_transaction, (signatures)(compression)(packed_context_free_data)(packed_trx) )
+FC_REFLECT( agrio::chain::packed_transaction, (signatures)(compression)(packed_context_free_data)(packed_trx) )

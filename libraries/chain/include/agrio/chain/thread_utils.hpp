@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in eos/LICENSE.txt
+ *  @copyright defined in agr/LICENSE.txt
  */
 #pragma once
 
@@ -11,7 +11,7 @@
 #include <future>
 #include <memory>
 
-namespace eosio { namespace chain {
+namespace agrio { namespace chain {
 
    /**
     * Wrapper class for boost asio thread pool and io_context run.
@@ -48,6 +48,6 @@ namespace eosio { namespace chain {
       return task->get_future();
    }
 
-} } // eosio::chain
+} } // agrio::chain
 
 
