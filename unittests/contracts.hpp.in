@@ -36,17 +36,23 @@ namespace agrio {
          MAKE_READ_WASM_ABI(agrio_token,  agrio.token,  contracts)
          MAKE_READ_WASM_ABI(agrio_wrap,   agrio.wrap,   contracts)
 
+         MAKE_READ_WASM_ABI(before_preactivate_agrio_bios,   agrio.bios, contracts/old_versions/v1.6.0-rc3)
+
          // Contracts in `agr/unittests/unittests/test-contracts' directory
-         MAKE_READ_WASM_ABI(asserter,             asserter,             test-contracts)
-         MAKE_READ_WASM_ABI(deferred_test,        deferred_test,        test-contracts)
-         MAKE_READ_WASM_ABI(noop,                 noop,                 test-contracts)
-         MAKE_READ_WASM_ABI(payloadless,          payloadless,          test-contracts)
-         MAKE_READ_WASM_ABI(proxy,                proxy,                test-contracts)
-         MAKE_READ_WASM_ABI(snapshot_test,        snapshot_test,        test-contracts)
-         MAKE_READ_WASM_ABI(test_api,             test_api,             test-contracts)
-         MAKE_READ_WASM_ABI(test_api_db,          test_api_db,          test-contracts)
-         MAKE_READ_WASM_ABI(test_api_multi_index, test_api_multi_index, test-contracts)
-         MAKE_READ_WASM_ABI(test_ram_limit,       test_ram_limit,       test-contracts)
+         MAKE_READ_WASM_ABI(asserter,              asserter,              test-contracts)
+         MAKE_READ_WASM_ABI(deferred_test,         deferred_test,         test-contracts)
+         MAKE_READ_WASM_ABI(get_sender_test,       get_sender_test,       test-contracts)
+         MAKE_READ_WASM_ABI(noop,                  noop,                  test-contracts)
+         MAKE_READ_WASM_ABI(payloadless,           payloadless,           test-contracts)
+         MAKE_READ_WASM_ABI(proxy,                 proxy,                 test-contracts)
+         MAKE_READ_WASM_ABI(ram_restrictions_test, ram_restrictions_test, test-contracts)
+         MAKE_READ_WASM_ABI(reject_all,            reject_all,            test-contracts)
+         MAKE_READ_WASM_ABI(restrict_action_test,  restrict_action_test,  test-contracts)
+         MAKE_READ_WASM_ABI(snapshot_test,         snapshot_test,         test-contracts)
+         MAKE_READ_WASM_ABI(test_api,              test_api,              test-contracts)
+         MAKE_READ_WASM_ABI(test_api_db,           test_api_db,           test-contracts)
+         MAKE_READ_WASM_ABI(test_api_multi_index,  test_api_multi_index,  test-contracts)
+         MAKE_READ_WASM_ABI(test_ram_limit,        test_ram_limit,        test-contracts)
       };
    } /// agrio::testing
 }  /// agrio

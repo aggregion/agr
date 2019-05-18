@@ -331,16 +331,20 @@ namespace agrio { namespace chain {
       AGR_ASSERT( auth.actor == link.account, irrelevant_auth_exception,
                   "the owner of the linked permission needs to be the actor of the declared authorization" );
 
-      AGR_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::updateauth to a minimum permission" );
-      AGR_ASSERT( link.type != deleteauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::deleteauth to a minimum permission" );
-      AGR_ASSERT( link.type != linkauth::get_name(),    action_validate_exception,
-                  "Cannot link agrio::linkauth to a minimum permission" );
-      AGR_ASSERT( link.type != unlinkauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::unlinkauth to a minimum permission" );
-      AGR_ASSERT( link.type != canceldelay::get_name(), action_validate_exception,
-                  "Cannot link agrio::canceldelay to a minimum permission" );
+      if( link.code == config::system_account_name
+            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) ) 
+      {
+         AGR_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::updateauth to a minimum permission" );
+         AGR_ASSERT( link.type != deleteauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::deleteauth to a minimum permission" );
+         AGR_ASSERT( link.type != linkauth::get_name(),    action_validate_exception,
+                     "Cannot link agrio::linkauth to a minimum permission" );
+         AGR_ASSERT( link.type != unlinkauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::unlinkauth to a minimum permission" );
+         AGR_ASSERT( link.type != canceldelay::get_name(), action_validate_exception,
+                     "Cannot link agrio::canceldelay to a minimum permission" );
+      }
 
       const auto linked_permission_name = lookup_minimum_permission(link.account, link.code, link.type);
 

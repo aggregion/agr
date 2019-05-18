@@ -47,8 +47,6 @@ namespace chain {
 
          friend class agrio::net_plugin_impl;
          friend struct agrio::handshake_message;
-
-         friend struct ::hello; // TODO: Rushed hack to support bnet_plugin. Need a better solution.
    };
 
 } }  // namespace agrio::chain

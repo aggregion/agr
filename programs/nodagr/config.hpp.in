@@ -11,6 +11,7 @@
 
 namespace agrio { namespace nodagr { namespace config {
   constexpr uint64_t version = 0x${nodagr_BUILD_VERSION};
+  const string node_executable_name = "${NODE_EXECUTABLE_NAME}";
 }}}
 
 #endif // CONFIG_HPP_IN

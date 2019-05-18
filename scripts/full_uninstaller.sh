@@ -8,9 +8,9 @@ if [ -d "/usr/local/include/agrio" ] || [ -d "$HOME/opt/agrio" ] || [ $FORCED ==
    elif [ $1 == 1 ] || [ $FORCED == 1 ]; then
       ANSWER=1
    fi
-   echo "Uninstalling..."
    case $ANSWER in
       1 | [Yy]* )
+         echo "Uninstalling..."
          if [ -d "$HOME/opt/agrio" ] || [[ $1 == "force-new" ]]; then
             if [ $( uname ) == "Darwin" ]; then
                # gettext and other brew packages are not modified as they can be dependencies for things other than agrio
@@ -128,7 +128,6 @@ if [ -d "/usr/local/include/agrio" ] || [ -d "$HOME/opt/agrio" ] || [ $FORCED ==
       ;;
       [Nn]* )
          printf "Skipping\n\n"
-         exit 0
       ;;
    esac
 fi

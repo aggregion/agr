@@ -62,7 +62,7 @@ $ ./nodagr -d ~/agr.data/generator_node --config-dir ~/agr.data/generator_node -
 ### Create a wallet on the non-producer and set bios contract
 ```bash
 $ ./clagr wallet create --to-console
-$ ./clagr wallet import --private-key 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+$ ./clagr wallet import --private-key 5Hqh8bdtEjh9MFeEKzRTLX9pn68qoc17QfTz6JB8Pn59VojjVsS
 $ ./clagr set contract agrio ~/agr/build.release/contracts/agrio.bios/ 
 ```
 

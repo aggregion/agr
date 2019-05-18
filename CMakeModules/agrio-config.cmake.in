@@ -2,6 +2,7 @@ if(AGRIO_ROOT STREQUAL "" OR NOT AGRIO_ROOT)
    set(AGRIO_ROOT "@AGR_ROOT_DIR@")
 endif()
 list(APPEND CMAKE_MODULE_PATH ${AGRIO_ROOT}/lib/cmake/agrio)
+list(APPEND CMAKE_MODULE_PATH ${AGRIO_ROOT}/lib64/cmake/agrio)
 include(AgrioTester)
 
 function(EXTRACT_MAJOR_MINOR_FROM_VERSION version success major minor)

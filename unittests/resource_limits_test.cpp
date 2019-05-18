@@ -14,7 +14,7 @@ using namespace agrio::chain::resource_limits;
 using namespace agrio::testing;
 using namespace agrio::chain;
 
-class resource_limits_fixture: private chainbase_fixture<512*1024>, public resource_limits_manager
+class resource_limits_fixture: private chainbase_fixture<1024*1024>, public resource_limits_manager
 {
    public:
       resource_limits_fixture()
