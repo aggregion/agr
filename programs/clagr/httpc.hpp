@@ -1,8 +1,10 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
+
+#include "config.hpp"
 
 namespace agrio { namespace client { namespace http {
 
@@ -128,7 +130,7 @@ namespace agrio { namespace client { namespace http {
    const string wallet_remove_key = wallet_func_base + "/remove_key";
    const string wallet_create_key = wallet_func_base + "/create_key";
    const string wallet_sign_trx = wallet_func_base + "/sign_transaction";
-   const string kagrd_stop = "/v1/kagrd/stop";
+   const string kagrd_stop = "/v1/" + string(client::config::key_store_executable_name) + "/stop";
 
    FC_DECLARE_EXCEPTION( connection_exception, 1100000, "Connection Exception" );
  }}}

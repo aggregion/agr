@@ -5,16 +5,25 @@ steps:
         docker-credential-gcr configure-docker && \
         echo "BUILDING BUILD IMAGE" && \
         cd Docker/builder && \
-        docker build -t agrio/builder:latest -t agrio/builder:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_COMMIT && \
+        docker build -t agrio/builder:latest -t agrio/builder:$BUILDKITE_COMMIT -t agrio/builder:$BUILDKITE_BRANCH . --build-arg branch=$BUILDKITE_COMMIT && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/builder:latest agrio/builder:$BUILDKITE_TAG || : && \
         docker tag agrio/builder:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker tag agrio/builder:$BUILDKITE_BRANCH gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/builder:$BUILDKITE_TAG gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_TAG || : && \
         docker tag agrio/builder:latest gcr.io/b1-automation-dev/agrio/builder:latest && \
         echo "PUSHING DOCKER IMAGES" && \
         docker push gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker push gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_TAG || : && \
         docker push gcr.io/b1-automation-dev/agrio/builder:latest && \
         echo "TRASHING OLD IMAGES" && \
         docker rmi agrio/builder:$BUILDKITE_COMMIT && \
+        docker rmi agrio/builder:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi agrio/builder:$BUILDKITE_TAG || : && \
         docker rmi agrio/builder:latest && \
         docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_TAG || : && \
         docker rmi gcr.io/b1-automation-dev/agrio/builder:latest
     label: "Docker build builder"
     agents:
@@ -30,16 +39,25 @@ steps:
         echo "BUILDING AGR IMAGE" && \
         docker pull gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
         cd Docker && \
-        docker build -t agrio/agr:latest -t agrio/agr:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_BRANCH && \
+        docker build -t agrio/agr:latest -t agrio/agr:$BUILDKITE_COMMIT -t agrio/agr:$BUILDKITE_BRANCH . --build-arg branch=$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/agr:latest agrio/agr:$BUILDKITE_TAG || : && \
         docker tag agrio/agr:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker tag agrio/agr:$BUILDKITE_BRANCH gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/agr:$BUILDKITE_TAG gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_TAG || : && \
         docker tag agrio/agr:latest gcr.io/b1-automation-dev/agrio/agr:latest && \
         echo "PUSHING DOCKER IMAGES" && \
         docker push gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker push gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_TAG || : && \
         docker push gcr.io/b1-automation-dev/agrio/agr:latest && \
         echo "TRASHING OLD IMAGES" && \
         docker rmi agrio/agr:$BUILDKITE_COMMIT && \
+        docker rmi agrio/agr:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi agrio/agr:$BUILDKITE_TAG || : && \
         docker rmi agrio/agr:latest && \
         docker rmi gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi gcr.io/b1-automation-dev/agrio/agr:$BUILDKITE_TAG || : && \
         docker rmi gcr.io/b1-automation-dev/agrio/agr:latest && \
         docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT
     label: "Docker build agr"
@@ -54,16 +72,25 @@ steps:
         echo "BUILDING AGR DEV IMAGE" && \
         docker pull gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT && \
         cd Docker/dev && \
-        docker build -t agrio/agr-dev:latest -t agrio/agr-dev:$BUILDKITE_COMMIT . --build-arg branch=$BUILDKITE_BRANCH && \
+        docker build -t agrio/agr-dev:latest -t agrio/agr-dev:$BUILDKITE_COMMIT -t agrio/agr-dev:$BUILDKITE_BRANCH . --build-arg branch=$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/agr-dev:latest agrio/agr-dev:$BUILDKITE_TAG || : && \
         docker tag agrio/agr-dev:$BUILDKITE_COMMIT gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker tag agrio/agr-dev:$BUILDKITE_BRANCH gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker tag agrio/agr-dev:$BUILDKITE_TAG gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_TAG || : && \
         docker tag agrio/agr-dev:latest gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
         echo "PUSHING DOCKER IMAGES" && \
         docker push gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker push gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker push gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_TAG || : && \
         docker push gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
         echo "TRASHING OLD IMAGES" && \
         docker rmi agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker rmi agrio/agr-dev:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi agrio/agr-dev:$BUILDKITE_TAG || : && \
         docker rmi agrio/agr-dev:latest && \
         docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_COMMIT && \
+        docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_BRANCH && \
+        [[ "$BUILDKITE_TAG" != "" ]] && docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:$BUILDKITE_TAG || : && \
         docker rmi gcr.io/b1-automation-dev/agrio/agr-dev:latest && \
         docker rmi gcr.io/b1-automation-dev/agrio/builder:$BUILDKITE_COMMIT
     label: "Docker build agr-dev"

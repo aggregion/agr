@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/http_client_plugin/http_client_plugin.hpp>
 #include <agrio/chain/exceptions.hpp>

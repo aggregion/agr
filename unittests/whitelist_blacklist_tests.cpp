@@ -1,16 +1,16 @@
-#include <boost/test/unit_test.hpp>
+/**
+ *  @file
+ *  @copyright defined in agr/LICENSE.txt
+ */
+#include <agrio/chain/generated_transaction_object.hpp>
 #include <agrio/testing/tester.hpp>
 #include <agrio/testing/tester_network.hpp>
 
-#include <agrio/chain/generated_transaction_object.hpp>
-
 #include <fc/variant_object.hpp>
 
-#include <agrio.token/agrio.token.wast.hpp>
-#include <agrio.token/agrio.token.abi.hpp>
+#include <boost/test/unit_test.hpp>
 
-#include <deferred_test/deferred_test.wast.hpp>
-#include <deferred_test/deferred_test.abi.hpp>
+#include <contracts.hpp>
 
 #ifdef NON_VALIDATING_TEST
 #define TESTER tester
@@ -70,8 +70,8 @@ class whitelist_blacklist_tester {
          if( !bootstrap ) return;
 
          chain->create_accounts({N(agrio.token), N(alice), N(bob), N(charlie)});
-         chain->set_code(N(agrio.token), agrio_token_wast);
-         chain->set_abi(N(agrio.token), agrio_token_abi);
+         chain->set_code(N(agrio.token), contracts::agrio_token_wasm() );
+         chain->set_abi(N(agrio.token), contracts::agrio_token_abi().data() );
          chain->push_action( N(agrio.token), N(create), N(agrio.token), mvo()
               ( "issuer", "agrio.token" )
               ( "maximum_supply", "1000000.00 TOK" )
@@ -206,13 +206,13 @@ BOOST_AUTO_TEST_CASE( contract_whitelist ) { try {
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(bob), agrio_token_wast);
-   test.chain->set_abi(N(bob), agrio_token_abi);
+   test.chain->set_code(N(bob), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(bob), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(charlie), agrio_token_wast);
-   test.chain->set_abi(N(charlie), agrio_token_abi);
+   test.chain->set_code(N(charlie), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(charlie), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
@@ -255,13 +255,13 @@ BOOST_AUTO_TEST_CASE( contract_blacklist ) { try {
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(bob), agrio_token_wast);
-   test.chain->set_abi(N(bob), agrio_token_abi);
+   test.chain->set_code(N(bob), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(bob), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(charlie), agrio_token_wast);
-   test.chain->set_abi(N(charlie), agrio_token_abi);
+   test.chain->set_code(N(charlie), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(charlie), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
@@ -298,13 +298,13 @@ BOOST_AUTO_TEST_CASE( action_blacklist ) { try {
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(bob), agrio_token_wast);
-   test.chain->set_abi(N(bob), agrio_token_abi);
+   test.chain->set_code(N(bob), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(bob), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
-   test.chain->set_code(N(charlie), agrio_token_wast);
-   test.chain->set_abi(N(charlie), agrio_token_abi);
+   test.chain->set_code(N(charlie), contracts::agrio_token_wasm() );
+   test.chain->set_abi(N(charlie), contracts::agrio_token_abi().data() );
 
    test.chain->produce_blocks();
 
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE( blacklist_agrio ) { try {
    whitelist_blacklist_tester<tester> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-   tester1.chain->set_code(config::system_account_name, agrio_token_wast);
+   tester1.chain->set_code(config::system_account_name, contracts::agrio_token_wasm() );
    tester1.chain->produce_blocks();
    tester1.shutdown();
    tester1.contract_blacklist = {config::system_account_name};
@@ -357,10 +357,10 @@ BOOST_AUTO_TEST_CASE( deferred_blacklist_failure ) { try {
    whitelist_blacklist_tester<tester> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-   tester1.chain->set_code( N(bob), deferred_test_wast );
-   tester1.chain->set_abi( N(bob),  deferred_test_abi );
-   tester1.chain->set_code( N(charlie), deferred_test_wast );
-   tester1.chain->set_abi( N(charlie),  deferred_test_abi );
+   tester1.chain->set_code( N(bob), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(bob),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(charlie), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(charlie),  contracts::deferred_test_abi().data() );
    tester1.chain->produce_blocks();
 
    tester1.chain->push_action( N(bob), N(defercall), N(alice), mvo()
@@ -408,12 +408,12 @@ BOOST_AUTO_TEST_CASE( blacklist_onerror ) { try {
    whitelist_blacklist_tester<TESTER> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-   tester1.chain->set_code( N(bob), deferred_test_wast );
-   tester1.chain->set_abi( N(bob),  deferred_test_abi );
-   tester1.chain->set_code( N(charlie), deferred_test_wast );
-   tester1.chain->set_abi( N(charlie),  deferred_test_abi );
+   tester1.chain->set_code( N(bob), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(bob),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(charlie), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(charlie),  contracts::deferred_test_abi().data() );
    tester1.chain->produce_blocks();
-
+   
    tester1.chain->push_action( N(bob), N(defercall), N(alice), mvo()
       ( "payer", "alice" )
       ( "sender_id", 0 )
@@ -444,12 +444,12 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
    whitelist_blacklist_tester<tester> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-   tester1.chain->set_code( N(alice), deferred_test_wast );
-   tester1.chain->set_abi( N(alice),  deferred_test_abi );
-   tester1.chain->set_code( N(bob), deferred_test_wast );
-   tester1.chain->set_abi( N(bob),  deferred_test_abi );
-   tester1.chain->set_code( N(charlie), deferred_test_wast );
-   tester1.chain->set_abi( N(charlie),  deferred_test_abi );
+   tester1.chain->set_code( N(alice), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(alice),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(bob), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(bob),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(charlie), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(charlie),  contracts::deferred_test_abi().data() );
    tester1.chain->produce_blocks();
 
    auto auth = authority(agrio::testing::base_tester::get_public_key("alice", "active"));
@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
    );
 
    auth = authority(agrio::testing::base_tester::get_public_key("bob", "active"));
-   auth.accounts.push_back( permission_level_weight{{N(alice), config::active_name}, 1} );
+   auth.accounts.push_back( permission_level_weight{{N(alice), config::agrio_code_name}, 1} );
    auth.accounts.push_back( permission_level_weight{{N(bob), config::agrio_code_name}, 1} );
 
    tester1.chain->push_action( N(agrio), N(updateauth), N(bob), mvo()
@@ -498,7 +498,8 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
       tester2.chain->push_block( b );
    }
 
-   auto log_trxs = [&]( const transaction_trace_ptr& t) {
+   auto log_trxs = [&](std::tuple<const transaction_trace_ptr&, const signed_transaction&> x) {
+      auto& t = std::get<0>(x);
       if( !t || t->action_traces.size() == 0 ) return;
 
       const auto& act = t->action_traces[0].act;
@@ -526,7 +527,7 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
 
 
    auto num_deferred = tester1.chain->control->db().get_index<generated_transaction_multi_index,by_trx_id>().size();
-   BOOST_REQUIRE_EQUAL(0, num_deferred);
+   BOOST_REQUIRE_EQUAL(0u, num_deferred);
 
    // Schedule a deferred transaction authorized by charlie@active
    tester1.chain->push_action( N(charlie), N(defercall), N(alice), mvo()
@@ -537,14 +538,14 @@ BOOST_AUTO_TEST_CASE( actor_blacklist_inline_deferred ) { try {
    );
 
    num_deferred = tester1.chain->control->db().get_index<generated_transaction_multi_index,by_trx_id>().size();
-   BOOST_REQUIRE_EQUAL(1, num_deferred);
+   BOOST_REQUIRE_EQUAL(1u, num_deferred);
 
    // Do not allow that deferred transaction to retire yet
    tester1.chain->finish_block();
    tester1.chain->produce_blocks(2, true); // Produce 2 empty blocks (other than onblock of course).
 
    num_deferred = tester1.chain->control->db().get_index<generated_transaction_multi_index,by_trx_id>().size();
-   BOOST_REQUIRE_EQUAL(1, num_deferred);
+   BOOST_REQUIRE_EQUAL(1u, num_deferred);
 
    c1.disconnect();
 
@@ -587,12 +588,12 @@ BOOST_AUTO_TEST_CASE( blacklist_sender_bypass ) { try {
    whitelist_blacklist_tester<tester> tester1;
    tester1.init();
    tester1.chain->produce_blocks();
-   tester1.chain->set_code( N(alice), deferred_test_wast );
-   tester1.chain->set_abi( N(alice),  deferred_test_abi );
-   tester1.chain->set_code( N(bob), deferred_test_wast );
-   tester1.chain->set_abi( N(bob),  deferred_test_abi );
-   tester1.chain->set_code( N(charlie), deferred_test_wast );
-   tester1.chain->set_abi( N(charlie),  deferred_test_abi );
+   tester1.chain->set_code( N(alice), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(alice),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(bob), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(bob),  contracts::deferred_test_abi().data() );
+   tester1.chain->set_code( N(charlie), contracts::deferred_test_wasm() );
+   tester1.chain->set_abi( N(charlie),  contracts::deferred_test_abi().data() );
    tester1.chain->produce_blocks();
 
    auto auth = authority(agrio::testing::base_tester::get_public_key("alice", "active"));

@@ -41,18 +41,22 @@ add_library( agrio_chain
              webassembly/wabt.cpp
 
 #             get_config.cpp
-#             global_property_object.cpp
 #
 #             contracts/chain_initializer.cpp
 
-
-#             transaction_metadata.cpp
+             trace.cpp
+             transaction_metadata.cpp
+             protocol_state_object.cpp
+             protocol_feature_activation.cpp
+             protocol_feature_manager.cpp
+             genesis_intrinsics.cpp
+             whitelisted_intrinsics.cpp
+             thread_utils.cpp
              ${HEADERS}
              )
 
 target_link_libraries( agrio_chain fc chainbase Logging IR WAST WASM Runtime
                        softfloat builtins wabt
-                       ${Boost_LIBRARIES}
                      )
 target_include_directories( agrio_chain
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include"

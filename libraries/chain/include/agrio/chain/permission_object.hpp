@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #pragma once
 #include <agrio/chain/authority.hpp>
@@ -32,8 +32,8 @@ namespace agrio { namespace chain {
       id_type                           id;
       permission_usage_object::id_type  usage_id;
       id_type                           parent; ///< parent permission
-      account_name                      owner; ///< the account this permission belongs to
-      permission_name                   name; ///< human-readable name for the permission
+      account_name                      owner; ///< the account this permission belongs to (should not be changed within a chainbase modifier lambda)
+      permission_name                   name; ///< human-readable name for the permission (should not be changed within a chainbase modifier lambda)
       time_point                        last_updated; ///< the last time this authority was updated
       shared_authority                  auth; ///< authority required to execute this permission
 

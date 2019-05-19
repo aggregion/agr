@@ -26,6 +26,7 @@ systemAccounts = [
     'agrio.stake',
     'agrio.token',
     'agrio.vpay',
+    'agrio.rex',
 ]
 
 def jsonArg(a):
@@ -168,7 +169,7 @@ def createStakedAccounts(b, e):
         stakeCpu = stake - stakeNet
         print('%s: total funds=%s, ram=%s, net=%s, cpu=%s, unstaked=%s' % (a['name'], intToCurrency(a['funds']), intToCurrency(ramFunds), intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(unstaked)))
         assert(funds == ramFunds + stakeNet + stakeCpu + unstaked)
-        retry(args.clagr + 'system newaccount --transfer agrio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' %
+        retry(args.clagr + 'system newaccount --transfer agrio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' % 
             (a['name'], a['pub'], intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(ramFunds)))
         if unstaked:
             retry(args.clagr + 'transfer agrio %s "%s"' % (a['name'], intToCurrency(unstaked)))
@@ -243,7 +244,7 @@ def msigProposeReplaceSystem(proposer, proposalName):
     trxPermissions = [{'actor': 'agrio', 'permission': 'active'}]
     with open(fastUnstakeSystem, mode='rb') as f:
         setcode = {'account': 'agrio', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
-    run(args.clagr + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) +
+    run(args.clagr + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) + 
         jsonArg(trxPermissions) + 'agrio setcode' + jsonArg(setcode) + ' -p ' + proposer)
 
 def msigApproveReplaceSystem(proposer, proposalName):
@@ -284,17 +285,20 @@ def stepStartBoot():
     startNode(0, {'name': 'agrio', 'pvt': args.private_key, 'pub': args.public_key})
     sleep(1.5)
 def stepInstallSystemContracts():
-    run(args.clagr + 'set contract agrio.token ' + args.contracts_dir + 'agrio.token/')
-    run(args.clagr + 'set contract agrio.msig ' + args.contracts_dir + 'agrio.msig/')
+    run(args.clagr + 'set contract agrio.token ' + args.contracts_dir + '/agrio.token/')
+    run(args.clagr + 'set contract agrio.msig ' + args.contracts_dir + '/agrio.msig/')
 def stepCreateTokens():
     run(args.clagr + 'push action agrio.token create \'["agrio", "10000000000.0000 %s"]\' -p agrio.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
     run(args.clagr + 'push action agrio.token issue \'["agrio", "%s", "memo"]\' -p agrio' % intToCurrency(totalAllocation))
     sleep(1)
 def stepSetSystemContract():
-    retry(args.clagr + 'set contract agrio ' + args.contracts_dir + 'agrio.system/')
+    retry(args.clagr + 'set contract agrio ' + args.contracts_dir + '/agrio.system/')
     sleep(1)
     run(args.clagr + 'push action agrio setpriv' + jsonArg(['agrio.msig', 1]) + '-p agrio@active')
+def stepInitSystemContract():
+    run(args.clagr + 'push action agrio init' + jsonArg(['0', '4,SYS']) + '-p agrio@active')
+    sleep(1)
 def stepCreateStakedAccounts():
     createStakedAccounts(0, len(accounts))
 def stepRegProducers():
@@ -326,27 +330,28 @@ def stepLog():
 parser = argparse.ArgumentParser()
 
 commands = [
-    ('k', 'kill',           stepKillAll,                True,    "Kill all nodagr and kagrd processes"),
-    ('w', 'wallet',         stepStartWallet,            True,    "Start kagrd, create wallet, fill with keys"),
-    ('b', 'boot',           stepStartBoot,              True,    "Start boot node"),
-    ('s', 'sys',            createSystemAccounts,       True,    "Create system accounts (agrio.*)"),
-    ('c', 'contracts',      stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
-    ('t', 'tokens',         stepCreateTokens,           True,    "Create tokens"),
-    ('S', 'sys-contract',   stepSetSystemContract,      True,    "Set system contract"),
-    ('T', 'stake',          stepCreateStakedAccounts,   True,    "Create staked accounts"),
-    ('p', 'reg-prod',       stepRegProducers,           True,    "Register producers"),
-    ('P', 'start-prod',     stepStartProducers,         True,    "Start producers"),
-    ('v', 'vote',           stepVote,                   True,    "Vote for producers"),
-    ('R', 'claim',          claimRewards,               True,    "Claim rewards"),
-    ('x', 'proxy',          stepProxyVotes,             True,    "Proxy votes"),
-    ('q', 'resign',         stepResign,                 True,    "Resign agrio"),
-    ('m', 'msg-replace',    msigReplaceSystem,          False,   "Replace system contract using msig"),
-    ('X', 'xfer',           stepTransfer,               False,   "Random transfer tokens (infinite loop)"),
-    ('l', 'log',            stepLog,                    True,    "Show tail of node's log"),
+    ('k', 'kill',               stepKillAll,                True,    "Kill all nodagr and kagrd processes"),
+    ('w', 'wallet',             stepStartWallet,            True,    "Start kagrd, create wallet, fill with keys"),
+    ('b', 'boot',               stepStartBoot,              True,    "Start boot node"),
+    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (agrio.*)"),
+    ('c', 'contracts',          stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
+    ('t', 'tokens',             stepCreateTokens,           True,    "Create tokens"),
+    ('S', 'sys-contract',       stepSetSystemContract,      True,    "Set system contract"),
+    ('I', 'init-sys-contract',  stepInitSystemContract,     True,    "Initialiaze system contract"),
+    ('T', 'stake',              stepCreateStakedAccounts,   True,    "Create staked accounts"),
+    ('p', 'reg-prod',           stepRegProducers,           True,    "Register producers"),
+    ('P', 'start-prod',         stepStartProducers,         True,    "Start producers"),
+    ('v', 'vote',               stepVote,                   True,    "Vote for producers"),
+    ('R', 'claim',              claimRewards,               True,    "Claim rewards"),
+    ('x', 'proxy',              stepProxyVotes,             True,    "Proxy votes"),
+    ('q', 'resign',             stepResign,                 True,    "Resign agrio"),
+    ('m', 'msg-replace',        msigReplaceSystem,          False,   "Replace system contract using msig"),
+    ('X', 'xfer',               stepTransfer,               False,   "Random transfer tokens (infinite loop)"),
+    ('l', 'log',                stepLog,                    True,    "Show tail of node's log"),
 ]
 
-parser.add_argument('--public-key', metavar='', help="AGRIO Public Key", default='AGR7W2ZHV5PAwxSRbWRMkzuangVF64X2AkYEEKjpdXu3BUPXPW6vA', dest="public_key")
-parser.add_argument('--private-Key', metavar='', help="AGRIO Private Key", default='5KDF6hrE58eEj3B38AiCFdCp43JqCTPSRLigCeFc4ze3otae4LM', dest="private_key")
+parser.add_argument('--public-key', metavar='', help="AGRIO Public Key", default='EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
+parser.add_argument('--private-Key', metavar='', help="AGRIO Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
 parser.add_argument('--clagr', metavar='', help="Clagr command", default='../../build/programs/clagr/clagr --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--nodagr', metavar='', help="Path to nodagr binary", default='../../build/programs/nodagr/nodagr')
 parser.add_argument('--kagrd', metavar='', help="Path to kagrd binary", default='../../build/programs/kagrd/kagrd')
@@ -378,7 +383,7 @@ for (flag, command, function, inAll, help) in commands:
         parser.add_argument('-' + flag, '--' + command, action='store_true', help=help, dest=command)
     else:
         parser.add_argument('--' + command, action='store_true', help=help, dest=command)
-
+        
 args = parser.parse_args()
 
 args.clagr += '--url http://127.0.0.1:%d ' % args.http_port

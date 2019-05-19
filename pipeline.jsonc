@@ -1,0 +1,41 @@
+{
+    "agrio-build-unpinned":
+    {
+        "pipeline-branch": "protocol-features-sync-nodes"
+    },
+    "agrio-lrt":
+    {
+        "pipeline-branch": "protocol-features-sync-nodes"
+    },
+    "agr-multiversion-tests":
+    {
+        "pipeline-branch": "protocol-features-sync-nodes",
+        "configuration":
+        [
+            "170=v1.7.0"
+        ]
+    },
+    "agrio-docker-builds":
+    {
+        "environment":
+        {
+            "BUILDER_TAG": "v1.8.0"
+        }
+    },
+    "agrio-sync-tests":
+    {
+        "environment":
+        {
+            "SKIP_PRE_V180": "true",
+            "SKIP_V180": "false"
+        }
+    },
+    "agrio-replay-tests":
+    {
+        "environment":
+        {
+            "SKIP_PRE_V180": "true",
+            "SKIP_V180": "false"
+        }
+    }
+}

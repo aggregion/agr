@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 
 #include <agrio/chain/authorization_manager.hpp>
@@ -331,16 +331,20 @@ namespace agrio { namespace chain {
       AGR_ASSERT( auth.actor == link.account, irrelevant_auth_exception,
                   "the owner of the linked permission needs to be the actor of the declared authorization" );
 
-      AGR_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::updateauth to a minimum permission" );
-      AGR_ASSERT( link.type != deleteauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::deleteauth to a minimum permission" );
-      AGR_ASSERT( link.type != linkauth::get_name(),    action_validate_exception,
-                  "Cannot link agrio::linkauth to a minimum permission" );
-      AGR_ASSERT( link.type != unlinkauth::get_name(),  action_validate_exception,
-                  "Cannot link agrio::unlinkauth to a minimum permission" );
-      AGR_ASSERT( link.type != canceldelay::get_name(), action_validate_exception,
-                  "Cannot link agrio::canceldelay to a minimum permission" );
+      if( link.code == config::system_account_name
+            || !_control.is_builtin_activated( builtin_protocol_feature_t::fix_linkauth_restriction ) ) 
+      {
+         AGR_ASSERT( link.type != updateauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::updateauth to a minimum permission" );
+         AGR_ASSERT( link.type != deleteauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::deleteauth to a minimum permission" );
+         AGR_ASSERT( link.type != linkauth::get_name(),    action_validate_exception,
+                     "Cannot link agrio::linkauth to a minimum permission" );
+         AGR_ASSERT( link.type != unlinkauth::get_name(),  action_validate_exception,
+                     "Cannot link agrio::unlinkauth to a minimum permission" );
+         AGR_ASSERT( link.type != canceldelay::get_name(), action_validate_exception,
+                     "Cannot link agrio::canceldelay to a minimum permission" );
+      }
 
       const auto linked_permission_name = lookup_minimum_permission(link.account, link.code, link.type);
 
@@ -431,7 +435,8 @@ namespace agrio { namespace chain {
                                                const flat_set<permission_level>&    provided_permissions,
                                                fc::microseconds                     provided_delay,
                                                const std::function<void()>&         _checktime,
-                                               bool                                 allow_unused_keys
+                                               bool                                 allow_unused_keys,
+                                               const flat_set<permission_level>&    satisfied_authorizations
                                              )const
    {
       const auto& checktime = ( static_cast<bool>(_checktime) ? _checktime : _noop_checktime );
@@ -488,9 +493,11 @@ namespace agrio { namespace chain {
                }
             }
 
-            auto res = permissions_to_satisfy.emplace( declared_auth, delay );
-            if( !res.second && res.first->second > delay) { // if the declared_auth was already in the map and with a higher delay
-               res.first->second = delay;
+            if( satisfied_authorizations.find( declared_auth ) == satisfied_authorizations.end() ) {
+               auto res = permissions_to_satisfy.emplace( declared_auth, delay );
+               if( !res.second && res.first->second > delay) { // if the declared_auth was already in the map and with a higher delay
+                  res.first->second = delay;
+               }
             }
          }
       }

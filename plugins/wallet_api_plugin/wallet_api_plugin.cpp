@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/wallet_api_plugin/wallet_api_plugin.hpp>
 #include <agrio/wallet_plugin/wallet_manager.hpp>
@@ -30,7 +30,7 @@ using namespace agrio;
           try { \
              if (body.empty()) body = "{}"; \
              INVOKE \
-             cb(http_response_code, fc::json::to_string(result)); \
+             cb(http_response_code, fc::variant(result)); \
           } catch (...) { \
              http_plugin::handle_exception(#api_name, #call_name, body, cb); \
           } \

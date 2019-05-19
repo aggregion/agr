@@ -4,7 +4,7 @@ NAME=$1
 AGR_PREFIX=${PREFIX}/${SUBPREFIX}
 mkdir -p ${PREFIX}/bin/
 #mkdir -p ${PREFIX}/lib/cmake/${PROJECT}
-mkdir -p ${AGR_PREFIX}/bin 
+mkdir -p ${AGR_PREFIX}/bin
 mkdir -p ${AGR_PREFIX}/licenses/agrio
 #mkdir -p ${AGR_PREFIX}/include
 #mkdir -p ${AGR_PREFIX}/lib/cmake/${PROJECT}
@@ -12,10 +12,10 @@ mkdir -p ${AGR_PREFIX}/licenses/agrio
 #mkdir -p ${AGR_PREFIX}/scripts
 
 # install binaries 
-cp -R ${BUILD_DIR}/bin/* ${AGR_PREFIX}/bin 
+cp -R ${BUILD_DIR}/bin/* ${AGR_PREFIX}/bin  || exit 1
 
 # install licenses
-cp -R ${BUILD_DIR}/licenses/agrio/* ${AGR_PREFIX}/licenses
+cp -R ${BUILD_DIR}/licenses/agrio/* ${AGR_PREFIX}/licenses || exit 1
 
 # install libraries
 #cp -R ${BUILD_DIR}/lib/* ${AGR_PREFIX}/lib
@@ -33,12 +33,10 @@ cp -R ${BUILD_DIR}/licenses/agrio/* ${AGR_PREFIX}/licenses
 #ln -sf ../../../${SUBPREFIX}/lib/cmake/${PROJECT}/AgrioTester.cmake AgrioTester.cmake
 #popd &> /dev/null
 
-pushd ${PREFIX}/bin &> /dev/null
-for f in `ls ${BUILD_DIR}/bin/`; do
+for f in $(ls "${BUILD_DIR}/bin/"); do
    bn=$(basename $f)
-   ln -sf ../${SUBPREFIX}/bin/$bn $bn
+   ln -sf ../${SUBPREFIX}/bin/$bn ${PREFIX}/bin/$bn || exit 1
 done
-popd &> /dev/null
-
-tar -cvzf $NAME ./${PREFIX}/*
-rm -r ${PREFIX}
+echo "Generating Tarball $NAME.tar.gz..."
+tar -cvzf $NAME.tar.gz ./${PREFIX}/* || exit 1
+rm -r ${PREFIX} || exit 1

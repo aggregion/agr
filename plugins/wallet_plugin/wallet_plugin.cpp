@@ -1,6 +1,6 @@
 /**
  *  @file
- *  @copyright defined in agr/LICENSE.txt
+ *  @copyright defined in agr/LICENSE
  */
 #include <agrio/wallet_plugin/wallet_plugin.hpp>
 #include <agrio/wallet_plugin/wallet_manager.hpp>
